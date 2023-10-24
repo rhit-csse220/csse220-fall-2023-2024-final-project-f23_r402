@@ -1,5 +1,6 @@
 package mainApp;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -15,8 +16,7 @@ public class ChromosomeComponent extends JComponent{
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		
-		chromosome.drawOn(g2);
+		chromosome.drawOn(g2);		
 	}
 
 }

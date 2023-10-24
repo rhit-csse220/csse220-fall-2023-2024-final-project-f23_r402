@@ -1,5 +1,6 @@
 package mainApp;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ public class Chromosome {
 	public static final int NUM_PER_ROW = 10;
 	
 	private String fileData;
-	private Gene[] genes = new Gene[NUM_OF_GENES];
+	public Gene[] genes = new Gene[NUM_OF_GENES];
 	private double fitnessScore;
 	
 	Random r = new Random();
@@ -18,6 +19,7 @@ public class Chromosome {
 	// constructor
 	public Chromosome() {
 		//TODO idk what to put
+		this.fileData="";
 		initiateGene();
 	}
 	
@@ -40,11 +42,24 @@ public class Chromosome {
 		}
 	}
 	
+	public void loadGene() {
+		for (int i = 0; i < fileData.length(); i++) {
+			this.genes[i].setBit(this.fileData.charAt(i));
+			System.out.println(this.fileData.charAt(i));
+		}
+	}
+	
 	public void drawOn(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		
-		for (Gene gene : genes) {
-			gene.drawOn(g2);
+		for (int i = 0; i < genes.length; i++) {
+			genes[i].drawOn(g2);
+			if (genes[i].getBit()=='1') {
+				g2.setColor(Color.black);
+			}
+			else {
+				g2.setColor(Color.white);
+			}
+			g2.drawString((String)(i+""), genes[i].getX(), 10+genes[i].getY());
 		}
 	}
 }

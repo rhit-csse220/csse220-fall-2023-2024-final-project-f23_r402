@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 public class Gene {
-	public static final int GENE_SIDE = 5; // side length of gene square
+	public static final int GENE_SIDE = 30; // side length of gene square
 	public static final Color GENE_0_COLOR = Color.BLACK;
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	
@@ -28,17 +28,11 @@ public class Gene {
 	public void drawOn(Graphics g) {
 		// Treat Graphics as a Graphics2D
 		Graphics2D g2 = (Graphics2D) g;
-		
-		if (this.bit == 0) {
+		if (this.bit == '0') {
 			g2.setColor(GENE_0_COLOR);
-		} else if (this.bit == 1) {
+		} else if (this.bit == '1') {
 			g2.setColor(GENE_1_COLOR);
 		}
-		
-		// or fill rect with x and y without translating?
-//		g2.translate(x, y);
-//		g2.fillRect(0, 0, GENE_SIDE, GENE_SIDE);
-//		g2.translate(-x, -y);
 		g2.fillRect(x, y, GENE_SIDE, GENE_SIDE);
 	}
 	
@@ -62,5 +56,29 @@ public class Gene {
 	
 	public void setChangeable() {
 		this.changeable = true;
+	}
+
+	public char getBit() {
+		return bit;
+	}
+
+	public void setBit(char bit) {
+		this.bit = bit;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
 	}
 }
