@@ -1,5 +1,7 @@
 package mainApp;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,6 +18,7 @@ public class Chromosome {
 	// constructor
 	public Chromosome() {
 		//TODO idk what to put
+		initiateGene();
 	}
 	
 	// methods
@@ -28,12 +31,20 @@ public class Chromosome {
 		this.fitnessScore = 0;
 	}
 	
-	public void addGene(Gene gene) {
+	public void initiateGene() {
 		for (int i = 0; i < NUM_PER_ROW; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int bit = r.nextInt(0,2);
-				genes[i] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
+				this.genes[i*10+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
 			}
+		}
+	}
+	
+	public void drawOn(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		
+		for (Gene gene : genes) {
+			gene.drawOn(g2);
 		}
 	}
 }

@@ -41,7 +41,11 @@ public class ChromosomeViewer {
 		
 		// text file name - BorderLayout.NORTH
 		
+		
 		// chromosome - BorderLayout.CENTER
+		ChromosomeComponent component = new ChromosomeComponent();
+		panel.add(component, BorderLayout.CENTER);
+		
 		
 		// buttons/fields - BorderLayout.SOUTH
 		JButton mutateButton = new JButton("Mutate");
@@ -51,7 +55,6 @@ public class ChromosomeViewer {
 		// Load button functionality
 		JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -81,8 +84,6 @@ public class ChromosomeViewer {
 		panel.add(mRateField, BorderLayout.CENTER);
 		panel.add(loadButton, BorderLayout.CENTER);
 		panel.add(saveButton, BorderLayout.CENTER);
-		
-		frame.pack();
 	} // driverMain
 	
 	public void handleDriverMain() {
@@ -94,7 +95,7 @@ public class ChromosomeViewer {
 	}
 	
 	public void setChromosome(Chromosome c) {
-		this.chromosome=c;
+		this.chromosome = c;
 	}
 	
 	public static void main(String[] args) {

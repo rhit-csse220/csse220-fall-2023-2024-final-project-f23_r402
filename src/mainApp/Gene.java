@@ -36,9 +36,10 @@ public class Gene {
 		}
 		
 		// or fill rect with x and y without translating?
-		g2.translate(x, y);
-		g2.fillRect(0, 0, GENE_SIDE, GENE_SIDE);
-		g2.translate(-x, -y);
+//		g2.translate(x, y);
+//		g2.fillRect(0, 0, GENE_SIDE, GENE_SIDE);
+//		g2.translate(-x, -y);
+		g2.fillRect(x, y, GENE_SIDE, GENE_SIDE);
 	}
 	
 	@Override
