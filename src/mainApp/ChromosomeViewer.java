@@ -3,6 +3,7 @@ package mainApp;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -11,15 +12,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.util.List;
-import java.io.FileWriter;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.plaf.FileChooserUI;
 import javax.swing.plaf.basic.BasicOptionPaneUI;
 
 public class ChromosomeViewer {
@@ -28,16 +32,19 @@ public class ChromosomeViewer {
 	 * component
 	 */
 
-	public Chromosome chromosome = new Chromosome();
-	public String fileName = "Example";
+	public String fileName = "Chromosome X";
+	public String filePath = "";
+	public File file;
+	public JFrame frame;
+	public ChromosomeComponent chComponent;
 
 	public void driverMain() {
 		final String frameTitle = "Chromosome Viewer";
-		final int frameWidth = 600;
-		final int frameHeight = 400;
+		final int frameWidth = 310;
+		final int frameHeight = 420;
 		final int textFieldWidth = 10; // needs to be changed to be in relation with frame width
 
-		JFrame frame = new JFrame();
+		this.frame = new JFrame();
 		frame.setTitle(frameTitle);
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,36 +59,37 @@ public class ChromosomeViewer {
 		// frame.add(panel, BorderLayout.SOUTH);
 
 		// chromosome - BorderLayout.CENTER
-		ChromosomeComponent chComponent = new ChromosomeComponent();
+		this.chComponent = new ChromosomeComponent();
 		frame.add(chComponent);
 
 		// buttons/fields - BorderLayout.SOUTH
+		JButton mutateButton = new JButton("Mutate");
 
 		JLabel mRate = new JLabel("M Rate:_/N");
 		JTextField mRateField = new JTextField("1", textFieldWidth);
-
-		JButton mutateButton = new JButton("Mutate");
 
 		// Load button functionality
 		JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
-				int response = fileChooser.showSaveDialog(null);
+				JFileChooser chooseFile = new JFileChooser();
+				chooseFile.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP\\"));
+				int response = chooseFile.showOpenDialog(null);
 
 				if (response == JFileChooser.APPROVE_OPTION) {
-					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+					file = new File(chooseFile.getSelectedFile().getAbsolutePath());
 					// Storing file name
-					ChromosomeViewer.this.fileName = file.getName();
-					frame.repaint();
-					System.out.println(file);
-					System.out.println(fileName);
+					fileName = file.getName();
+					filePath = file.getPath();
+					fileNameLabel.setText(fileName);
 					try {
 						List<String> lines = Files.readAllLines(file.toPath());
 						for (String s : lines) {
-							chromosome.storeChromosomeData(s);
+							chComponent.chromosome = new Chromosome();
+							chComponent.handleStoreChromosomeData(s);
+							chComponent.handleLoadGene();
+							frame.repaint();
 						}
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -93,31 +101,22 @@ public class ChromosomeViewer {
 
 		JButton saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        JFileChooser fileChooser = new JFileChooser();
-		        fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
-		        int response = fileChooser.showSaveDialog(null);
 
-		        if (response == JFileChooser.APPROVE_OPTION) {
-		            File file = fileChooser.getSelectedFile();
-		            if (!file.getName().toLowerCase().endsWith(".txt")) {
-		                file = new File(file.getAbsolutePath() + ".txt");
-		            }
-
-		            // Get the chromosome data in the required format (1 for black, 0 for green)
-		            String chromosomeData = chromosome.getChromosomeDataAsString();
-
-		            try (FileWriter writer = new FileWriter(file)) {
-		                writer.write(chromosomeData);
-		            } catch (IOException ex) {
-		                ex.printStackTrace();
-		            }
-		        }
-		    }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PrintWriter writer = new PrintWriter(filePath);
+					BufferedWriter bWriter = new BufferedWriter(writer);
+					for (Gene gene : chComponent.chromosome.genes) {
+						bWriter.write(gene.getBit());
+					}
+					bWriter.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		});
-
-
 
 		/**
 		 * panel.add(mutateButton, BorderLayout.EAST); panel.add(mRate,
@@ -176,9 +175,12 @@ public class ChromosomeViewer {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO figure out how this will change it on click
-				chComponent.containsGene(e.getX(), e.getY()).changeBit();
+				Gene gene = chComponent.containsGene(e.getX(), e.getY());
+				if (gene != null) {
+					gene.changeBit();
+				}
+				fileNameLabel.setText(fileName+" (new)"); // Appends the label text to include (new) if edited
 				frame.repaint();
-				System.out.println(chComponent.containsGene(e.getX(), e.getY()).getBit());
 			}
 		});
 
@@ -189,19 +191,8 @@ public class ChromosomeViewer {
 		this.driverMain();
 	}
 
-	public Chromosome getChromosome() {
-		return this.chromosome;
-	}
-
-	public void setChromosome(Chromosome c) {
-		this.chromosome = c;
-	}
-
 	public static void main(String[] args) {
 		ChromosomeViewer c = new ChromosomeViewer();
 		c.handleDriverMain();
-		int bit = 1;
-		char cded = (char) (bit + '0');
-		System.out.println(cded);
 	} // main
 }
