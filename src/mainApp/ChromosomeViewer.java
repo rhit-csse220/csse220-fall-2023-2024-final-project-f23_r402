@@ -62,32 +62,42 @@ public class ChromosomeViewer {
 		// Load button functionality
 		JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
-				int response = fileChooser.showSaveDialog(null);
-				
-				if (response==JFileChooser.APPROVE_OPTION) {
-					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-					//Storing file name
-					ChromosomeViewer.this.fileName = file.getName();
-					frame.repaint();
-					System.out.println(file);
-					System.out.println(fileName);
-					try {
-						List<String> lines = Files.readAllLines(file.toPath());
-						for (String s : lines) {
-							chromosome.storeChromosomeData(s);
-						}
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        JFileChooser fileChooser = new JFileChooser();
+		        fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
+		        int response = fileChooser.showSaveDialog(null);
 
+		        if (response == JFileChooser.APPROVE_OPTION) {
+		            File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+		            System.out.println(file);
+
+		            try {
+		                List<String> lines = Files.readAllLines(file.toPath());
+
+		                for (String line : lines) {
+		                    // Ensure each line has exactly 100 characters
+		                    if (line.length() != 100) {
+		                        JOptionPane.showMessageDialog(frame,
+		                                "The loaded file does not have the expected format (100 characters per line).",
+		                                "File Format Error",
+		                                JOptionPane.ERROR_MESSAGE);
+		                        return;
+		                    }
+
+		                    chromosome.storeChromosomeData(line);
+		                }
+		            } catch (IOException e1) {
+		                // Display an error message if there's an issue with the file
+		                JOptionPane.showMessageDialog(frame,
+		                        "An error occurred while loading the file.",
+		                        "File Load Error",
+		                        JOptionPane.ERROR_MESSAGE);
+		                e1.printStackTrace();
+		            }
+		        }
+		    }
+		});
 		JButton saveButton = new JButton("Save");
 		
 		
