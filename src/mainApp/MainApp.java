@@ -8,9 +8,7 @@ package mainApp;
  * <br>Restrictions: None
  */
 public class MainApp {
-	
-	
-	private void runApp() {
+	public void runApp() {
 		System.out.println("Write your cool arcade game here!");	
 		System.out.println("I found it!");
 	} // runApp
@@ -19,9 +17,6 @@ public class MainApp {
 	 * ensures: runs the application
 	 * @param args unused
 	 */
-	public static void main(String[] args) {
-		MainApp mainApp = new MainApp();
-		mainApp.runApp();		
-	} // main
+	
 
 }
