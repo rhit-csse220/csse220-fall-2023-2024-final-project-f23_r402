@@ -12,11 +12,11 @@ import javax.swing.*;
 
 public class ChromosomeViewer {
 	/**
-
 	 * ensures: creates, initializes, and sets visible the Viewer's frame and component
-
 	 */
 
+	public Chromosome chromosome;
+	
 	public void driverMain() {
 		final String frameTitle = "Chromosome Viewer";
 		final int frameWidth = 600;
@@ -24,6 +24,7 @@ public class ChromosomeViewer {
 //		final int frameXLoc = 1000;
 //		final int frameYLoc = 1000;
 		final int textFieldWidth = 10; // needs to be changed to be in relation with frame width
+		
 
 		JFrame frame = new JFrame();
 		frame.setTitle(frameTitle);
@@ -47,6 +48,7 @@ public class ChromosomeViewer {
 		JLabel mRate = new JLabel("M Rate:_/N");
 		JTextField mRateField = new JTextField("1", textFieldWidth);
 		
+		// Load button functionality
 		JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(new ActionListener() {
 			
@@ -60,9 +62,9 @@ public class ChromosomeViewer {
 					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
 					System.out.println(file);
 					try {
-						List<String> lines = Files.readAllLines(file.toPath());
+						List<String> lines = Files.readAllLines(file.toPath()); 
 						for (String s : lines) {
-							System.out.println(s);
+							chromosome.storeChromosomeData(s);
 						}
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -71,7 +73,7 @@ public class ChromosomeViewer {
 				}
 			}
 		});
-		
+
 		JButton saveButton = new JButton("Save");
 		
 		panel.add(mutateButton, BorderLayout.CENTER);
@@ -87,8 +89,19 @@ public class ChromosomeViewer {
 		this.driverMain();
 	}
 	
+	public Chromosome getChromosome() {
+		return this.chromosome;
+	}
+	
+	public void setChromosome(Chromosome c) {
+		this.chromosome=c;
+	}
+	
 	public static void main(String[] args) {
 		ChromosomeViewer c = new ChromosomeViewer();
-		c.handleDriverMain();	
+		c.handleDriverMain();
+		int bit = 1;
+		char cded = (char)(bit + '0');
+		System.out.println(cded);
 	} // main
 }
