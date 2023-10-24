@@ -3,6 +3,7 @@ package mainApp;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 public class Gene {
 	public static final int GENE_SIDE = 30; // side length of gene square
@@ -10,7 +11,7 @@ public class Gene {
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	
 	
-	private char bit;
+	public char bit;
 	private boolean changeable;
 	// x and y are top left corners of square
 	private int x;
@@ -43,10 +44,10 @@ public class Gene {
 	
 	// used for when the bit is 0 or 1
 	public void changeBit() {
-		if (this.bit == 0) {
-			this.bit = 1;
-		} else if (this.bit == 1) {
-			this.bit = 0;
+		if (this.bit == '0') {
+			this.bit = '1';
+		} else if (this.bit == '1') {
+			this.bit = '0';
 		}
 	}
 	
@@ -80,5 +81,15 @@ public class Gene {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public boolean isSelected(Rectangle2D.Double box) {
+		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, GENE_SIDE, GENE_SIDE);
+		if (boundingBox.contains(box)){
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

@@ -8,6 +8,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteOrder;
@@ -24,6 +27,7 @@ public class ChromosomeViewer {
 	 */
 
 	public Chromosome chromosome = new Chromosome();
+	public String fileName = "Example";
 	
 	public void driverMain() {
 		final String frameTitle = "Chromosome Viewer";
@@ -31,7 +35,6 @@ public class ChromosomeViewer {
 		final int frameHeight = 400;
 		final int textFieldWidth = 10; // needs to be changed to be in relation with frame width
 		
-
 		JFrame frame = new JFrame();
 		frame.setTitle(frameTitle);
 		frame.setSize(frameWidth, frameHeight);
@@ -39,6 +42,9 @@ public class ChromosomeViewer {
 		frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
 
 		frame.setVisible(true);
+		
+		JLabel fileNameLabel = new JLabel(fileName);
+		frame.add(fileNameLabel, BorderLayout.NORTH);
 		
 		//JPanel panel = new JPanel();
 		//frame.add(panel, BorderLayout.SOUTH);			
@@ -64,7 +70,11 @@ public class ChromosomeViewer {
 				
 				if (response==JFileChooser.APPROVE_OPTION) {
 					File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+					//Storing file name
+					ChromosomeViewer.this.fileName = file.getName();
+					frame.repaint();
 					System.out.println(file);
+					System.out.println(fileName);
 					try {
 						List<String> lines = Files.readAllLines(file.toPath());
 						for (String s : lines) {
@@ -107,6 +117,41 @@ public class ChromosomeViewer {
 		c.gridx=1;
 		c.gridy=1;
 		panel.add(saveButton, c);
+		
+		frame.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//TODO figure out how this will change it on click
+				chComponent.containsGene(e.getX(), e.getY()).changeBit();
+				frame.repaint();
+				System.out.println(chComponent.containsGene(e.getX(), e.getY()).getBit());
+			}
+		});
 		
 		frame.pack();
 	} // driverMain
