@@ -26,16 +26,17 @@ public class Gene {
 	}
 	
 	// methods
-	public void drawOn(Graphics g) {
-		// Treat Graphics as a Graphics2D
-		Graphics2D g2 = (Graphics2D) g;
-		if (this.bit == '0') {
-			g2.setColor(GENE_0_COLOR);
-		} else if (this.bit == '1') {
-			g2.setColor(GENE_1_COLOR);
-		}
-		g2.fillRect(x, y, GENE_SIDE, GENE_SIDE);
-	}
+	   public void drawOn(Graphics g) {
+	        // Treat Graphics as a Graphics2D
+	        Graphics2D g2 = (Graphics2D) g;
+	        if (this.bit == '0') {
+	            g2.setColor(GENE_0_COLOR);
+	        } else if (this.bit == '1') {
+	            g2.setColor(GENE_1_COLOR);
+	        }
+	        g2.fillRect(x, y, GENE_SIDE, GENE_SIDE);
+	    }
+
 	
 	@Override
 	public String toString() {
@@ -44,12 +45,12 @@ public class Gene {
 	
 	// used for when the bit is 0 or 1
 	public void changeBit() {
-		if (this.bit == '0') {
-			this.bit = '1';
-		} else if (this.bit == '1') {
-			this.bit = '0';
-		}
-	}
+        if (this.bit == '0') {
+            this.bit = '1';
+        } else if (this.bit == '1') {
+            this.bit = '0';
+        }
+    }
 	
 	public void setNonChangeable() {
 		this.changeable = false;
@@ -82,6 +83,10 @@ public class Gene {
 	public void setY(int y) {
 		this.y = y;
 	}
+    public boolean isChangeable() {
+        return changeable;
+    }
+	
 	
 	public boolean isSelected(Rectangle2D.Double box) {
 		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, GENE_SIDE, GENE_SIDE);

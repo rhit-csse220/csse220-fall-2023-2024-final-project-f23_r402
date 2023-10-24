@@ -62,4 +62,18 @@ public class Chromosome {
 			g2.drawString((String)(i+""), genes[i].getX(), 10+genes[i].getY());
 		}
 	}
+	
+	public String getChromosomeDataAsString() {
+	    StringBuilder data = new StringBuilder();
+	    for (Gene gene : genes) {
+	        // Append '1' for black and '0' for green
+	        if (gene.getBit() == '1') {
+	            data.append('1');
+	        } else {
+	            data.append('0');
+	        }
+	    }
+	    return data.toString();
+	}
+	
 }

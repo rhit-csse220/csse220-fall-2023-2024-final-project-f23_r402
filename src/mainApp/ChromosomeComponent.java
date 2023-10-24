@@ -19,6 +19,7 @@ public class ChromosomeComponent extends JComponent{
 		Graphics2D g2 = (Graphics2D) g;
 		chromosome.drawOn(g2);	
 	}
+
 	
 	//TODO Make method for selecting gene and stuff
 	public Gene containsGene(int x, int y) {
