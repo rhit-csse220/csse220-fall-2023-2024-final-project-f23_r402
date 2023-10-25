@@ -138,7 +138,7 @@ public class ChromosomeViewer {
 							
 							chComponent.setChromosome(new Chromosome());
 							chComponent.handleStoreChromosomeData(s);
-							chComponent.handleLoadGene();
+							chComponent.handleInitiateGeneWithFile();
 							frame.repaint();
 						}
 					} catch (IOException e1) {

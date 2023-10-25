@@ -15,6 +15,7 @@ public class ChromosomeComponent extends JComponent{
 	
 	public ChromosomeComponent() {
 		this.chromosome = new Chromosome();
+		this.chromosome.initiateGene();
 	}
 	
 	public void setChromosome(Chromosome c) {this.chromosome = c;}
@@ -25,9 +26,9 @@ public class ChromosomeComponent extends JComponent{
         this.chromosome.storeChromosomeData(s);
     }
     
-    // Method to access the private object of Chromosome and its method, loadGene
-    public void handleLoadGene() {
-        this.chromosome.loadGene();
+    // Method to access the private object of Chromosome and its method, initiateGeneWithFile
+    public void handleInitiateGeneWithFile() {
+        this.chromosome.initiateGeneWithFile();
     }
 	
 	@Override

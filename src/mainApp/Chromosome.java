@@ -14,7 +14,7 @@ public class Chromosome {
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
 	
 	private String fileData;
-	public Gene[] genes = new Gene[NUM_OF_GENES];
+	public Gene[] genes; 
 	private double fitnessScore;
 	
 	Random r = new Random();
@@ -22,7 +22,6 @@ public class Chromosome {
 	// constructor
 	public Chromosome() {
 		this.fileData=""; // TODO don't think this is necessary?
-		initiateGene();
 	}
 	
 	// methods
@@ -49,6 +48,7 @@ public class Chromosome {
 	}
 	
 	public void initiateGene() {
+		genes = new Gene[NUM_OF_GENES];
 		for (int i = 0; i < NUM_PER_ROW; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int bit = r.nextInt(0,2);
@@ -59,23 +59,12 @@ public class Chromosome {
 	
 	// maybe not needed
 	public void initiateGeneWithFile() {
-		for (int i = 0; i < NUM_PER_ROW; i++) {
+		genes = new Gene[this.fileData.length()];
+		for (int i = 0; i < this.fileData.length()/NUM_PER_ROW; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				char bit = this.fileData.charAt(i*10+j);
 				this.genes[i*10+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
 			}
-		}
-	}
-	
-	public void loadGene() {
-//		for (int i = 0; i < fileData.length(); i++) {
-//			this.genes[i].setBit(this.fileData.charAt(i));
-//			System.out.println(this.fileData.charAt(i));
-//		}
-		if (fileData.length() != NUM_OF_GENES) {
-			System.out.println("Wrong number of genes in file");
-		} else {
-			initiateGeneWithFile();
 		}
 	}
 	
