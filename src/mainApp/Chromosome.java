@@ -7,24 +7,42 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Chromosome {
-	public static final int NUM_OF_GENES = 100;
-	public static final int NUM_PER_ROW = 10;
+	// when numOfGenes == 100
+	// // public static final int NUM_OF_GENES = 100;
+	// public static final int NUM_PER_ROW_100 = 10;
+	// // when numOfGenes == 20
+	// public static final int NUM_PER_ROW_20 = 5;
 	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
 	
+	private int numOfGenes = 100; //default values
+	private int numPerRow = 10; //default values
+	private int numPerColumn = 10; //default values
 	private String fileData;
-	public Gene[] genes; 
+	public Gene[] genes;
 	private double fitnessScore;
 	
 	Random r = new Random();
 	
 	// constructor
-	public Chromosome() {
-		this.fileData=""; // TODO don't think this is necessary?
+	public Chromosome(){}
+
+	public Chromosome(int numOfGenes) {
+		this.numOfGenes = numOfGenes;
+		if (numOfGenes == 20){
+			this.numPerRow = 5;
+			this.numPerColumn = 4;
+		} else if (numOfGenes == 100){
+			this.numPerRow = 10;
+			this.numPerColumn = 10;
+		}
 	}
 	
 	// methods
+	public int getNumPerRow() {return this.numPerRow;}
+	public int getNumPerColumn() {return this.numPerColumn;}
+
 	public boolean checkChromosomeData() {
         if (fileData.length()%10!=0 && fileData!="") {
             return false;
@@ -48,11 +66,11 @@ public class Chromosome {
 	}
 	
 	public void initiateGene() {
-		genes = new Gene[NUM_OF_GENES];
-		for (int i = 0; i < NUM_PER_ROW; i++) {
-			for (int j = 0; j < NUM_PER_ROW; j++) {
+		genes = new Gene[numOfGenes];
+		for (int i = 0; i < numPerColumn; i++) {
+			for (int j = 0; j < numPerRow; j++) {
 				int bit = r.nextInt(0,2);
-				this.genes[i*10+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
+				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
 			}
 		}
 	}
@@ -60,10 +78,10 @@ public class Chromosome {
 	// maybe not needed
 	public void initiateGeneWithFile() {
 		genes = new Gene[this.fileData.length()];
-		for (int i = 0; i < this.fileData.length()/NUM_PER_ROW; i++) {
-			for (int j = 0; j < NUM_PER_ROW; j++) {
-				char bit = this.fileData.charAt(i*10+j);
-				this.genes[i*10+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
+		for (int i = 0; i < numPerColumn; i++) {
+			for (int j = 0; j < numPerRow; j++) {
+				char bit = this.fileData.charAt(i*numPerColumn+j);
+				this.genes[i*numPerColumn+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
 			}
 		}
 	}
@@ -97,10 +115,10 @@ public class Chromosome {
 	    StringBuilder data = new StringBuilder();
 	    for (Gene gene : genes) {
 	        // Append '1' for black and '0' for green
-	        if (gene.getBit() == '1') {
-	            data.append('1');
-	        } else {
+	        if (gene.getBit() == '0') {
 	            data.append('0');
+	        } else if (gene.getBit() == '1'){
+	            data.append('1');
 	        }
 	    }
 	    return data.toString();

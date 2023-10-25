@@ -41,7 +41,7 @@ public class ChromosomeViewer {
 	
 	public static final int BORDER = 20;
 	
-	public int getGeneWidth() {return (frame.getWidth()-BORDER*2)/Chromosome.NUM_PER_ROW;}
+	public int getGeneWidth() {return (frame.getWidth()-BORDER*2)/(chComponent.getChromosome().getNumPerRow());}
 
 	public void driverMain() {
 		final String frameTitle = "Chromosome Viewer";
@@ -69,9 +69,12 @@ public class ChromosomeViewer {
 		frame.add(chComponent);
 
 		// buttons/fields - BorderLayout.SOUTH
-		JLabel mRate = new JLabel("M Rate:_/N");
+		JLabel mRate = new JLabel("M Rate:");
 		JTextField mRateField = new JTextField("1", textFieldWidth);
 
+		/**
+		 * Functional Mutate Button
+		 */
 		JButton mutateButton = new JButton("Mutate");
 		mutateButton.addActionListener(new ActionListener() {
 			@Override
@@ -96,7 +99,6 @@ public class ChromosomeViewer {
 						gene.changeBit();
 					}
 				}
-
 				// Repaint the frame to reflect the changes
 				frame.repaint();
 			}
@@ -108,7 +110,6 @@ public class ChromosomeViewer {
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				JFileChooser chooseFile = new JFileChooser();
 //				chooseFile.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP\\"));
 				int response = chooseFile.showOpenDialog(null);
@@ -202,9 +203,9 @@ public class ChromosomeViewer {
 		
 		JPanel buttonPanel = new JPanel();
 		frame.add(buttonPanel, BorderLayout.SOUTH);
-		buttonPanel.add(mutateButton);
 		buttonPanel.add(mRate);
 		buttonPanel.add(mRateField);
+		buttonPanel.add(mutateButton);
 		buttonPanel.add(loadButton);
 		buttonPanel.add(saveButton);
 
