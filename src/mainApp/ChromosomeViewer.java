@@ -69,10 +69,39 @@ public class ChromosomeViewer {
 		frame.add(chComponent);
 
 		// buttons/fields - BorderLayout.SOUTH
-		JButton mutateButton = new JButton("Mutate");
-
 		JLabel mRate = new JLabel("M Rate:_/N");
 		JTextField mRateField = new JTextField("1", textFieldWidth);
+
+		JButton mutateButton = new JButton("Mutate");
+		mutateButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get the mutation rate as a percentage from the text field
+				int mutationRate = Integer.parseInt(mRateField.getText());
+
+				if (mutationRate < 0 || mutationRate > 100) {
+					// Handle invalid input, show an error message, etc.
+					JOptionPane.showMessageDialog(frame,
+							"Invalid mutation rate. Please enter a number between 0 and 100.", "Invalid Input",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				// Perform mutation for each gene based on the mutation rate
+				for (Gene gene : chComponent.getChromosome().genes) {
+					// Generate a random number between 1 and 100
+					int randomNum = (int) (Math.random() * 100) + 1;
+					if (randomNum <= mutationRate) {
+						// Mutate the gene
+						gene.changeBit();
+					}
+				}
+
+				// Repaint the frame to reflect the changes
+				frame.repaint();
+			}
+
+		});
 
 		// Load button functionality
 		JButton loadButton = new JButton("Load");
