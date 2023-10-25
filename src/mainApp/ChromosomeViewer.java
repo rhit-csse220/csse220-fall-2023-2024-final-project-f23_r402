@@ -15,6 +15,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.ByteOrder;
@@ -37,26 +38,31 @@ public class ChromosomeViewer {
 	public File file;
 	public JFrame frame;
 	public ChromosomeComponent chComponent;
+	
+	public static final int BORDER = 20;
+	
+	public int getGeneWidth() {return (frame.getWidth()-BORDER*2)/Chromosome.NUM_PER_ROW;}
 
 	public void driverMain() {
 		final String frameTitle = "Chromosome Viewer";
 		final int frameWidth = 310;
 		final int frameHeight = 420;
-		final int textFieldWidth = 10; // needs to be changed to be in relation with frame width
+		final int textFieldWidth = 5; // TODO check value
 
 		this.frame = new JFrame();
 		frame.setTitle(frameTitle);
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
-
+		//frame.setResizable(false);
+		
 		frame.setVisible(true);
+		
+		// public int getFrameWidth() {return frame.getWidth()};
 
+		// fileName - BorderLayout.NORTH
 		JLabel fileNameLabel = new JLabel(fileName);
 		frame.add(fileNameLabel, BorderLayout.NORTH);
-
-		// JPanel panel = new JPanel();
-		// frame.add(panel, BorderLayout.SOUTH);
 
 		// chromosome - BorderLayout.CENTER
 		this.chComponent = new ChromosomeComponent();
@@ -73,27 +79,47 @@ public class ChromosomeViewer {
 		loadButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				JFileChooser chooseFile = new JFileChooser();
-				chooseFile.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP\\"));
+//				chooseFile.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP\\"));
 				int response = chooseFile.showOpenDialog(null);
 
 				if (response == JFileChooser.APPROVE_OPTION) {
 					file = new File(chooseFile.getSelectedFile().getAbsolutePath());
 					// Storing file name
+					// TODO check which one to use
 					fileName = file.getName();
 					filePath = file.getPath();
 					fileNameLabel.setText(fileName);
+					// test
+//					System.out.println(file);
+//					System.out.println(fileName);
+					
 					try {
 						List<String> lines = Files.readAllLines(file.toPath());
+						
 						for (String s : lines) {
-							chComponent.chromosome = new Chromosome();
+//							if (s.length() != 100) {
+//		                        JOptionPane.showMessageDialog(frame,
+//		                                "The loaded file does not have the expected format (100 characters per line).",
+//		                                "File Format Error",
+//		                                JOptionPane.ERROR_MESSAGE);
+//		                        return;
+//		                    }
+							
+							chComponent.setChromosome(new Chromosome());
 							chComponent.handleStoreChromosomeData(s);
 							chComponent.handleLoadGene();
 							frame.repaint();
 						}
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						// Display an error message if there's an issue with the file
+		                JOptionPane.showMessageDialog(frame,
+		                        "An error occurred while loading the file.",
+		                        "File Load Error",
+		                        JOptionPane.ERROR_MESSAGE);
+		                System.out.println("Illegal file type");
+		                e1.printStackTrace();
 					}
 				}
 			}
@@ -104,17 +130,37 @@ public class ChromosomeViewer {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					PrintWriter writer = new PrintWriter(filePath);
-					BufferedWriter bWriter = new BufferedWriter(writer);
-					for (Gene gene : chComponent.chromosome.genes) {
-						bWriter.write(gene.getBit());
-					}
-					bWriter.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				JFileChooser fileChooser = new JFileChooser();
+		        fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
+		        int response = fileChooser.showSaveDialog(null);
+
+		        if (response == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooser.getSelectedFile();
+		            if (!file.getName().toLowerCase().endsWith(".txt")) {
+		                file = new File(file.getAbsolutePath() + ".txt");
+		            }
+	
+		            // Get the chromosome data in the required format (1 for black, 0 for green)
+		            String chromosomeData = chComponent.getChromosome().getChromosomeDataAsString();
+	
+		            try (FileWriter writer = new FileWriter(file)) {
+		                writer.write(chromosomeData);
+		            } catch (IOException ex) {
+		                ex.printStackTrace();
+		            }
+		        }
+				
+//				try {
+//					PrintWriter writer = new PrintWriter(filePath);
+//					BufferedWriter bWriter = new BufferedWriter(writer);
+//					for (Gene gene : chComponent.getChromosome().genes) {
+//						bWriter.write(gene.getBit());
+//					}
+//					bWriter.close();
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 			}
 		});
 
@@ -124,27 +170,35 @@ public class ChromosomeViewer {
 		 * panel.add(loadButton, BorderLayout.CENTER); panel.add(saveButton,
 		 * BorderLayout.CENTER);
 		 */
+		
+		JPanel buttonPanel = new JPanel();
+		frame.add(buttonPanel, BorderLayout.SOUTH);
+		buttonPanel.add(mutateButton);
+		buttonPanel.add(mRate);
+		buttonPanel.add(mRateField);
+		buttonPanel.add(loadButton);
+		buttonPanel.add(saveButton);
 
-		JPanel panel = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		frame.add(panel, BorderLayout.SOUTH);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady = GridBagConstraints.VERTICAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		panel.add(mutateButton, c);
-		c.gridx = 1;
-		c.gridy = 0;
-		panel.add(mRate, c);
-		c.gridx = 2;
-		c.gridy = 0;
-		panel.add(mRateField);
-		c.gridx = 0;
-		c.gridy = 1;
-		panel.add(loadButton, c);
-		c.gridx = 1;
-		c.gridy = 1;
-		panel.add(saveButton, c);
+//		JPanel panel = new JPanel(new GridBagLayout());
+//		GridBagConstraints c = new GridBagConstraints();
+//		frame.add(panel, BorderLayout.SOUTH);
+//		c.fill = GridBagConstraints.HORIZONTAL;
+//		c.ipady = GridBagConstraints.VERTICAL;
+//		c.gridx = 0;
+//		c.gridy = 0;
+//		panel.add(mutateButton, c);
+//		c.gridx = 1;
+//		c.gridy = 0;
+//		panel.add(mRate, c);
+//		c.gridx = 2;
+//		c.gridy = 0;
+//		panel.add(mRateField);
+//		c.gridx = 0;
+//		c.gridy = 1;
+//		panel.add(loadButton, c);
+//		c.gridx = 1;
+//		c.gridy = 1;
+//		panel.add(saveButton, c);
 
 		frame.addMouseListener(new MouseListener() {
 

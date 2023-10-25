@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Gene {
-	public static final int GENE_SIDE = 30; // side length of gene square
+	public static final int GENE_SIDE = 30; // side length of gene square // TODO CHANGE THIS
 	public static final Color GENE_0_COLOR = Color.BLACK;
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	
@@ -92,8 +92,7 @@ public class Gene {
 		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, GENE_SIDE, GENE_SIDE);
 		if (boundingBox.contains(box)){
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
