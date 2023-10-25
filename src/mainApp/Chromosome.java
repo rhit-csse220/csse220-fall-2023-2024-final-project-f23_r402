@@ -61,8 +61,8 @@ public class Chromosome {
 	public void initiateGeneWithFile() {
 		for (int i = 0; i < NUM_PER_ROW; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
-				int bit = this.fileData.charAt(i*10+j);
-				this.genes[i*10+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
+				char bit = this.fileData.charAt(i*10+j);
+				this.genes[i*10+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
 			}
 		}
 	}
