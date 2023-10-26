@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Chromosome {
 	public static final int NUM_PER_ROW = 10;
+	public static final int Y_COORD_LETTER_OFFSET = 10;
 	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
@@ -163,7 +164,7 @@ public class Chromosome {
 			} else if (genes[i].getBit()=='0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
 			}
-			g2.drawString((String)(i+""), genes[i].getX(), 10+genes[i].getY());
+			g2.drawString((String)(i+""), genes[i].getX(), Y_COORD_LETTER_OFFSET+genes[i].getY());
 		}
 	}
 }
