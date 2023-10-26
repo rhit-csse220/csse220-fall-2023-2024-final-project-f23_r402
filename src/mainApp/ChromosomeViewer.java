@@ -42,9 +42,9 @@ public class ChromosomeViewer {
 		int compHeight = this.chComponent.getHeight();
 		int compWidth = this.frame.getWidth();
 		if (compWidth <= compHeight) {
-			return (compWidth - BORDER * 2) / (chComponent.getChromosome().getNumPerRow());
+			return (compWidth - BORDER * 2) / (Chromosome.NUM_PER_ROW);
 		} else {
-			return (compHeight - BORDER * 2) / (chComponent.getChromosome().getNumPerRow());
+			return (compHeight - BORDER * 2) / (Chromosome.NUM_PER_ROW);
 		}
 	} // findGeneWidth
 
@@ -83,6 +83,7 @@ public class ChromosomeViewer {
 
 		/**
 		 * Functional Mutate Button
+		 * ensures: takes the int in mRateField and performs mutation on Chromosome
 		 */
 		JButton mutateButton = new JButton("Mutate");
 		mutateButton.addActionListener(new ActionListener() {
@@ -113,6 +114,7 @@ public class ChromosomeViewer {
 					}
 					// Repaint the frame to reflect the changes
 					frame.repaint();
+
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(frame,
 							"Invalid mutation rate. Please enter an integer between 0 and "
@@ -125,6 +127,10 @@ public class ChromosomeViewer {
 
 		});
 
+		/**
+		 * Function Load Button
+		 * ensures: loads Chromosome with correct file type and correct standards
+		 */
 		JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(new ActionListener() {
 		    @Override
@@ -135,7 +141,7 @@ public class ChromosomeViewer {
 		        if (response == JFileChooser.APPROVE_OPTION) {
 		            file = new File(chooseFile.getSelectedFile().getAbsolutePath());
 		            fileName = file.getName();
-		            filePath = file.getPath();
+		            // filePath = file.getPath();
 		            fileNameLabel.setText(fileName);
 
 		            try {
@@ -149,10 +155,11 @@ public class ChromosomeViewer {
 		                // Check if the loaded file data is invalid in terms of length
 		                int characterCount = fileData.length();
 		                if (characterCount % 10 != 0) {
-		                    JOptionPane.showMessageDialog(null,
-		                            "Invalid file data length. Expected a multiple of 10 characters, but loaded " + characterCount + " characters.",
-		                            "Invalid Data Length",
-		                            JOptionPane.ERROR_MESSAGE);
+		                    // JOptionPane.showMessageDialog(null,
+		                    //         "Invalid file data length. Expected a multiple of 10 characters, but loaded " + characterCount + " characters.",
+		                    //         "Invalid Data Length",
+		                    //         JOptionPane.ERROR_MESSAGE);
+							throw new InvalidChromosomeFormatException(characterCount);
 		                } else {
 		                    // Proceed with loading and initializing the data
 		                    chComponent.setChromosome(new Chromosome());
@@ -160,12 +167,13 @@ public class ChromosomeViewer {
 		                    chComponent.handleInitiateGeneWithFile();
 		                    frame.repaint();
 		                }
-		            } catch (IOException e1) {
-		                JOptionPane.showMessageDialog(null,
+		            } catch (IOException | InvalidChromosomeFormatException ex) {
+						if (ex instanceof IOException) {
+							JOptionPane.showMessageDialog(null,
 		                        "An error occurred while loading the file.",
 		                        "File Load Error",
 		                        JOptionPane.ERROR_MESSAGE);
-		                e1.printStackTrace();
+						}
 		            }
 		        }
 		    }
@@ -272,6 +280,10 @@ public class ChromosomeViewer {
 
 		frame.pack();
 	} // driverMain
+
+	public void loadFile(JFrame frame, JComponent component){
+
+	}
 
 	public void handleDriverMain() {
 		this.driverMain();

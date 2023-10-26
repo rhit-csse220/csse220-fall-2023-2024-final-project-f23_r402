@@ -3,21 +3,15 @@ package mainApp;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Chromosome {
-	// when numOfGenes == 100
-	// // public static final int NUM_OF_GENES = 100;
-	// public static final int NUM_PER_ROW_100 = 10;
-	// // when numOfGenes == 20
-	// public static final int NUM_PER_ROW_20 = 5;
+	public static final int NUM_PER_ROW = 10;
 	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
 	
 	private int numOfGenes = 100; //default values
-	private int numPerRow = 10; //default values
 	private int numPerColumn = 10; //default values
 	private String fileData = "";
 	public Gene[] genes;
@@ -33,28 +27,17 @@ public class Chromosome {
 
 	//TODO finish description 
 	/**
-	 * ensures: ???
+	 * Creates a new Chromosome object with different number of genes than the default 100
 	 * @param numOfGenes
-	 * @param geneSide
 	 */
 	// Are we still adding the resizable geneSide according to frameWidth/Height?
-	public Chromosome(int numOfGenes, int geneSide) {
+	// Will add it but not for Milestone 1 for now - need to ask Thomas
+	public Chromosome(int numOfGenes) {
 		this.numOfGenes = numOfGenes;
-		// this.geneSide = geneSide;
-		if (numOfGenes == 20){
-			this.numPerRow = 5;
-			this.numPerColumn = 4;
-		} else if (numOfGenes == 100){
-			this.numPerRow = 10;
-			this.numPerColumn = 10;
-		}
+		// this.geneSide = geneSide
+
+		this.numPerColumn = numOfGenes/NUM_PER_ROW;
 	}
-	
-	/**
-	 * ensures: that the number of genes per row in this chromosome is returned
-	 * @return the number of genes per row
-	 */
-	public int getNumPerRow() {return this.numPerRow;} //getNumPerRow
 	
 	/**
 	 * ensures: that the number of genes per column in this chromosome is returned
@@ -111,12 +94,12 @@ public class Chromosome {
 	}
 	
 	/**
-	 * ensures: that a present number of 100 genes is initialized into the chromosome
+	 * ensures: that a numOfGenes Gene objects is initialized into the chromosome
 	 */
 	public void initiateGene() {
 		genes = new Gene[numOfGenes];
 		for (int i = 0; i < numPerColumn; i++) {
-			for (int j = 0; j < numPerRow; j++) {
+			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int bit = r.nextInt(0,2);
 				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
 				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
@@ -129,11 +112,11 @@ public class Chromosome {
 	 */
 	public void initiateGeneWithFile() {
 		genes = new Gene[numOfGenes];
-		numPerColumn=numOfGenes/numPerRow;
+		numPerColumn = numOfGenes / NUM_PER_ROW;
 		for (int i = 0; i < numPerColumn; i++) {
-			for (int j = 0; j < numPerRow; j++) {
+			for (int j = 0; j < NUM_PER_ROW; j++) {
 				char bit = this.fileData.charAt(i*numPerColumn+j);
-				this.genes[i*numPerRow+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
+				this.genes[i*numPerColumn+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
 			}
 		}
 	}

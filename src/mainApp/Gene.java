@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Gene {
-	public static final int GENE_SIDE = 30; // side length of gene square // TODO CHANGE THIS
+	public static final int GENE_SIDE = 30; // side length of gene square // TODO change to autosize in future development
 	public static final Color GENE_0_COLOR = Color.BLACK;
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	
