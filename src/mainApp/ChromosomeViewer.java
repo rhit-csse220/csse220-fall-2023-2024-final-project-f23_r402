@@ -2,11 +2,6 @@ package mainApp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -23,9 +18,6 @@ import java.nio.file.Files;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.FileChooserUI;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
 
 public class ChromosomeViewer {
 	/**
@@ -41,13 +33,24 @@ public class ChromosomeViewer {
 	
 	public static final int BORDER = 20;
 	
-	public int getGeneWidth() {return (frame.getWidth()-BORDER*2)/(chComponent.getChromosome().getNumPerRow());}
+	public int findGeneWidth(){
+		int compHeight = this.chComponent.getHeight();
+		int compWidth = this.frame.getWidth();
+		if (compWidth <= compHeight) {
+			return (compWidth-BORDER*2)/(chComponent.getChromosome().getNumPerRow());
+		} else {
+			return (compHeight-BORDER*2)/(chComponent.getChromosome().getNumPerRow());
+		}
+	}
+
+	// height of chComponent: this.chComponent.getHeight()
+	// width of frame: frame.getWidth()
 
 	public void driverMain() {
 		final String frameTitle = "Chromosome Viewer";
 		final int frameWidth = 310;
 		final int frameHeight = 420;
-		final int textFieldWidth = 5; // TODO check value
+		final int textFieldWidth = 3;
 
 		this.frame = new JFrame();
 		frame.setTitle(frameTitle);
@@ -71,6 +74,7 @@ public class ChromosomeViewer {
 		// buttons/fields - BorderLayout.SOUTH
 		JLabel mRate = new JLabel("M Rate:");
 		JTextField mRateField = new JTextField("1", textFieldWidth);
+		JLabel mRateUnit = new JLabel("/N");
 
 		/**
 		 * Functional Mutate Button
@@ -80,27 +84,37 @@ public class ChromosomeViewer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Get the mutation rate as a percentage from the text field
-				int mutationRate = Integer.parseInt(mRateField.getText());
+				try{
+					int mutationRate = Integer.parseInt(mRateField.getText());
 
-				if (mutationRate < 0 || mutationRate > 100) {
-					// Handle invalid input, show an error message, etc.
-					JOptionPane.showMessageDialog(frame,
-							"Invalid mutation rate. Please enter a number between 0 and 100.", "Invalid Input",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
-				// Perform mutation for each gene based on the mutation rate
-				for (Gene gene : chComponent.getChromosome().genes) {
-					// Generate a random number between 1 and 100
-					int randomNum = (int) (Math.random() * 100) + 1;
-					if (randomNum <= mutationRate) {
-						// Mutate the gene
-						gene.changeBit();
+					if (mutationRate < 0 || mutationRate > chComponent.getChromosome().getNumOfGenes()) {
+						// Handle invalid input, show an error message, etc.
+						JOptionPane.showMessageDialog(frame,
+								"Invalid mutation rate. Please enter an integer between 0 and " + chComponent.getChromosome().getNumOfGenes(), "Invalid Input",
+								JOptionPane.ERROR_MESSAGE);
+						return;
 					}
+
+					// Perform mutation for each gene based on the mutation rate
+					for (Gene gene : chComponent.getChromosome().genes) {
+						// Generate a random number between 1 and 100
+						int randomNum = (int) (Math.random() * chComponent.getChromosome().getNumOfGenes()) + 1;
+						if (randomNum <= mutationRate) {
+							// Mutate the gene
+							gene.changeBit();
+						}
+					}
+					// Repaint the frame to reflect the changes
+					frame.repaint();
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(frame,
+								"Invalid mutation rate. Please enter an integer between 0 and " + chComponent.getChromosome().getNumOfGenes(), "Invalid Input",
+								JOptionPane.ERROR_MESSAGE);
+						return;
 				}
-				// Repaint the frame to reflect the changes
-				frame.repaint();
+				
+
+				
 			}
 
 		});
@@ -200,11 +214,12 @@ public class ChromosomeViewer {
 		 * panel.add(loadButton, BorderLayout.CENTER); panel.add(saveButton,
 		 * BorderLayout.CENTER);
 		 */
-		
+
 		JPanel buttonPanel = new JPanel();
 		frame.add(buttonPanel, BorderLayout.SOUTH);
 		buttonPanel.add(mRate);
 		buttonPanel.add(mRateField);
+		buttonPanel.add(mRateUnit);
 		buttonPanel.add(mutateButton);
 		buttonPanel.add(loadButton);
 		buttonPanel.add(saveButton);
@@ -231,30 +246,17 @@ public class ChromosomeViewer {
 //		panel.add(saveButton, c);
 
 		frame.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {}
 
 			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mousePressed(MouseEvent e) {}
 
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseExited(MouseEvent e) {}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+			public void mouseEntered(MouseEvent e) {}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {

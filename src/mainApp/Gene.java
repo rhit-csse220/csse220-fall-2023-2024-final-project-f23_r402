@@ -16,26 +16,29 @@ public class Gene {
 	// x and y are top left corners of square
 	private int x;
 	private int y;
-	
+	// private int geneSide;
+
 	// constructor
-	public Gene(char bit, boolean changeable, int x, int y) {
+	public Gene(char bit, boolean changeable, int x, int y, int geneSide) {
 		this.bit = bit;
 		this.changeable = changeable;
 		this.x = x;
 		this.y = y;
+		// this.geneSide = geneSide;
 	}
 	
 	// methods
-	   public void drawOn(Graphics g) {
-	        // Treat Graphics as a Graphics2D
-	        Graphics2D g2 = (Graphics2D) g;
-	        if (this.bit == '0') {
-	            g2.setColor(GENE_0_COLOR);
-	        } else if (this.bit == '1') {
-	            g2.setColor(GENE_1_COLOR);
-	        }
-	        g2.fillRect(x, y, GENE_SIDE, GENE_SIDE);
-	    }
+	public void drawOn(Graphics g) {
+	    // Treat Graphics as a Graphics2D
+	    Graphics2D g2 = (Graphics2D) g;
+	    if (this.bit == '0') {
+	         g2.setColor(GENE_0_COLOR);
+	    } else if (this.bit == '1') {
+            g2.setColor(GENE_1_COLOR);
+        }
+        // g2.fillRect(x, y, this.geneSide, this.geneSide);
+		g2.fillRect(x, y, GENE_SIDE, GENE_SIDE);
+    }
 
 	
 	@Override
@@ -52,41 +55,27 @@ public class Gene {
         }
     }
 	
-	public void setNonChangeable() {
-		this.changeable = false;
-	}
+	public void setNonChangeable() {this.changeable = false;}
 	
-	public void setChangeable() {
-		this.changeable = true;
-	}
+	public void setChangeable() {this.changeable = true;}
 
-	public char getBit() {
-		return bit;
-	}
+	public char getBit() {return bit;}
 
-	public void setBit(char bit) {
-		this.bit = bit;
-	}
+	public void setBit(char bit) {this.bit = bit;}
 
-	public int getX() {
-		return x;
-	}
+	public int getX() {return x;}
 
-	public void setX(int x) {
-		this.x = x;
-	}
+	public void setX(int x) {this.x = x;}
 
-	public int getY() {
-		return y;
-	}
+	public int getY() {return y;}
 
-	public void setY(int y) {
-		this.y = y;
-	}
-    public boolean isChangeable() {
-        return changeable;
-    }
+	public void setY(int y) {this.y = y;}
 	
+    public boolean isChangeable() {return changeable;}
+
+	public int getGeneSide() {return GENE_SIDE;}
+
+	// public void setGeneSide(int geneSide) {this.geneSide = geneSide;}
 	
 	public boolean isSelected(Rectangle2D.Double box) {
 		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, GENE_SIDE, GENE_SIDE);

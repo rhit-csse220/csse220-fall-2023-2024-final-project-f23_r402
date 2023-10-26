@@ -19,17 +19,19 @@ public class Chromosome {
 	private int numOfGenes = 100; //default values
 	private int numPerRow = 10; //default values
 	private int numPerColumn = 10; //default values
-	private String fileData;
+	private String fileData = "";
 	public Gene[] genes;
 	private double fitnessScore;
+	// private int geneSide;
 	
 	Random r = new Random();
 	
 	// constructor
 	public Chromosome(){}
 
-	public Chromosome(int numOfGenes) {
+	public Chromosome(int numOfGenes, int geneSide) {
 		this.numOfGenes = numOfGenes;
+		// this.geneSide = geneSide;
 		if (numOfGenes == 20){
 			this.numPerRow = 5;
 			this.numPerColumn = 4;
@@ -42,6 +44,15 @@ public class Chromosome {
 	// methods
 	public int getNumPerRow() {return this.numPerRow;}
 	public int getNumPerColumn() {return this.numPerColumn;}
+	public int getNumOfGenes() {return this.numOfGenes;}
+
+	// public int getGeneSide() {return geneSide;}
+
+	// public void setGeneSide(int geneSide) {
+	// 	for (int i = 0; i < this.genes.length; i++){
+	// 		this.genes[i].setGeneSide(geneSide)
+	// 	}
+	// }
 
 	public boolean checkChromosomeData() {
         if (fileData.length()%10!=0 && fileData!="") {
@@ -70,7 +81,8 @@ public class Chromosome {
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < numPerRow; j++) {
 				int bit = r.nextInt(0,2);
-				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
+				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
+				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
 			}
 		}
 	}
@@ -81,7 +93,7 @@ public class Chromosome {
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < numPerRow; j++) {
 				char bit = this.fileData.charAt(i*numPerColumn+j);
-				this.genes[i*numPerColumn+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i);
+				this.genes[i*numPerColumn+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
 			}
 		}
 	}
