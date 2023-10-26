@@ -84,15 +84,26 @@ public class Gene {
 	public void setBit(char bit) {this.bit = bit;} //setBit
 
 	/**
-	 * @return the x 
+	 * @return the x-coordinate of the gene
 	 */
-	public int getX() {return x;}
+	public int getX() {return x;} //getX
 
-	public void setX(int x) {this.x = x;}
+	/**
+	 * ensures: the x-coordinate of the gene is updated
+	 * @param x is the new x-coordinate
+	 */
+	public void setX(int x) {this.x = x;} //setX
 
-	public int getY() {return y;}
+	/**
+	 * @return the y-coordinate of the gene
+	 */
+	public int getY() {return y;} //getY
 
-	public void setY(int y) {this.y = y;}
+	/**
+	 * ensures: the y-coordinate of the gene is updated
+	 * @param y is the new y-coordinate
+	 */
+	public void setY(int y) {this.y = y;} //setY
 	
 	/**
 	 * @return whether the gene is editable through clicking or not
@@ -102,7 +113,7 @@ public class Gene {
     /**
      * @return the current dimensions of the gene when drawn on the frame
      */
-	public int getGeneSide() {return GENE_SIDE;}
+	public int getGeneSide() {return GENE_SIDE;} //getGeneSide
 
 	// public void setGeneSide(int geneSide) {this.geneSide = geneSide;}
 	
@@ -118,5 +129,5 @@ public class Gene {
 		} else {
 			return false;
 		}
-	}
+	} //isSelected
 }

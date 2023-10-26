@@ -77,7 +77,7 @@ public class Chromosome {
 	// }
 
 	/**
-	 * checks if the chromosome data is valid or invalid
+	 * checks if the chromosome data is valid or invalid based on if the length is valid, and no invalid characters
 	 * @return true or false depending on if the chromosome data is valid or invalid
 	 */
 	public boolean checkChromosomeData() {
