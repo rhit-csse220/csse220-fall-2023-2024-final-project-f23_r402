@@ -59,20 +59,25 @@ public class Chromosome {
 	// }
 
 	/**
+	 * UNUSED
 	 * checks if the chromosome data is valid or invalid based on if the length is valid, and no invalid characters
 	 * @return true or false depending on if the chromosome data is valid or invalid
 	 */
-	public boolean checkChromosomeData() {
-        if (fileData.length() % 10 != 0 && fileData!="") {
-            return false;
-        }
-        for (int i = 0; i < fileData.length(); i++) {
-            if (!(fileData.charAt(i)=='0' || fileData.charAt(i)=='1')) {
-                return false;
-            }
-        }
-        return true;
-    }
+	// public boolean checkChromosomeLength() {
+    //     if (fileData.length() % 10 != 0 && fileData!="") {
+    //         return false;
+    //     }
+    //     return true;
+    // }
+
+	// public boolean checkChromosomeData() {
+	// 	for (int i = 0; i < fileData.length(); i++) {
+    //         if (!(fileData.charAt(i)=='0' || fileData.charAt(i)=='1')) {
+    //             return false;
+    //         }
+    //     }
+	// 	return true;
+	// }
 	
 	/**
 	 * ensures: that the data from the file is loaded into the chromosome's file data

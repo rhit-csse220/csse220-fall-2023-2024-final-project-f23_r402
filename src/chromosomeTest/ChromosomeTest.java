@@ -8,19 +8,20 @@ import mainApp.Gene;
 
 
 public class ChromosomeTest {
-    @Test
-    public void testCheckChromosomeDataWithValidData() {
-        Chromosome chromosome = new Chromosome();
-        chromosome.storeChromosomeData("0011001100");
-        assertTrue(chromosome.checkChromosomeData());
-    }
+    // checkChromosomeData method not used
+    // @Test
+    // public void testCheckChromosomeDataWithValidData() {
+    //     Chromosome chromosome = new Chromosome();
+    //     chromosome.storeChromosomeData("0011001100");
+    //     assertTrue(chromosome.checkChromosomeData());
+    // }
 
-    @Test
-    public void testCheckChromosomeDataWithInvalidData() {
-        Chromosome chromosome = new Chromosome();
-        chromosome.storeChromosomeData("0012001100");
-        assertFalse(chromosome.checkChromosomeData());
-    }
+    // @Test
+    // public void testCheckChromosomeDataWithInvalidData() {
+    //     Chromosome chromosome = new Chromosome();
+    //     chromosome.storeChromosomeData("0012001100");
+    //     assertFalse(chromosome.checkChromosomeData());
+    // }
 
     @Test
     public void testStoreChromosomeData() {
@@ -54,9 +55,5 @@ public class ChromosomeTest {
         chromosome.initiateGene(); // Initialize genes with random data
         assertNotNull(chromosome.genes);
     }
- 
-    
-
-
 }
 

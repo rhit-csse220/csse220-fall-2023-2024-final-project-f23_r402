@@ -160,7 +160,7 @@ public class ChromosomeViewer {
 		                    //         "Invalid Data Length",
 		                    //         JOptionPane.ERROR_MESSAGE);
 							throw new InvalidChromosomeFormatException(characterCount);
-		                } else if (!chComponent.getChromosome().checkChromosomeData()){
+		                } else if (!checkChromosomeData(fileData.toString())){
 							throw new InvalidChromosomeCharacterException();
 						} else {
 		                    // Proceed with loading and initializing the data
@@ -281,8 +281,13 @@ public class ChromosomeViewer {
 		frame.pack();
 	} // driverMain
 
-	public void loadFile(JFrame frame, JComponent component){
-
+	public boolean checkChromosomeData(String fileData) {
+		for (int i = 0; i < fileData.length(); i++) {
+            if (!(fileData.charAt(i)=='0' || fileData.charAt(i)=='1')) {
+                return false;
+            }
+        }
+		return true;
 	}
 
 	public void handleDriverMain() {
