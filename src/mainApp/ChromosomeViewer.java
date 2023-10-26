@@ -30,22 +30,23 @@ public class ChromosomeViewer {
 	public File file;
 	public JFrame frame;
 	public ChromosomeComponent chComponent;
-	
+
 	public static final int BORDER = 20;
-	
+
 	/**
 	 * ensures: calculates the gene width based on the frame's dimensions
+	 * 
 	 * @return the gene width based on the frame's dimensons
 	 */
-	public int findGeneWidth(){
+	public int findGeneWidth() {
 		int compHeight = this.chComponent.getHeight();
 		int compWidth = this.frame.getWidth();
 		if (compWidth <= compHeight) {
-			return (compWidth-BORDER*2)/(chComponent.getChromosome().getNumPerRow());
+			return (compWidth - BORDER * 2) / (chComponent.getChromosome().getNumPerRow());
 		} else {
-			return (compHeight-BORDER*2)/(chComponent.getChromosome().getNumPerRow());
+			return (compHeight - BORDER * 2) / (chComponent.getChromosome().getNumPerRow());
 		}
-	} //findGeneWidth
+	} // findGeneWidth
 
 	// height of chComponent: this.chComponent.getHeight()
 	// width of frame: frame.getWidth()
@@ -61,10 +62,10 @@ public class ChromosomeViewer {
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
-		//frame.setResizable(false);
-		
+		// frame.setResizable(false);
+
 		frame.setVisible(true);
-		
+
 		// public int getFrameWidth() {return frame.getWidth()};
 
 		// fileName - BorderLayout.NORTH
@@ -88,14 +89,15 @@ public class ChromosomeViewer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Get the mutation rate as a percentage from the text field
-				try{
+				try {
 					int mutationRate = Integer.parseInt(mRateField.getText());
 
 					if (mutationRate < 0 || mutationRate > chComponent.getChromosome().getNumOfGenes()) {
 						// Handle invalid input, show an error message, etc.
 						JOptionPane.showMessageDialog(frame,
-								"Invalid mutation rate. Please enter an integer between 0 and " + chComponent.getChromosome().getNumOfGenes(), "Invalid Input",
-								JOptionPane.ERROR_MESSAGE);
+								"Invalid mutation rate. Please enter an integer between 0 and "
+										+ chComponent.getChromosome().getNumOfGenes(),
+								"Invalid Input", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 
@@ -106,63 +108,69 @@ public class ChromosomeViewer {
 						if (randomNum <= mutationRate) {
 							// Mutate the gene
 							gene.changeBit();
-							fileNameLabel.setText(fileName+" (mutated)");
+							fileNameLabel.setText(fileName + " (mutated)");
 						}
 					}
 					// Repaint the frame to reflect the changes
 					frame.repaint();
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(frame,
-								"Invalid mutation rate. Please enter an integer between 0 and " + chComponent.getChromosome().getNumOfGenes(), "Invalid Input",
-								JOptionPane.ERROR_MESSAGE);
-						return;
+							"Invalid mutation rate. Please enter an integer between 0 and "
+									+ chComponent.getChromosome().getNumOfGenes(),
+							"Invalid Input", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
-				
 
-				
 			}
 
 		});
 
 		JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooseFile = new JFileChooser();
-//				chooseFile.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP\\"));
-				int response = chooseFile.showOpenDialog(null);
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        JFileChooser chooseFile = new JFileChooser();
+		        int response = chooseFile.showOpenDialog(null);
 
-				if (response == JFileChooser.APPROVE_OPTION) {
-					file = new File(chooseFile.getSelectedFile().getAbsolutePath());
-					// Storing file name
-					// TODO check which one to use
-					fileName = file.getName();
-					filePath = file.getPath();
-					fileNameLabel.setText(fileName);
-					// test
-//					System.out.println(file);
-//					System.out.println(fileName);
-					
-					try {
-						List<String> lines = Files.readAllLines(file.toPath());
-						for (String s : lines) {
-							chComponent.setChromosome(new Chromosome());
-							chComponent.handleStoreChromosomeData(s);
-							chComponent.handleInitiateGeneWithFile();
-							frame.repaint();
-						}
-					} catch (IOException e1) {
-						// Display an error message if there's an issue with the file
-		                JOptionPane.showMessageDialog(frame,
+		        if (response == JFileChooser.APPROVE_OPTION) {
+		            file = new File(chooseFile.getSelectedFile().getAbsolutePath());
+		            fileName = file.getName();
+		            filePath = file.getPath();
+		            fileNameLabel.setText(fileName);
+
+		            try {
+		                List<String> lines = Files.readAllLines(file.toPath());
+		                StringBuilder fileData = new StringBuilder();
+
+		                for (String s : lines) {
+		                    fileData.append(s);
+		                }
+
+		                // Check if the loaded file data is invalid in terms of length
+		                int characterCount = fileData.length();
+		                if (characterCount != 20 && characterCount != 100) {
+		                    JOptionPane.showMessageDialog(null,
+		                            "Invalid file data length. Expected 20 or 100 characters, but loaded " + characterCount + " characters.",
+		                            "Invalid Data Length",
+		                            JOptionPane.ERROR_MESSAGE);
+		                } else {
+		                    // Proceed with loading and initializing the data
+		                    chComponent.setChromosome(new Chromosome());
+		                    chComponent.handleStoreChromosomeData(fileData.toString());
+		                    chComponent.handleInitiateGeneWithFile();
+		                    frame.repaint();
+		                }
+		            } catch (IOException e1) {
+		                JOptionPane.showMessageDialog(null,
 		                        "An error occurred while loading the file.",
 		                        "File Load Error",
 		                        JOptionPane.ERROR_MESSAGE);
-		                System.out.println("Illegal file type");
 		                e1.printStackTrace();
-					}
-				}
-			}
+		            }
+		        }
+		    }
 		});
+
 
 		JButton saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
@@ -170,25 +178,25 @@ public class ChromosomeViewer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
-		        fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
-		        int response = fileChooser.showSaveDialog(null);
+				fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
+				int response = fileChooser.showSaveDialog(null);
 
-		        if (response == JFileChooser.APPROVE_OPTION) {
+				if (response == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
-		            if (!file.getName().toLowerCase().endsWith(".txt")) {
-		                file = new File(file.getAbsolutePath() + ".txt");
-		            }
-	
-		            // Get the chromosome data in the required format (1 for black, 0 for green)
-		            String chromosomeData = chComponent.getChromosome().getChromosomeDataAsString();
-	
-		            try (FileWriter writer = new FileWriter(file)) {
-		                writer.write(chromosomeData);
-		            } catch (IOException ex) {
-		                ex.printStackTrace();
-		            }
-		        }
-				
+					if (!file.getName().toLowerCase().endsWith(".txt")) {
+						file = new File(file.getAbsolutePath() + ".txt");
+					}
+
+					// Get the chromosome data in the required format (1 for black, 0 for green)
+					String chromosomeData = chComponent.getChromosome().getChromosomeDataAsString();
+
+					try (FileWriter writer = new FileWriter(file)) {
+						writer.write(chromosomeData);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+
 //				try {
 //					PrintWriter writer = new PrintWriter(filePath);
 //					BufferedWriter bWriter = new BufferedWriter(writer);
@@ -235,16 +243,20 @@ public class ChromosomeViewer {
 
 		frame.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {
+			}
 
 			@Override
-			public void mousePressed(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {
+			}
 
 			@Override
-			public void mouseExited(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {
+			}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {}
+			public void mouseEntered(MouseEvent e) {
+			}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -253,7 +265,7 @@ public class ChromosomeViewer {
 				if (gene != null) {
 					gene.changeBit();
 				}
-				fileNameLabel.setText(fileName+" (new)"); // Appends the label text to include (new) if edited
+				fileNameLabel.setText(fileName + " (new)"); // Appends the label text to include (new) if edited
 				frame.repaint();
 			}
 		});
