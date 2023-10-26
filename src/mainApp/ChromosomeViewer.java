@@ -148,9 +148,9 @@ public class ChromosomeViewer {
 
 		                // Check if the loaded file data is invalid in terms of length
 		                int characterCount = fileData.length();
-		                if (characterCount != 20 && characterCount != 100) {
+		                if (characterCount % 10 != 0) {
 		                    JOptionPane.showMessageDialog(null,
-		                            "Invalid file data length. Expected 20 or 100 characters, but loaded " + characterCount + " characters.",
+		                            "Invalid file data length. Expected a multiple of 10 characters, but loaded " + characterCount + " characters.",
 		                            "Invalid Data Length",
 		                            JOptionPane.ERROR_MESSAGE);
 		                } else {

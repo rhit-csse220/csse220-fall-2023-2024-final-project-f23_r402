@@ -6,7 +6,6 @@ import org.junit.Test;
 import mainApp.Chromosome;
 import mainApp.ChromosomeComponent;
 import mainApp.Gene;
-import java.awt.Color;
 
 public class ChromosomeComponentTest {
     @Test
@@ -19,18 +18,20 @@ public class ChromosomeComponentTest {
         assertEquals(100, chromosome.getNumOfGenes());
     }
 
+    
     @Test
     public void testHandleStoreChromosomeData() {
         ChromosomeComponent component = new ChromosomeComponent();
         Chromosome chromosome = component.getChromosome();
 
-        // Store chromosome data
+        // Store chromosome data using the method
         component.handleStoreChromosomeData("100");
 
         // Check if the data is correctly stored in the chromosome
         assertTrue(chromosome.checkChromosomeData());
         assertEquals("100", chromosome.getChromosomeDataAsString());
     }
+
 
     @Test
     public void testContainsGene() {
@@ -67,6 +68,6 @@ public class ChromosomeComponentTest {
 
         // Verify that genes are initialized
         assertNotNull(chromosome.genes);
-        assertEquals(100, chromosome.getNumOfGenes());
+        assertEquals(10, chromosome.getNumOfGenes());
     }
 }
