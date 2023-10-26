@@ -33,6 +33,10 @@ public class ChromosomeViewer {
 	
 	public static final int BORDER = 20;
 	
+	/**
+	 * ensures: calculates the gene width based on the frame's dimensions
+	 * @return the gene width based on the frame's dimensons
+	 */
 	public int findGeneWidth(){
 		int compHeight = this.chComponent.getHeight();
 		int compWidth = this.frame.getWidth();
@@ -41,7 +45,7 @@ public class ChromosomeViewer {
 		} else {
 			return (compHeight-BORDER*2)/(chComponent.getChromosome().getNumPerRow());
 		}
-	}
+	} //findGeneWidth
 
 	// height of chComponent: this.chComponent.getHeight()
 	// width of frame: frame.getWidth()
@@ -102,6 +106,7 @@ public class ChromosomeViewer {
 						if (randomNum <= mutationRate) {
 							// Mutate the gene
 							gene.changeBit();
+							fileNameLabel.setText(fileName+" (mutated)");
 						}
 					}
 					// Repaint the frame to reflect the changes
@@ -119,7 +124,6 @@ public class ChromosomeViewer {
 
 		});
 
-		// Load button functionality
 		JButton loadButton = new JButton("Load");
 		loadButton.addActionListener(new ActionListener() {
 			@Override
@@ -141,16 +145,7 @@ public class ChromosomeViewer {
 					
 					try {
 						List<String> lines = Files.readAllLines(file.toPath());
-						
 						for (String s : lines) {
-//							if (s.length() != 100) {
-//		                        JOptionPane.showMessageDialog(frame,
-//		                                "The loaded file does not have the expected format (100 characters per line).",
-//		                                "File Format Error",
-//		                                JOptionPane.ERROR_MESSAGE);
-//		                        return;
-//		                    }
-							
 							chComponent.setChromosome(new Chromosome());
 							chComponent.handleStoreChromosomeData(s);
 							chComponent.handleInitiateGeneWithFile();
@@ -207,13 +202,6 @@ public class ChromosomeViewer {
 //				}
 			}
 		});
-
-		/**
-		 * panel.add(mutateButton, BorderLayout.EAST); panel.add(mRate,
-		 * BorderLayout.EAST); panel.add(mRateField, BorderLayout.CENTER);
-		 * panel.add(loadButton, BorderLayout.CENTER); panel.add(saveButton,
-		 * BorderLayout.CENTER);
-		 */
 
 		JPanel buttonPanel = new JPanel();
 		frame.add(buttonPanel, BorderLayout.SOUTH);

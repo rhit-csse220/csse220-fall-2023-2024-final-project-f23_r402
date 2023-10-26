@@ -31,8 +31,9 @@ public class Chromosome {
 	 */
 	public Chromosome(){}// Chromosome
 
+	//TODO finish description 
 	/**
-	 * ensures: 
+	 * ensures: ???
 	 * @param numOfGenes
 	 * @param geneSide
 	 */
@@ -49,10 +50,23 @@ public class Chromosome {
 		}
 	}
 	
-	// methods
-	public int getNumPerRow() {return this.numPerRow;}
-	public int getNumPerColumn() {return this.numPerColumn;}
-	public int getNumOfGenes() {return this.numOfGenes;}
+	/**
+	 * ensures: that the number of genes per row in this chromosome is returned
+	 * @return the number of genes per row
+	 */
+	public int getNumPerRow() {return this.numPerRow;} //getNumPerRow
+	
+	/**
+	 * ensures: that the number of genes per column in this chromosome is returned
+	 * @return the number of genes per column
+	 */
+	public int getNumPerColumn() {return this.numPerColumn;} //getNumPerColumn
+	
+	/**
+	 * ensures: that the number of genes in this chromosome is returned
+	 * @return the number of genes 
+	 */
+	public int getNumOfGenes() {return this.numOfGenes;} //getNumOfGenes
 
 	// public int getGeneSide() {return geneSide;}
 
@@ -62,6 +76,10 @@ public class Chromosome {
 	// 	}
 	// }
 
+	/**
+	 * checks if the chromosome data is valid or invalid
+	 * @return true or false depending on if the chromosome data is valid or invalid
+	 */
 	public boolean checkChromosomeData() {
         if (fileData.length()%10!=0 && fileData!="") {
             return false;
@@ -74,17 +92,27 @@ public class Chromosome {
         return true;
     }
 	
+	/**
+	 * ensures: that the data from the file is loaded into the chromosome's file data
+	 * @param s is the input for the method to add into the file data of the chromosome
+	 */
 	public void storeChromosomeData(String s) {
 		this.fileData = this.fileData.concat(s);
 		this.numOfGenes=this.fileData.length();
 		// TODO add exceptions
 	}
 	
+	/**
+	 * ensures: that the fitness score for the chromosome is calculated
+	 */
 	public void calcFuction() {
 		//TODO calc + store fitness score
 		this.fitnessScore = 0;
 	}
 	
+	/**
+	 * ensures: that a present number of 100 genes is initialized into the chromosome
+	 */
 	public void initiateGene() {
 		genes = new Gene[numOfGenes];
 		for (int i = 0; i < numPerColumn; i++) {
@@ -96,6 +124,9 @@ public class Chromosome {
 		}
 	}
 	
+	/**
+	 * ensures: that the file data possessed by the chromosome can now be read into its genes accordingly
+	 */
 	public void initiateGeneWithFile() {
 		genes = new Gene[numOfGenes];
 		numPerColumn=numOfGenes/numPerRow;
@@ -131,7 +162,10 @@ public class Chromosome {
 		}
 	}
 	
-	// TODO check this
+	/**
+	 * ensures: that the chromosome data, i.e the genes and their values, are concatenated into a single string
+	 * @return the chromosome data
+	 */
 	public String getChromosomeDataAsString() {
 	    StringBuilder data = new StringBuilder();
 	    for (Gene gene : genes) {
