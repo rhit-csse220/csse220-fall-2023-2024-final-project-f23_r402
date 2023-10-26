@@ -170,7 +170,7 @@ public class ChromosomeViewer {
 		            } catch (IOException | InvalidChromosomeFormatException ex) {
 						if (ex instanceof IOException) {
 							JOptionPane.showMessageDialog(null,
-		                        "An error occurred while loading the file.",
+		                        "Wrong file type.",
 		                        "File Load Error",
 		                        JOptionPane.ERROR_MESSAGE);
 						}
