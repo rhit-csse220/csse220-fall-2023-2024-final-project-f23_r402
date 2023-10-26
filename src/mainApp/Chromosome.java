@@ -26,9 +26,17 @@ public class Chromosome {
 	
 	Random r = new Random();
 	
-	// constructor
-	public Chromosome(){}
+	/**
+	 * Creates a new Chromosome object
+	 */
+	public Chromosome(){}// Chromosome
 
+	/**
+	 * ensures: 
+	 * @param numOfGenes
+	 * @param geneSide
+	 */
+	// Are we still adding the resizable geneSide according to frameWidth/Height?
 	public Chromosome(int numOfGenes, int geneSide) {
 		this.numOfGenes = numOfGenes;
 		// this.geneSide = geneSide;
@@ -68,6 +76,7 @@ public class Chromosome {
 	
 	public void storeChromosomeData(String s) {
 		this.fileData = this.fileData.concat(s);
+		this.numOfGenes=this.fileData.length();
 		// TODO add exceptions
 	}
 	
@@ -87,13 +96,13 @@ public class Chromosome {
 		}
 	}
 	
-	// maybe not needed
 	public void initiateGeneWithFile() {
-		genes = new Gene[this.fileData.length()];
+		genes = new Gene[numOfGenes];
+		numPerColumn=numOfGenes/numPerRow;
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < numPerRow; j++) {
 				char bit = this.fileData.charAt(i*numPerColumn+j);
-				this.genes[i*numPerColumn+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
+				this.genes[i*numPerRow+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
 			}
 		}
 	}
