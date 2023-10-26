@@ -198,17 +198,6 @@ public class ChromosomeViewer {
 						ex.printStackTrace();
 					}
 				}
-
-//				try {
-//					PrintWriter writer = new PrintWriter(filePath);
-//					BufferedWriter bWriter = new BufferedWriter(writer);
-//					for (Gene gene : chComponent.getChromosome().genes) {
-//						bWriter.write(gene.getBit());
-//					}
-//					bWriter.close();
-//				} catch (IOException ex) {
-//					ex.printStackTrace();
-//				}
 			}
 		});
 
@@ -220,27 +209,6 @@ public class ChromosomeViewer {
 		buttonPanel.add(mutateButton);
 		buttonPanel.add(loadButton);
 		buttonPanel.add(saveButton);
-
-//		JPanel panel = new JPanel(new GridBagLayout());
-//		GridBagConstraints c = new GridBagConstraints();
-//		frame.add(panel, BorderLayout.SOUTH);
-//		c.fill = GridBagConstraints.HORIZONTAL;
-//		c.ipady = GridBagConstraints.VERTICAL;
-//		c.gridx = 0;
-//		c.gridy = 0;
-//		panel.add(mutateButton, c);
-//		c.gridx = 1;
-//		c.gridy = 0;
-//		panel.add(mRate, c);
-//		c.gridx = 2;
-//		c.gridy = 0;
-//		panel.add(mRateField);
-//		c.gridx = 0;
-//		c.gridy = 1;
-//		panel.add(loadButton, c);
-//		c.gridx = 1;
-//		c.gridy = 1;
-//		panel.add(saveButton, c);
 
 		frame.addMouseListener(new MouseListener() {
 			@Override

@@ -117,42 +117,6 @@ public class Chromosome {
 	// 		this.genes[i].setGeneSide(geneSide)
 	// 	}
 	// }
-
-	/**
-	 * UNUSED
-	 * checks if the chromosome data is valid or invalid based on if the length is valid, and no invalid characters
-	 * @return true or false depending on if the chromosome data is valid or invalid
-	 */
-	// public boolean checkChromosomeLength() {
-    //     if (fileData.length() % 10 != 0 && fileData!="") {
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
-	// public boolean checkChromosomeData() {
-	// 	for (int i = 0; i < fileData.length(); i++) {
-    //         if (!(fileData.charAt(i)=='0' || fileData.charAt(i)=='1')) {
-    //             return false;
-    //         }
-    //     }
-	// 	return true;
-	// }
-	
-	/**
-	 * ensures: that the file data possessed by the chromosome can now be read into its genes accordingly
-	 */
-	
-	/***
-     * Debugger method
-     */
-//  public String genesToString() {
-//      String s = "";
-//      for (int i = 0; i < genes.length; i++) {
-//          s = s.concat(""+genes[i].getBit());
-//      }
-//      return s;
-//  }
 	
 	public void drawOn(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
