@@ -18,14 +18,21 @@ public class Gene {
 	private int y;
 	// private int geneSide;
 
-	// constructor
+	/**
+	 * ensures: The instantiation of a new Gene object according to the given parameters
+	 * @param bit is two values, a '1' and '0', determining its current state
+	 * @param changeable determines if the gene can be clicked on to be changed or not
+	 * @param x is the current x-coordinate position of the gene
+	 * @param y is the current y-coordinate position of the gene
+	 * @param geneSide is the width and height of the gene when drawn in the frame
+	 */
 	public Gene(char bit, boolean changeable, int x, int y, int geneSide) {
 		this.bit = bit;
 		this.changeable = changeable;
 		this.x = x;
 		this.y = y;
 		// this.geneSide = geneSide;
-	}
+	} //Gene
 	
 	// methods
 	public void drawOn(Graphics g) {
@@ -55,14 +62,30 @@ public class Gene {
         }
     }
 	
-	public void setNonChangeable() {this.changeable = false;}
+	/**
+	 * ensures: that the gene's state can no longer be changed by clicking on it
+	 */
+	public void setNonChangeable() {this.changeable = false;} //setNonChangeable
 	
-	public void setChangeable() {this.changeable = true;}
+	/**
+	 * ensures: that the gene's state can be changed by clicking on it
+	 */
+	public void setChangeable() {this.changeable = true;} //setChangeable
 
-	public char getBit() {return bit;}
+	/**
+	 * @return the value of the bit
+	 */
+	public char getBit() {return bit;} //getBit
 
-	public void setBit(char bit) {this.bit = bit;}
+	/**
+	 * ensures: that the gene's state/bit is modified according to the inputted parameter
+	 * @param bit is the new character value for the gene state, varies between '1' and '0'
+	 */ 
+	public void setBit(char bit) {this.bit = bit;} //setBit
 
+	/**
+	 * @return the x 
+	 */
 	public int getX() {return x;}
 
 	public void setX(int x) {this.x = x;}
@@ -71,12 +94,23 @@ public class Gene {
 
 	public void setY(int y) {this.y = y;}
 	
-    public boolean isChangeable() {return changeable;}
+	/**
+	 * @return whether the gene is editable through clicking or not
+	 */
+    public boolean isChangeable() {return changeable;} //isChangeable
 
+    /**
+     * @return the current dimensions of the gene when drawn on the frame
+     */
 	public int getGeneSide() {return GENE_SIDE;}
 
 	// public void setGeneSide(int geneSide) {this.geneSide = geneSide;}
 	
+	/**
+	 * ensures: that the currently selected gene is returned if the inputted box overlaps with the gene's box
+	 * @param box is the current coordinates of the mouse
+	 * @return the currently selected gene
+	 */
 	public boolean isSelected(Rectangle2D.Double box) {
 		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, GENE_SIDE, GENE_SIDE);
 		if (boundingBox.contains(box)){
