@@ -160,17 +160,19 @@ public class ChromosomeViewer {
 		                    //         "Invalid Data Length",
 		                    //         JOptionPane.ERROR_MESSAGE);
 							throw new InvalidChromosomeFormatException(characterCount);
-		                } else {
+		                } else if (!chComponent.getChromosome().checkChromosomeData()){
+							throw new InvalidChromosomeCharacterException();
+						} else {
 		                    // Proceed with loading and initializing the data
 		                    chComponent.setChromosome(new Chromosome());
 		                    chComponent.handleStoreChromosomeData(fileData.toString());
 		                    chComponent.handleInitiateGeneWithFile();
 		                    frame.repaint();
 		                }
-		            } catch (IOException | InvalidChromosomeFormatException ex) {
+		            } catch (IOException | InvalidChromosomeFormatException | InvalidChromosomeCharacterException ex) {
 						if (ex instanceof IOException) {
 							JOptionPane.showMessageDialog(null,
-		                        "Wrong file type.",
+		                        "Wrong file type or file does not exist.",
 		                        "File Load Error",
 		                        JOptionPane.ERROR_MESSAGE);
 						}
@@ -213,7 +215,6 @@ public class ChromosomeViewer {
 //					}
 //					bWriter.close();
 //				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
 //					e1.printStackTrace();
 //				}
 			}
@@ -268,7 +269,6 @@ public class ChromosomeViewer {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO figure out how this will change it on click
 				Gene gene = chComponent.containsGene(e.getX(), e.getY());
 				if (gene != null) {
 					gene.changeBit();

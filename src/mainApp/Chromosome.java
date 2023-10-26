@@ -25,7 +25,6 @@ public class Chromosome {
 	 */
 	public Chromosome(){}// Chromosome
 
-	//TODO finish description 
 	/**
 	 * Creates a new Chromosome object with different number of genes than the default 100
 	 * @param numOfGenes
@@ -64,7 +63,7 @@ public class Chromosome {
 	 * @return true or false depending on if the chromosome data is valid or invalid
 	 */
 	public boolean checkChromosomeData() {
-        if (fileData.length()%10!=0 && fileData!="") {
+        if (fileData.length() % 10 != 0 && fileData!="") {
             return false;
         }
         for (int i = 0; i < fileData.length(); i++) {
