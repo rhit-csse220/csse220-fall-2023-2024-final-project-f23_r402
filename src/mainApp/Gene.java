@@ -46,14 +46,11 @@ public class Gene {
         // g2.fillRect(x, y, this.geneSide, this.geneSide);
 		g2.fillRect(x, y, GENE_SIDE, GENE_SIDE);
     }
-
 	
-	@Override
-	public String toString() {
-		return "Gene [x=" + x + ", y=" + y + ", bit=" + bit + ", changeable=" + changeable + "]";
-	}
-	
-	// used for when the bit is 0 or 1
+	/**
+	 * ensures: changes bit from 0 to 1 or 1 to 0
+	 * note: used for when the bit is 0 or 1
+	 */
 	public void changeBit() {
         if (this.bit == '0') {
             this.bit = '1';
@@ -61,16 +58,35 @@ public class Gene {
             this.bit = '0';
         }
     }
-	
+
 	/**
-	 * ensures: that the gene's state can no longer be changed by clicking on it
+	 * ensures: that the currently selected gene is returned if the inputted box overlaps with the gene's box
+	 * @param box is the current coordinates of the mouse
+	 * @return the currently selected gene
 	 */
-	public void setNonChangeable() {this.changeable = false;} //setNonChangeable
+	public boolean isSelected(Rectangle2D.Double box) {
+		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, GENE_SIDE, GENE_SIDE);
+		if (boundingBox.contains(box)){
+			return true;
+		} else {
+			return false;
+		}
+	} //isSelected
+
+	/**
+	 * @return whether the gene is editable through clicking or not
+	 */
+    public boolean isChangeable() {return changeable;} //isChangeable
 	
 	/**
 	 * ensures: that the gene's state can be changed by clicking on it
 	 */
 	public void setChangeable() {this.changeable = true;} //setChangeable
+	
+	/**
+	 * ensures: that the gene's state can no longer be changed by clicking on it
+	 */
+	public void setNonChangeable() {this.changeable = false;} //setNonChangeable
 
 	/**
 	 * @return the value of the bit
@@ -104,30 +120,16 @@ public class Gene {
 	 * @param y is the new y-coordinate
 	 */
 	public void setY(int y) {this.y = y;} //setY
-	
-	/**
-	 * @return whether the gene is editable through clicking or not
-	 */
-    public boolean isChangeable() {return changeable;} //isChangeable
 
     /**
      * @return the current dimensions of the gene when drawn on the frame
      */
-	public int getGeneSide() {return GENE_SIDE;} //getGeneSide
+	// public int getGeneSide() {return GENE_SIDE;} //getGeneSide
 
 	// public void setGeneSide(int geneSide) {this.geneSide = geneSide;}
-	
-	/**
-	 * ensures: that the currently selected gene is returned if the inputted box overlaps with the gene's box
-	 * @param box is the current coordinates of the mouse
-	 * @return the currently selected gene
-	 */
-	public boolean isSelected(Rectangle2D.Double box) {
-		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, GENE_SIDE, GENE_SIDE);
-		if (boundingBox.contains(box)){
-			return true;
-		} else {
-			return false;
-		}
-	} //isSelected
+
+	@Override
+	public String toString() {
+		return "Gene [x=" + x + ", y=" + y + ", bit=" + bit + ", changeable=" + changeable + "]";
+	}
 }

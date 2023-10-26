@@ -37,6 +37,66 @@ public class Chromosome {
 
 		this.numPerColumn = numOfGenes/NUM_PER_ROW;
 	}
+
+	//methods
+	/**
+	 * ensures: that the fitness score for the chromosome is calculated
+	 */
+	public void calcFitnessFuction() {
+		//TODO calc + store fitness score
+		this.fitnessScore = 0;
+	}
+	
+	/**
+	 * ensures: that a numOfGenes Gene objects is initialized into the chromosome
+	 */
+	public void initiateGene() {
+		genes = new Gene[numOfGenes];
+		for (int i = 0; i < numPerColumn; i++) {
+			for (int j = 0; j < NUM_PER_ROW; j++) {
+				int bit = r.nextInt(0,2);
+				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
+				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
+			}
+		}
+	}
+
+	public void initiateGeneWithFile() {
+		genes = new Gene[numOfGenes];
+		numPerColumn = numOfGenes / NUM_PER_ROW;
+		for (int i = 0; i < numPerColumn; i++) {
+			for (int j = 0; j < NUM_PER_ROW; j++) {
+				char bit = this.fileData.charAt(i*numPerColumn+j);
+				this.genes[i*numPerColumn+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
+			}
+		}
+	}
+
+	/**
+	 * ensures: that the data from the file is loaded into the chromosome's file data
+	 * @param s is the input for the method to add into the file data of the chromosome
+	 */
+	public void storeChromosomeData(String s) {
+		this.fileData = this.fileData.concat(s);
+		this.numOfGenes = this.fileData.length();
+	}
+
+	/**
+	 * ensures: that the chromosome data, i.e the genes and their values, are concatenated into a single string
+	 * @return the chromosome data
+	 */
+	public String getChromosomeDataAsString() {
+	    StringBuilder data = new StringBuilder();
+	    for (Gene gene : genes) {
+	        // Append '1' for black and '0' for green
+	        if (gene.getBit() == '0') {
+	            data.append('0');
+	        } else if (gene.getBit() == '1'){
+	            data.append('1');
+	        }
+	    }
+	    return data.toString();
+	}
 	
 	/**
 	 * ensures: that the number of genes per column in this chromosome is returned
@@ -80,50 +140,8 @@ public class Chromosome {
 	// }
 	
 	/**
-	 * ensures: that the data from the file is loaded into the chromosome's file data
-	 * @param s is the input for the method to add into the file data of the chromosome
-	 */
-	public void storeChromosomeData(String s) {
-		this.fileData = this.fileData.concat(s);
-		this.numOfGenes=this.fileData.length();
-		// TODO add exceptions
-	}
-	
-	/**
-	 * ensures: that the fitness score for the chromosome is calculated
-	 */
-	public void calcFuction() {
-		//TODO calc + store fitness score
-		this.fitnessScore = 0;
-	}
-	
-	/**
-	 * ensures: that a numOfGenes Gene objects is initialized into the chromosome
-	 */
-	public void initiateGene() {
-		genes = new Gene[numOfGenes];
-		for (int i = 0; i < numPerColumn; i++) {
-			for (int j = 0; j < NUM_PER_ROW; j++) {
-				int bit = r.nextInt(0,2);
-				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
-				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
-			}
-		}
-	}
-	
-	/**
 	 * ensures: that the file data possessed by the chromosome can now be read into its genes accordingly
 	 */
-	public void initiateGeneWithFile() {
-		genes = new Gene[numOfGenes];
-		numPerColumn = numOfGenes / NUM_PER_ROW;
-		for (int i = 0; i < numPerColumn; i++) {
-			for (int j = 0; j < NUM_PER_ROW; j++) {
-				char bit = this.fileData.charAt(i*numPerColumn+j);
-				this.genes[i*numPerColumn+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
-			}
-		}
-	}
 	
 	/***
      * Debugger method
@@ -148,22 +166,4 @@ public class Chromosome {
 			g2.drawString((String)(i+""), genes[i].getX(), 10+genes[i].getY());
 		}
 	}
-	
-	/**
-	 * ensures: that the chromosome data, i.e the genes and their values, are concatenated into a single string
-	 * @return the chromosome data
-	 */
-	public String getChromosomeDataAsString() {
-	    StringBuilder data = new StringBuilder();
-	    for (Gene gene : genes) {
-	        // Append '1' for black and '0' for green
-	        if (gene.getBit() == '0') {
-	            data.append('0');
-	        } else if (gene.getBit() == '1'){
-	            data.append('1');
-	        }
-	    }
-	    return data.toString();
-	}
-	
 }

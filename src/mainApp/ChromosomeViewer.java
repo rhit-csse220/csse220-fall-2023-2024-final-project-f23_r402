@@ -6,14 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -24,14 +19,13 @@ public class ChromosomeViewer {
 	 * ensures: creates, initializes, and sets visible the Viewer's frame and
 	 * component
 	 */
+	public static final int BORDER = 20;
 
 	public String fileName = "Chromosome X";
 	public String filePath = "";
 	public File file;
 	public JFrame frame;
 	public ChromosomeComponent chComponent;
-
-	public static final int BORDER = 20;
 
 	/**
 	 * ensures: calculates the gene width based on the frame's dimensions
@@ -122,9 +116,7 @@ public class ChromosomeViewer {
 							"Invalid Input", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-
 			}
-
 		});
 
 		/**
@@ -214,8 +206,8 @@ public class ChromosomeViewer {
 //						bWriter.write(gene.getBit());
 //					}
 //					bWriter.close();
-//				} catch (IOException e1) {
-//					e1.printStackTrace();
+//				} catch (IOException ex) {
+//					ex.printStackTrace();
 //				}
 			}
 		});
