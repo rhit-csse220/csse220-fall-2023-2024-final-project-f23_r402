@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Chromosome implements Comparable {
 	public static final int NUM_PER_ROW = 10;
+	public static final int X_COORD_LETTER_OFFSET = 5;
 	public static final int Y_COORD_LETTER_OFFSET = 10;
 	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
@@ -17,8 +18,8 @@ public class Chromosome implements Comparable {
 	private String fileData = "";
 	public Gene[] genes;
 	private double fitnessScore;
-	private int geneWidth = 30;
-	private int border = 0;
+	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
+	private int border = ChromosomeComponent.DEFAULT_BORDER;
 	
 	//Setting seed for the Random object (Are we supposed to reproduce the same genome data for each chromsome, cuz I think that's what the specifications seem to be implying by setting the seed)
 	Random r = new Random(100010001);
@@ -72,7 +73,7 @@ public class Chromosome implements Comparable {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int bit = r.nextInt(0,2);
 				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
-				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j, this.geneWidth*i, this.geneWidth);
+				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
 
@@ -86,7 +87,7 @@ public class Chromosome implements Comparable {
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				char bit = this.fileData.charAt(i*numPerColumn+j);
-				this.genes[i*numPerColumn+j] = new Gene(bit, true, this.geneWidth*j, this.geneWidth*i, this.geneWidth);
+				this.genes[i*numPerColumn+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
 
@@ -173,7 +174,7 @@ public class Chromosome implements Comparable {
 			} else if (genes[i].getBit()=='0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
 			}
-			g2.drawString((String)(i+""), genes[i].getX(), Y_COORD_LETTER_OFFSET+genes[i].getY());
+			g2.drawString((String)(i+""), genes[i].getX() + X_COORD_LETTER_OFFSET, Y_COORD_LETTER_OFFSET+genes[i].getY());
 		}
 	}
 

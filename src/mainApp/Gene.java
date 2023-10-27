@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Gene {
-	// public static final int GENE_SIDE = 30; // side length of gene square // TODO change to autosize in future development
+	public static final int DEFAULT_GENE_SIDE = 30; // side length of gene square
 	public static final Color GENE_0_COLOR = Color.BLACK;
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	
@@ -16,8 +16,8 @@ public class Gene {
 	// x and y are top left corners of square
 	private int x;
 	private int y;
-	private int geneWidth = 30;
-	private int border = 0;
+	private int geneWidth = DEFAULT_GENE_SIDE;
+	private int border = ChromosomeComponent.DEFAULT_BORDER;
 
 	/**
 	 * ensures: The instantiation of a new Gene object according to the given parameters

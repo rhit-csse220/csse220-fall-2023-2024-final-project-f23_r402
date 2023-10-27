@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 public class ChromosomeComponent extends JComponent{
 	public static final int X_MOUSE_COORD_OFFSET = 7;
 	public static final int Y_MOUSE_COORD_OFFSET = 45;
-	public static final int DEFAULT_BORDER = 0; // TODO change later
+	public static final int DEFAULT_BORDER = 3; // TODO change later
 	
 	private Chromosome chromosome;
 	
@@ -29,23 +29,34 @@ public class ChromosomeComponent extends JComponent{
 	public int findGeneWidth() {
 		int compHeight = this.getHeight();
 		int compWidth = this.getWidth();
+		getFrameDimensions(); // debugger
 		if (compWidth <= compHeight) {
 			return (compWidth - DEFAULT_BORDER * 2) / (Chromosome.NUM_PER_ROW);
 		} else {
-			return (compHeight - findBorder() * 2) / (Chromosome.NUM_PER_ROW);
+			return (compHeight) / (Chromosome.NUM_PER_ROW);
 		}
 	} // findGeneWidth
 
-	public int findBorder(){
-		// int compHeight = this.getHeight();
-		// int compWidth = this.getWidth();
-		// if (compWidth <= compHeight) {
-		// 	return DEFAULT_BORDER;
-		// } else {
-		// 	return (compWidth - compHeight)/2;
-		// }
-		return 0;
+	// debugger
+	public void getFrameDimensions(){
+		System.out.println("width: "+this.getWidth()+", height: "+this.getHeight());
+		System.out.println("border: "+this.findBorder());
+		// System.out.println("width: "+findGeneWidth());
 	}
+
+	/**
+	 * ensures: calculates the horizontal border for the component
+	 * @return the horizontal border based on the component's dimensions
+	 */
+	public int findBorder(){
+		int compHeight = this.getHeight();
+		int compWidth = this.getWidth();
+		if (compWidth <= compHeight) {
+			return DEFAULT_BORDER;
+		} else {
+			return (compWidth - compHeight)/2;
+		}
+	} // findBorder
 
 	/**
 	 * ensures: that the chromosome of the component is changed to a new chromosome
@@ -77,7 +88,7 @@ public class ChromosomeComponent extends JComponent{
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		chromosome.drawOn(g2, findGeneWidth(), findBorder());
+		chromosome.drawOn(g2, findGeneWidth(), findBorder()); // debugger
 	}
 	
 	/**
