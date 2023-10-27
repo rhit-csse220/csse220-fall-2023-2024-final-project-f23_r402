@@ -17,8 +17,8 @@ public class Chromosome {
 	private String fileData = "";
 	public Gene[] genes;
 	private double fitnessScore;
-	private int geneWidth = 30;
-	private int border = 0;
+	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
+	private int border = ChromosomeComponent.DEFAULT_BORDER;
 	
 	Random r = new Random();
 	
@@ -58,7 +58,7 @@ public class Chromosome {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int bit = r.nextInt(0,2);
 				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
-				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j, this.geneWidth*i, this.geneWidth);
+				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
 	}
@@ -69,7 +69,7 @@ public class Chromosome {
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				char bit = this.fileData.charAt(i*numPerColumn+j);
-				this.genes[i*numPerColumn+j] = new Gene(bit, true, this.geneWidth*j, this.geneWidth*i, this.geneWidth);
+				this.genes[i*numPerColumn+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
 	}
@@ -142,7 +142,7 @@ public class Chromosome {
 			} else if (genes[i].getBit()=='0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
 			}
-			g2.drawString((String)(i+""), genes[i].getX(), Y_COORD_LETTER_OFFSET+genes[i].getY());
+			g2.drawString((String)(i+""), genes[i].getX()+this.border, Y_COORD_LETTER_OFFSET+genes[i].getY());
 		}
 	}
 }
