@@ -39,13 +39,13 @@ public class ChromosomeComponentTest {
         Chromosome chromosome = component.getChromosome();
 
         // Create a mock gene
-        Gene mockGene = new Gene('0', true, 0, 0, Gene.GENE_SIDE);
+        Gene mockGene = new Gene('0', true, 0, 0, 30);
 
         // Set the chromosome genes to the mock gene
         chromosome.genes = new Gene[] { mockGene };
 
         // Call containsGene with coordinates within the mock gene
-        Gene selectedGene = component.containsGene(mockGene.getX() + Gene.GENE_SIDE / 2, mockGene.getY() + Gene.GENE_SIDE / 2);
+        Gene selectedGene = component.containsGene(mockGene.getX() + 30 / 2, mockGene.getY() + 30 / 2);
 
         // Verify that the selected gene is the mock gene
         assertNotNull(selectedGene);

@@ -30,7 +30,7 @@ public class ChromosomeTest {
         chromosome.genes = new Gene[10];
         for (int i = 0; i < 10; i++) {
             char bit = "0011001100".charAt(i);
-            chromosome.genes[i] = new Gene(bit, true, 0, 0, Gene.GENE_SIDE); // Set x and y to 0 for simplicity
+            chromosome.genes[i] = new Gene(bit, true, 0, 0, 30); // Set x and y to 0 for simplicity
         }
 
         chromosome.storeChromosomeData("0011001100");
