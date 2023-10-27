@@ -69,7 +69,7 @@ public class ChromosomeViewer {
 			public void actionPerformed(ActionEvent e) {
 				// Get the mutation rate as a percentage from the text field
 				try {
-					int mutationRate = Integer.parseInt(mRateField.getText());
+					double mutationRate = Double.parseDouble(mRateField.getText());
 
 					if (mutationRate < 0 || mutationRate > chComponent.getChromosome().getNumOfGenes()) {
 						// Handle invalid input, show an error message, etc.
@@ -81,15 +81,8 @@ public class ChromosomeViewer {
 					}
 
 					// Perform mutation for each gene based on the mutation rate
-					for (Gene gene : chComponent.getChromosome().genes) {
-						// Generate a random number between 1 and 100
-						int randomNum = (int) (Math.random() * chComponent.getChromosome().getNumOfGenes()) + 1;
-						if (randomNum <= mutationRate) {
-							// Mutate the gene
-							gene.changeBit();
-							fileNameLabel.setText(fileName + " (mutated)");
-						}
-					}
+					chComponent.getChromosome().mutateGenes(mutationRate);
+					fileNameLabel.setText(fileName + " (mutated)");
 					// Repaint the frame to reflect the changes
 					frame.repaint();
 

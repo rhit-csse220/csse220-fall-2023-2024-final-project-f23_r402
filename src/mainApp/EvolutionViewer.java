@@ -2,6 +2,7 @@ package mainApp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.TextField;
 
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -18,6 +19,7 @@ import javax.swing.border.Border;
 public class EvolutionViewer {
     public JFrame frame;
     public EvolutionComponent evComponent;
+    public int generations;
     public void driverMain(){
         final String frameTitle = "Evolution Viewer";
 		final int frameWidth = 1000;
@@ -113,12 +115,22 @@ public class EvolutionViewer {
         
         buttonPanel.add(startEvolutionButton);
 
+        //Line plot chart
+        
         frame.pack();
+
+        // Modify the dimensions of the given text fields (Has to be after frame.pack(), i can't explain why)
+        for (JTextField textField : textFields) {
+            textField.setBounds(textField.getX(), textField.getY()+8, textField.getWidth(), 20); // TODO Substitute Magic Numbers Here!
+        }
     }
 
     public void handleDriverMain(){
         this.driverMain();
-        //this.evComponent.population.giveFitness(); To check if the chromosomes were sorted according to fitness
+         this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
+         for (int i = 0; i < 200; i++){
+        this.evComponent.population.truncationSelection(1);}
+         this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
     }
 
     public static void main(String[] args) {

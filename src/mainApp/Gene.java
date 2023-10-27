@@ -140,6 +140,14 @@ public class Gene {
 	// public int getGeneSide() {return GENE_SIDE;} //getGeneSide
 	public void setBorder(int border) {this.border = border;}
 
+	public void mutate(double mutationRate, int numOfGenes){
+		int randomNum = (int)(Math.random() * numOfGenes) + 1;
+		if (randomNum <= mutationRate) {
+			// Mutate the gene
+			this.changeBit();
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "Gene [x=" + x + ", y=" + y + ", bit=" + bit + ", changeable=" + changeable + "]";

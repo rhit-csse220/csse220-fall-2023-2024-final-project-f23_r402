@@ -41,6 +41,12 @@ public class Chromosome implements Comparable {
 		this.numPerColumn = numOfGenes/NUM_PER_ROW;
 	}
 
+	public Chromosome(String fileData){
+		this.fileData = fileData;
+		this.initiateGeneWithFile();
+		this.calcFitnessFuction();
+	}
+
 	//methods
 	/*
 	 * ensures: that the fitness score for the chromosome is calculated
@@ -96,6 +102,13 @@ public class Chromosome implements Comparable {
 				this.genes[i*numPerColumn+j].setGeneWidth(this.geneWidth);
 			}
 		}
+	}
+
+	public void mutateGenes(double mutationRate){
+		for (Gene gene : this.genes){
+			gene.mutate(mutationRate, this.numOfGenes);
+		}
+		this.calcFitnessFuction();
 	}
 
 	/**
@@ -170,12 +183,11 @@ public class Chromosome implements Comparable {
 
 		// Compare the fitness scores of this chromosome and the other chromosome
 		if (thisFitness < otherFitness) {
-			return -1;
-		} else if (thisFitness > otherFitness) {
 			return 1;
+		} else if (thisFitness > otherFitness) {
+			return -1;
 		} else {
 			return 0;
 		}
 	}
-
 }
