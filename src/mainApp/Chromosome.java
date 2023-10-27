@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-public class Chromosome {
+public class Chromosome implements Comparable {
 	public static final int NUM_PER_ROW = 10;
 	public static final int Y_COORD_LETTER_OFFSET = 10;
 	
@@ -20,7 +20,8 @@ public class Chromosome {
 	private int geneWidth = 30;
 	private int border = 0;
 	
-	Random r = new Random();
+	//Setting seed for the Random object (Are we supposed to reproduce the same genome data for each chromsome, cuz I think that's what the specifications seem to be implying by setting the seed)
+	Random r = new Random(100010001);
 	
 	/**
 	 * Creates a new Chromosome object
@@ -41,17 +42,19 @@ public class Chromosome {
 	}
 
 	//methods
-	/**
+	/*
 	 * ensures: that the fitness score for the chromosome is calculated
 	 */
 	public void calcFitnessFuction() {
 		//TODO calc + store fitness score
-		this.fitnessScore=0;
+		int fitnessScore = 0;
+		String fileData = getChromosomeDataAsString();
 		for (int i = 0; i < fileData.length(); i++){
 			if (fileData.charAt(i)=='1'){
-				this.fitnessScore+=1;
+				fitnessScore+=1;
 			}
 		}
+		this.fitnessScore=fitnessScore;
 	}
 	
 	/**
@@ -66,6 +69,9 @@ public class Chromosome {
 				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j, this.geneWidth*i, this.geneWidth);
 			}
 		}
+
+		// TO SET THE FITNESS SCORE
+		this.calcFitnessFuction();
 	}
 
 	public void initiateGeneWithFile() {
@@ -77,6 +83,9 @@ public class Chromosome {
 				this.genes[i*numPerColumn+j] = new Gene(bit, true, this.geneWidth*j, this.geneWidth*i, this.geneWidth);
 			}
 		}
+
+		// TO SET THE FITNESS SCORE
+		this.calcFitnessFuction();
 	}
 
 	public void adjustGenePosition(){
@@ -127,6 +136,10 @@ public class Chromosome {
 	 */
 	public int getNumOfGenes() {return this.numOfGenes;} //getNumOfGenes
 
+	public double getFitnessScore(){
+		return this.fitnessScore;
+	}
+
 	// public int getGeneSide() {return geneSide;}
 
 	// public void setGeneSide(int geneSide) {
@@ -150,4 +163,19 @@ public class Chromosome {
 			g2.drawString((String)(i+""), genes[i].getX(), Y_COORD_LETTER_OFFSET+genes[i].getY());
 		}
 	}
+
+	public int compareTo(Object otherChromosome) {
+		double thisFitness = this.getFitnessScore();
+		double otherFitness = ((Chromosome)otherChromosome).getFitnessScore();
+
+		// Compare the fitness scores of this chromosome and the other chromosome
+		if (thisFitness < otherFitness) {
+			return -1;
+		} else if (thisFitness > otherFitness) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
 }

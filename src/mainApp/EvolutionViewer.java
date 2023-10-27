@@ -118,6 +118,7 @@ public class EvolutionViewer {
 
     public void handleDriverMain(){
         this.driverMain();
+        //this.evComponent.population.giveFitness(); To check if the chromosomes were sorted according to fitness
     }
 
     public static void main(String[] args) {
