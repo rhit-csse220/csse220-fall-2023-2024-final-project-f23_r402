@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Gene {
-	public static final int GENE_SIDE = 30; // side length of gene square // TODO change to autosize in future development
+	// public static final int GENE_SIDE = 30; // side length of gene square // TODO change to autosize in future development
 	public static final Color GENE_0_COLOR = Color.BLACK;
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	
@@ -16,7 +16,8 @@ public class Gene {
 	// x and y are top left corners of square
 	private int x;
 	private int y;
-	// private int geneSide;
+	private int geneWidth = 30;
+	private int border = 0;
 
 	/**
 	 * ensures: The instantiation of a new Gene object according to the given parameters
@@ -26,12 +27,12 @@ public class Gene {
 	 * @param y is the current y-coordinate position of the gene
 	 * @param geneSide is the width and height of the gene when drawn in the frame
 	 */
-	public Gene(char bit, boolean changeable, int x, int y, int geneSide) {
+	public Gene(char bit, boolean changeable, int x, int y, int geneWidth) {
 		this.bit = bit;
 		this.changeable = changeable;
 		this.x = x;
 		this.y = y;
-		// this.geneSide = geneSide;
+		this.geneWidth = geneWidth;
 	} //Gene
 	
 	// methods
@@ -44,7 +45,7 @@ public class Gene {
             g2.setColor(GENE_1_COLOR);
         }
         // g2.fillRect(x, y, this.geneSide, this.geneSide);
-		g2.fillRect(x, y, GENE_SIDE, GENE_SIDE);
+		g2.fillRect(x+this.border, y, this.geneWidth, this.geneWidth);
     }
 	
 	/**
@@ -65,7 +66,7 @@ public class Gene {
 	 * @return the currently selected gene
 	 */
 	public boolean isSelected(Rectangle2D.Double box) {
-		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, GENE_SIDE, GENE_SIDE);
+		Rectangle2D.Double boundingBox = new Rectangle2D.Double(x, y, this.geneWidth, this.geneWidth);
 		if (boundingBox.contains(box)){
 			return true;
 		} else {
@@ -121,12 +122,23 @@ public class Gene {
 	 */
 	public void setY(int y) {this.y = y;} //setY
 
+
+	/**
+	 * @return side length of gene
+	 */
+	public int getGeneWidth(){return this.geneWidth;}
+
+	/**
+	 * ensures: the side length of gene is updated
+	 * @param geneSide is the new side length of gene
+	 */
+	public void setGeneWidth(int geneWidth){this.geneWidth = geneWidth;}
+
     /**
      * @return the current dimensions of the gene when drawn on the frame
      */
 	// public int getGeneSide() {return GENE_SIDE;} //getGeneSide
-
-	// public void setGeneSide(int geneSide) {this.geneSide = geneSide;}
+	public void setBorder(int border) {this.border = border;}
 
 	@Override
 	public String toString() {

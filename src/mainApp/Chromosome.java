@@ -17,7 +17,8 @@ public class Chromosome {
 	private String fileData = "";
 	public Gene[] genes;
 	private double fitnessScore;
-	// private int geneSide;
+	private int geneWidth = 30;
+	private int border = 0;
 	
 	Random r = new Random();
 	
@@ -57,7 +58,7 @@ public class Chromosome {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int bit = r.nextInt(0,2);
 				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
-				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
+				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j, this.geneWidth*i, this.geneWidth);
 			}
 		}
 	}
@@ -68,7 +69,17 @@ public class Chromosome {
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				char bit = this.fileData.charAt(i*numPerColumn+j);
-				this.genes[i*numPerColumn+j] = new Gene(bit, true, Gene.GENE_SIDE*j, Gene.GENE_SIDE*i, Gene.GENE_SIDE);
+				this.genes[i*numPerColumn+j] = new Gene(bit, true, this.geneWidth*j, this.geneWidth*i, this.geneWidth);
+			}
+		}
+	}
+
+	public void adjustGenePosition(){
+		for (int i = 0; i < numPerColumn; i++) {
+			for (int j = 0; j < NUM_PER_ROW; j++) {
+				this.genes[i*numPerColumn+j].setX(this.geneWidth*j + this.border);
+				this.genes[i*numPerColumn+j].setY(this.geneWidth*i);
+				this.genes[i*numPerColumn+j].setGeneWidth(this.geneWidth);
 			}
 		}
 	}
@@ -119,8 +130,11 @@ public class Chromosome {
 	// 	}
 	// }
 	
-	public void drawOn(Graphics g) {
+	public void drawOn(Graphics g, int geneWidth, int border) {
 		Graphics2D g2 = (Graphics2D) g;
+		this.geneWidth = geneWidth;
+		this.border = border;
+		adjustGenePosition();
 		for (int i = 0; i < genes.length; i++) {
 			genes[i].drawOn(g2);
 			if (genes[i].getBit()=='1') {

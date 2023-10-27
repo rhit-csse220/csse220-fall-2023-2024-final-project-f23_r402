@@ -1,6 +1,7 @@
 package mainApp;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,28 +20,11 @@ public class ChromosomeViewer {
 	 * ensures: creates, initializes, and sets visible the Viewer's frame and
 	 * component
 	 */
-	public static final int BORDER = 20;
-
 	public String fileName = "Chromosome X";
 	public String filePath = "";
 	public File file;
 	public JFrame frame;
 	public ChromosomeComponent chComponent;
-
-	/**
-	 * ensures: calculates the gene width based on the frame's dimensions
-	 * 
-	 * @return the gene width based on the frame's dimensons
-	 */
-	public int findGeneWidth() {
-		int compHeight = this.chComponent.getHeight();
-		int compWidth = this.frame.getWidth();
-		if (compWidth <= compHeight) {
-			return (compWidth - BORDER * 2) / (Chromosome.NUM_PER_ROW);
-		} else {
-			return (compHeight - BORDER * 2) / (Chromosome.NUM_PER_ROW);
-		}
-	} // findGeneWidth
 
 	// height of chComponent: this.chComponent.getHeight()
 	// width of frame: frame.getWidth()
@@ -68,7 +52,7 @@ public class ChromosomeViewer {
 
 		// chromosome - BorderLayout.CENTER
 		this.chComponent = new ChromosomeComponent();
-		frame.add(chComponent);
+		frame.add(chComponent, BorderLayout.CENTER);
 
 		// buttons/fields - BorderLayout.SOUTH
 		JLabel mRate = new JLabel("M Rate:");

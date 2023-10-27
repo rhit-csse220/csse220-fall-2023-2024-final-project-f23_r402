@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 public class ChromosomeComponent extends JComponent{
 	public static final int X_MOUSE_COORD_OFFSET = 7;
 	public static final int Y_MOUSE_COORD_OFFSET = 45;
+	public static final int DEFAULT_BORDER = 0; // TODO change later
 	
 	private Chromosome chromosome;
 	
@@ -20,6 +21,32 @@ public class ChromosomeComponent extends JComponent{
 		this.chromosome.initiateGene();
 	} //ChromosomeComponent
 	
+	/**
+	 * ensures: calculates the gene width based on the frame's dimensions
+	 * 
+	 * @return the gene width based on the component's dimensons
+	 */
+	public int findGeneWidth() {
+		int compHeight = this.getHeight();
+		int compWidth = this.getWidth();
+		if (compWidth <= compHeight) {
+			return (compWidth - DEFAULT_BORDER * 2) / (Chromosome.NUM_PER_ROW);
+		} else {
+			return (compHeight - findBorder() * 2) / (Chromosome.NUM_PER_ROW);
+		}
+	} // findGeneWidth
+
+	public int findBorder(){
+		// int compHeight = this.getHeight();
+		// int compWidth = this.getWidth();
+		// if (compWidth <= compHeight) {
+		// 	return DEFAULT_BORDER;
+		// } else {
+		// 	return (compWidth - compHeight)/2;
+		// }
+		return 0;
+	}
+
 	/**
 	 * ensures: that the chromosome of the component is changed to a new chromosome
 	 * @param c is the chromosome that is going to be used as the chromosome component's new chromosome
@@ -50,7 +77,7 @@ public class ChromosomeComponent extends JComponent{
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		chromosome.drawOn(g2);	
+		chromosome.drawOn(g2, findGeneWidth(), findBorder());
 	}
 	
 	/**
