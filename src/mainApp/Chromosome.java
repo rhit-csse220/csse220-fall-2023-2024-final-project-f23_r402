@@ -46,7 +46,12 @@ public class Chromosome {
 	 */
 	public void calcFitnessFuction() {
 		//TODO calc + store fitness score
-		this.fitnessScore = 0;
+		this.fitnessScore=0;
+		for (int i = 0; i < fileData.length(); i++){
+			if (fileData.charAt(i)=='1'){
+				this.fitnessScore+=1;
+			}
+		}
 	}
 	
 	/**
