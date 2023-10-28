@@ -64,6 +64,49 @@ public class Chromosome implements Comparable {
 		this.fitnessScore=fitnessScore;
 	}
 	
+	  public void fitnessSmiley() {
+	        String targetString = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
+	        int matchingBits = 0;
+
+	        // Ensure that the targetString and chromosome data have the same length
+	        if (targetString.length() != getNumOfGenes()) {
+	            throw new IllegalArgumentException("Chromosome length does not match target string length.");
+	        }
+
+	        String chromosomeData = getChromosomeDataAsString();
+
+	        // Compare each bit of the chromosome with the target string
+	        for (int i = 0; i < chromosomeData.length(); i++) {
+	            if (chromosomeData.charAt(i) == targetString.charAt(i)) {
+	                matchingBits++;
+	            }
+	        }
+
+	        // Set the fitness score based on the number of matching bits
+	        this.fitnessScore = matchingBits;
+	    }
+	  
+	  
+	  public void fitnessMax() {
+	        String chromosomeData = getChromosomeDataAsString();
+	        int maxConsecutiveOnes = 0;
+	        int currentConsecutiveOnes = 0;
+
+	        for (int i = 0; i < chromosomeData.length(); i++) {
+	            if (chromosomeData.charAt(i) == '1') {
+	                currentConsecutiveOnes++;
+	                if (currentConsecutiveOnes > maxConsecutiveOnes) {
+	                    maxConsecutiveOnes = currentConsecutiveOnes;
+	                }
+	            } else {
+	                currentConsecutiveOnes = 0; // Reset consecutive ones counter
+	            }
+	        }
+
+	        // Set the fitness score based on the maximum consecutive ones
+	        this.fitnessScore = maxConsecutiveOnes;
+	    }
+	  
 	/**
 	 * ensures: that a numOfGenes Gene objects is initialized into the chromosome
 	 */
@@ -81,6 +124,7 @@ public class Chromosome implements Comparable {
 		this.calcFitnessFuction();
 	}
 
+	
 	public void initiateGeneWithFile() {
 		genes = new Gene[numOfGenes];
 		numPerColumn = numOfGenes / NUM_PER_ROW;
