@@ -52,15 +52,16 @@ public class Chromosome implements Comparable {
 	/*
 	 * ensures: that the fitness score for the chromosome is calculated
 	 */
-	public void calcFitnessFuction() { // might need to return int/double instead depending on the use in EvolutionViewer
+	public void calcFitnessFuction() {
+		//TODO calc + store fitness score
 		int fitnessScore = 0;
 		String fileData = getChromosomeDataAsString();
 		for (int i = 0; i < fileData.length(); i++){
-			if (fileData.charAt(i) == '1'){
-				fitnessScore++;
+			if (fileData.charAt(i)=='1'){
+				fitnessScore+=1;
 			}
 		}
-		this.fitnessScore = fitnessScore;
+		this.fitnessScore=fitnessScore;
 	}
 	
 	  public void fitnessSmiley() {
@@ -70,19 +71,19 @@ public class Chromosome implements Comparable {
 	        // Ensure that the targetString and chromosome data have the same length
 	        if (targetString.length() != getNumOfGenes()) {
 	            throw new IllegalArgumentException("Chromosome length does not match target string length.");
-	        } else{
-				String chromosomeData = getChromosomeDataAsString();
+	        }
 
-				// Compare each bit of the chromosome with the target string
-				for (int i = 0; i < chromosomeData.length(); i++) {
-					if (chromosomeData.charAt(i) == targetString.charAt(i)) {
-						matchingBits++;
-					}
-				}
+	        String chromosomeData = getChromosomeDataAsString();
 
-				// Set the fitness score based on the number of matching bits
-				this.fitnessScore = matchingBits;
-			}
+	        // Compare each bit of the chromosome with the target string
+	        for (int i = 0; i < chromosomeData.length(); i++) {
+	            if (chromosomeData.charAt(i) == targetString.charAt(i)) {
+	                matchingBits++;
+	            }
+	        }
+
+	        // Set the fitness score based on the number of matching bits
+	        this.fitnessScore = matchingBits;
 	    }
 	  
 	  
@@ -115,7 +116,7 @@ public class Chromosome implements Comparable {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int bit = r.nextInt(0,2);
 				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
-				this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
+				this.genes[i*NUM_PER_ROW+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
 
@@ -130,7 +131,7 @@ public class Chromosome implements Comparable {
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				char bit = this.fileData.charAt(i*numPerColumn+j);
-				this.genes[i*numPerColumn+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
+				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
 
@@ -193,26 +194,49 @@ public class Chromosome implements Comparable {
 	 */
 	public int getNumOfGenes() {return this.numOfGenes;} //getNumOfGenes
 
-	/**
-	 * ensures: that the fitness score of the chromosome is returned
-	 * @return the fitness score of the chromosome
-	 */
-	public double getFitnessScore(){return this.fitnessScore;}
+	public double getFitnessScore(){
+		return this.fitnessScore;
+	}
+
+	// public int getGeneSide() {return geneSide;}
+
+	// public void setGeneSide(int geneSide) {
+	// 	for (int i = 0; i < this.genes.length; i++){
+	// 		this.genes[i].setGeneSide(geneSide)
+	// 	}
+	// }
 	
 	public void drawOn(Graphics g, int geneWidth, int border) {
-		Graphics2D g2 = (Graphics2D) g;
-		this.geneWidth = geneWidth;
-		this.border = border;
-		adjustGenePosition();
-		for (int i = 0; i < genes.length; i++) {
-			genes[i].drawOn(g2);
-			if (genes[i].getBit()=='1') {
-				g2.setColor(GENE_1_TEXT_COLOR);
-			} else if (genes[i].getBit()=='0') {
-				g2.setColor(GENE_0_TEXT_COLOR);
-			}
-			g2.drawString((String)(i+""), genes[i].getX() + X_COORD_LETTER_OFFSET, Y_COORD_LETTER_OFFSET + genes[i].getY());
-		}
+	    Graphics2D g2 = (Graphics2D) g;
+	    this.geneWidth = geneWidth;
+	    this.border = border;
+ 
+	    // Calculate the X and Y coordinates for each gene and draw them
+	    for (int i = 0; i < genes.length; i++) {
+	        // Calculate the row and column of the gene in the grid
+	        int row = i / NUM_PER_ROW;
+	        int col = i % NUM_PER_ROW;
+ 
+	        // Calculate the X and Y coordinates based on the gene's position in the grid
+	        int geneX = col * geneWidth + border;
+	        int geneY = row * geneWidth;
+ 
+	        // Set the position and width for the gene
+	        genes[i].setX(geneX);
+	        genes[i].setY(geneY);
+	        genes[i].setGeneWidth(geneWidth);
+ 
+	        // Draw the gene
+	        genes[i].drawOn(g2);
+ 
+	        if (genes[i].getBit() == '1') {
+	            g2.setColor(GENE_1_TEXT_COLOR);
+	        } else if (genes[i].getBit() == '0') {
+	            g2.setColor(GENE_0_TEXT_COLOR);
+	        }
+ 
+	        g2.drawString((String)(i + ""), geneX + X_COORD_LETTER_OFFSET, Y_COORD_LETTER_OFFSET + geneY);
+	    }
 	}
 
 	public int compareTo(Object otherChromosome) {
