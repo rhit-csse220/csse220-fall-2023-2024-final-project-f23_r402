@@ -233,17 +233,17 @@ public class EvolutionComponent extends JComponent {
 
     public void drawLegend(Graphics2D g2){
       g2.setColor(Color.green);
-      g2.fillRect(calculateX(95.0), calculateY(55.0), 20, 20);
+      g2.fillRect(calculateX(0.95*generations), calculateY(55.0), 20, 20);
 
       g2.setColor(Color.orange);
-      g2.fillRect(calculateX(95.0), calculateY(40.0), 20, 20);
+      g2.fillRect(calculateX(0.95*generations), calculateY(40.0), 20, 20);
       
       g2.setColor(Color.red);
-      g2.fillRect(calculateX(95.0), calculateY(25.0), 20, 20);
+      g2.fillRect(calculateX(0.95*generations), calculateY(25.0), 20, 20);
       
       g2.setColor(Color.black);
-      g2.drawString("Best fitness", calculateX(98), calculateY(49));
-      g2.drawString("Ave fitness", calculateX(98), calculateY(34));
-      g2.drawString("Low fitness", calculateX(98), calculateY(19));
+      g2.drawString("Best fitness", calculateX(0.98*generations), calculateY(49));
+      g2.drawString("Ave fitness", calculateX(0.98*generations), calculateY(34));
+      g2.drawString("Low fitness", calculateX(0.98*generations), calculateY(19));
     }
 }
