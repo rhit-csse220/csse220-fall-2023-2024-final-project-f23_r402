@@ -36,10 +36,10 @@ public class EvolutionViewer {
 		frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
-
-        this.evComponent=new EvolutionComponent();
-        frame.add(evComponent, BorderLayout.CENTER);
         
+        evComponent = new EvolutionComponent();
+        frame.add(evComponent, BorderLayout.CENTER);
+
         //Text fields array
         JTextField[] textFields = new JTextField[5];
 
@@ -83,7 +83,7 @@ public class EvolutionViewer {
 
         //Population
         JLabel population = new JLabel("Population ");
-        JTextField populationField = new JTextField("1");
+        JTextField populationField = new JTextField("100");
         textFields[1] = populationField;
 
         buttonPanel.add(population);
@@ -91,7 +91,7 @@ public class EvolutionViewer {
 
         //Generations
         JLabel generations = new JLabel("Generations ");
-        JTextField generationsField = new JTextField("1");
+        JTextField generationsField = new JTextField("100");
         textFields[2] = generationsField;
 
         buttonPanel.add(generations);
@@ -99,7 +99,7 @@ public class EvolutionViewer {
 
         //Genome length
         JLabel genomeLength = new JLabel("Genome Length ");
-        JTextField genomeLengthField = new JTextField("1");
+        JTextField genomeLengthField = new JTextField("100");
         textFields[3] = genomeLengthField;
 
         buttonPanel.add(genomeLength);
@@ -116,26 +116,29 @@ public class EvolutionViewer {
         //Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
         startEvolutionButton.addActionListener(new ActionListener() {
-            Timer timer = new Timer(1000/33, new ActionListener() {
+            Timer timer = new Timer(1000/330, new ActionListener() {
                 int generationCount = -1;
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (generationCount==-1){
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                         generationCount++;
+                        frame.repaint();
                     }
                     if (generationCount<=Integer.parseInt(generationsField.getText())){
                         evComponent.handleSelection();
                         generationCount++;
+                        evComponent.generationCount=generationCount;
+                        frame.repaint();
                     }
                     else {
                         startEvolutionButton.setText("Start Evolution");
+                        System.out.println(evComponent.population.chromosomes.get(0).getChromosomeDataAsString());
                         timer.restart();
 
                         //TODO populationField might not be needed to be initialized here i think lawl
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-                        
-                        evComponent.population = new Population(Integer.parseInt(populationField.getText()));
+                        frame.repaint();
                         generationCount=-1;
                         timer.stop();
                     }
@@ -144,6 +147,7 @@ public class EvolutionViewer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (startEvolutionButton.getText().equals("Start Evolution")){
+                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                     startEvolutionButton.setText("Pause");
                     timer.start();
                 }
@@ -161,6 +165,7 @@ public class EvolutionViewer {
         buttonPanel.add(startEvolutionButton);
 
         //Line plot chart
+        frame.add(new JLabel("population"), BorderLayout.NORTH);
         
         frame.pack();
 
@@ -173,8 +178,12 @@ public class EvolutionViewer {
     public void handleDriverMain(){
         this.driverMain();
         //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
-        //  for (int i = 0; i < 200; i++){
-        // this.evComponent.population.truncationSelection(1);}
+        // this.evComponent.population = new Population(200, 150); 
+        // for (int i = 0; i < 200; i++){
+        //     this.evComponent.population.truncationSelection(1);
+        //     this.evComponent.population.giveFitness();
+        // }
+        // System.out.println(this.evComponent.population.chromosomes.get(0).getChromosomeDataAsString());
         //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
     }   
 
