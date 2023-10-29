@@ -1,22 +1,29 @@
 package mainApp;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
 public class EvolutionComponent extends JComponent {
     public Population population;
     private int populationSize;
-    private int generations;
+    private int generations = 100;
     private int elitism;
     private int genomeLength;
     private double mutationRate;
     private String selection;
     private Boolean crossover;
+    private int x,y,xLimit,yLimit,xWidth,yHeight;
+    public int generationCount;
+    public ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
 
     public EvolutionComponent() {
-		this.population = new Population();
+		  this.population = new Population();
     }
 
     public int getPopulationSize() {
@@ -83,6 +90,8 @@ public class EvolutionComponent extends JComponent {
       this.setGenerations(Integer.parseInt(generations));
       this.setGenomeLength(Integer.parseInt(genomeLength));
       this.setElitism(Integer.parseInt(elitism));
+      this.lineArray.removeAll(lineArray);
+      this.population = new Population(this.populationSize, this.genomeLength);
     }
 
     public void handleSelection(){
@@ -100,10 +109,141 @@ public class EvolutionComponent extends JComponent {
 
     @Override
     protected void paintComponent(Graphics g) {
-      Graphics2D g2 = (Graphics2D) g;
+    Graphics2D g2 = (Graphics2D) g;
+    // TODO remove magic numbers
+      x = (int)(0.04*this.getWidth());
+      y = (int)(0.08*this.getHeight());
+      xLimit = (int)(this.getWidth()*0.92);
+      yLimit = (int)(this.getHeight()*0.82);  
       this.drawOn(g2);
+      this.drawLines(g2);
+      this.drawLegend(g2);
+      g2.drawString("Fitness over Generations", -x+(this.getWidth()/2), 10);
     }
 
     public void drawOn(Graphics2D g2){
+      drawAxes(g2);
+      drawLegend(g2);
+    }
+
+    public void drawAxes(Graphics2D g2){
+      g2.drawRect(x, y, xLimit, yLimit);
+      drawXDivisions(g2);
+      drawYDivisions(g2);
+    }
+
+    public void drawXDivisions(Graphics2D g2){
+      // TODO FIGURE OUT WHY IT DOESNT UPDATE WHEN NUM OF GENERATIONS CHANGES
+      xWidth = xLimit - x;
+      yHeight = yLimit + y;
+      g2.translate(x, yHeight);
+      int num = 0;
+      for (int i = 0; i <= xWidth; i+= xWidth/10){
+        String sNum = Integer.toString(num);
+        g2.drawLine(i, -5, i, 5);
+        g2.drawString(sNum, i, 20);
+        num+=generations/10;
+        if ((i+(xWidth/10))>=xWidth){
+          xWidth = i;
+        }
+      }
+      g2.translate(-x, -yHeight);
+    }
+
+    public void drawYDivisions(Graphics2D g2){
+      yHeight = yLimit - y;
+      g2.translate(x, y);
+      int num = 100;
+      for (int i = 0; i <= yHeight; i+= yHeight/10){
+        String sNum = Integer.toString(num);
+        g2.drawLine(5, i, -5, i);
+        g2.drawString(sNum, -25, i+5);
+        num-=10;
+        if ((i+yHeight/10)>=yHeight){
+          yHeight = i;
+        }
+        //System.out.println(i+","+yHeight);
+      }
+      g2.translate(-x, -y);
+    }
+
+    public void storeLines(Graphics2D g2){
+      drawLines(g2);
+      // if (generationCount>=generations){
+      //   g2.setColor(g2.getBackground());
+      //   g2.drawPolyline(xPoints, yPoints, xPoints.length);
+      // }
+    }
+    // public void drawBestLine(Graphics2D g2){
+    //   g2.translate(x, y);
+    //   if (generationCount!=-1 && this.population.prevC!=null){
+    //     int pX = generationCount*((xWidth)/generations);
+    //     int nX = (generationCount+1)*((xWidth)/generations);
+    //     int pY = yHeight-(int)(this.population.prevC.getFitnessScore()*((yHeight)/100));
+    //     int nY = yHeight-(int)(this.population.nextC.getFitnessScore()*((yHeight)/100));
+    //     xPoints[generationCount]=pX;
+    //     xPoints[generationCount+1]=nX;
+    //     yPoints[generationCount]=pY;
+    //     yPoints[generationCount+1]=nY;
+    //     g2.drawPolyline(xPoints, yPoints, this.generations);
+    //   }
+    //   g2.translate(-x,-y);
+    // }
+
+    public int calculateY(double y){
+      return (int)(yHeight-((double)y*((double)yHeight/100.0)));
+    }
+
+    public int calculateX(double x){
+      return (int)(x*((double)xWidth/generations));
+    }
+
+    public void drawLines(Graphics2D g2){
+      g2.translate(x, y);
+      System.out.println(this.population.lineArray.size());
+        for (int i = 1; i < generations; i++){
+          if (i<this.population.lineArray.size()){
+          //Line of best fit
+          int pX = calculateX(i-1);
+          int nX = calculateX(i);
+          int pY = calculateY(this.population.lineArray.get(i-1).getBestFitness());
+          int nY = calculateY(this.population.lineArray.get(i).getBestFitness());
+          g2.setColor(Color.green);
+          g2.setStroke(new BasicStroke(5));
+          g2.drawLine(pX, pY, nX, nY);
+
+          //Line of avg
+          pY = calculateY(this.population.lineArray.get(i-1).getAvgFitness());
+          nY = calculateY(this.population.lineArray.get(i).getAvgFitness());
+          g2.setColor(Color.orange);
+          g2.drawLine(pX, pY, nX, nY);
+
+
+          //Line of lowest
+          //TODO FIGURE OUT LOGIC FOR WHY THIS IS SO JAGGED; Assumably, u can use the array in such a way that the newest chromosome is preserved, and then the previous index where the last chromosome was preserved can be used to find the initial x,y, with the current chromsome being the final x,y. this may require restructuring of linearray rn.
+          pY = calculateY(this.population.lineArray.get(i-1).getLowFitness());
+          nY = calculateY(this.population.lineArray.get(i).getLowFitness());
+          g2.setColor(Color.red);
+          g2.drawLine(pX, pY, nX, nY);
+          
+        }
+      }
+      g2.translate(-x,-y);
+    }
+
+    public void drawLegend(Graphics2D g2){
+      g2.setColor(Color.green);
+      g2.fillRect(calculateX(95.0), calculateY(55.0), 20, 20);
+
+      g2.setColor(Color.orange);
+      g2.fillRect(calculateX(95.0), calculateY(40.0), 20, 20);
+      
+      g2.setColor(Color.red);
+      g2.fillRect(calculateX(95.0), calculateY(25.0), 20, 20);
+      
+      g2.setColor(Color.black);
+      g2.drawString("Best fitness", calculateX(98), calculateY(49));
+      g2.drawString("Ave fitness", calculateX(98), calculateY(34));
+      g2.drawString("Low fitness", calculateX(98), calculateY(19));
     }
 }
