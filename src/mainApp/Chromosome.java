@@ -52,16 +52,15 @@ public class Chromosome implements Comparable {
 	/*
 	 * ensures: that the fitness score for the chromosome is calculated
 	 */
-	public void calcFitnessFuction() {
-		//TODO calc + store fitness score
+	public void calcFitnessFuction() { // might need to return int/double instead depending on the use in EvolutionViewer
 		int fitnessScore = 0;
 		String fileData = getChromosomeDataAsString();
 		for (int i = 0; i < fileData.length(); i++){
-			if (fileData.charAt(i)=='1'){
-				fitnessScore+=1;
+			if (fileData.charAt(i) == '1'){
+				fitnessScore++;
 			}
 		}
-		this.fitnessScore=fitnessScore;
+		this.fitnessScore = fitnessScore;
 	}
 	
 	  public void fitnessSmiley() {
@@ -71,19 +70,19 @@ public class Chromosome implements Comparable {
 	        // Ensure that the targetString and chromosome data have the same length
 	        if (targetString.length() != getNumOfGenes()) {
 	            throw new IllegalArgumentException("Chromosome length does not match target string length.");
-	        }
+	        } else{
+				String chromosomeData = getChromosomeDataAsString();
 
-	        String chromosomeData = getChromosomeDataAsString();
+				// Compare each bit of the chromosome with the target string
+				for (int i = 0; i < chromosomeData.length(); i++) {
+					if (chromosomeData.charAt(i) == targetString.charAt(i)) {
+						matchingBits++;
+					}
+				}
 
-	        // Compare each bit of the chromosome with the target string
-	        for (int i = 0; i < chromosomeData.length(); i++) {
-	            if (chromosomeData.charAt(i) == targetString.charAt(i)) {
-	                matchingBits++;
-	            }
-	        }
-
-	        // Set the fitness score based on the number of matching bits
-	        this.fitnessScore = matchingBits;
+				// Set the fitness score based on the number of matching bits
+				this.fitnessScore = matchingBits;
+			}
 	    }
 	  
 	  
@@ -194,17 +193,11 @@ public class Chromosome implements Comparable {
 	 */
 	public int getNumOfGenes() {return this.numOfGenes;} //getNumOfGenes
 
-	public double getFitnessScore(){
-		return this.fitnessScore;
-	}
-
-	// public int getGeneSide() {return geneSide;}
-
-	// public void setGeneSide(int geneSide) {
-	// 	for (int i = 0; i < this.genes.length; i++){
-	// 		this.genes[i].setGeneSide(geneSide)
-	// 	}
-	// }
+	/**
+	 * ensures: that the fitness score of the chromosome is returned
+	 * @return the fitness score of the chromosome
+	 */
+	public double getFitnessScore(){return this.fitnessScore;}
 	
 	public void drawOn(Graphics g, int geneWidth, int border) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -218,7 +211,7 @@ public class Chromosome implements Comparable {
 			} else if (genes[i].getBit()=='0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
 			}
-			g2.drawString((String)(i+""), genes[i].getX() + X_COORD_LETTER_OFFSET, Y_COORD_LETTER_OFFSET+genes[i].getY());
+			g2.drawString((String)(i+""), genes[i].getX() + X_COORD_LETTER_OFFSET, Y_COORD_LETTER_OFFSET + genes[i].getY());
 		}
 	}
 

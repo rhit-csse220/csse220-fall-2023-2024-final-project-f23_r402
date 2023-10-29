@@ -74,7 +74,7 @@ public class ChromosomeViewer {
 					if (mutationRate < 0 || mutationRate > chComponent.getChromosome().getNumOfGenes()) {
 						// Handle invalid input, show an error message, etc.
 						JOptionPane.showMessageDialog(frame,
-								"Invalid mutation rate. Please enter an integer between 0 and "
+								"Invalid mutation rate. Please enter an number between 0 and "
 										+ chComponent.getChromosome().getNumOfGenes(),
 								"Invalid Input", JOptionPane.ERROR_MESSAGE);
 						return;
