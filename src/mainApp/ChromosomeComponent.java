@@ -29,20 +29,12 @@ public class ChromosomeComponent extends JComponent{
 	public int findGeneWidth() {
 		int compHeight = this.getHeight();
 		int compWidth = this.getWidth();
-		getFrameDimensions(); // debugger
 		if (compWidth <= compHeight) {
 			return (compWidth - DEFAULT_BORDER * 2) / (Chromosome.NUM_PER_ROW);
 		} else {
 			return (compHeight) / (Chromosome.NUM_PER_ROW);
 		}
 	} // findGeneWidth
-
-	// debugger
-	public void getFrameDimensions(){
-		System.out.println("width: "+this.getWidth()+", height: "+this.getHeight());
-		System.out.println("border: "+this.findBorder());
-		// System.out.println("width: "+findGeneWidth());
-	}
 
 	/**
 	 * ensures: calculates the horizontal border for the component
