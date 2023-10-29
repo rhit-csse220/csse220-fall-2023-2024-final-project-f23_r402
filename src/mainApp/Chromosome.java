@@ -21,8 +21,8 @@ public class Chromosome implements Comparable {
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
 	
-	//Setting seed for the Random object
-	Random r = new Random(100010001);
+	//Setting seed for the Random object (Are we supposed to reproduce the same genome data for each chromsome, cuz I think that's what the specifications seem to be implying by setting the seed)
+	Random r = new Random(1000);
 	
 	/**
 	 * Creates a new Chromosome object
@@ -40,8 +40,10 @@ public class Chromosome implements Comparable {
 
 	public Chromosome(String fileData){
 		this.fileData = fileData;
+		this.numOfGenes = this.fileData.length();
 		this.initiateGeneWithFile();
 		this.calcFitnessFuction();
+		//this.fitnessSmiley();
 	}
 
 	//methods
@@ -49,14 +51,15 @@ public class Chromosome implements Comparable {
 	 * ensures: that the fitness score for the chromosome is calculated
 	 */
 	public void calcFitnessFuction() {
+		//TODO calc + store fitness score
 		int fitnessScore = 0;
 		String fileData = getChromosomeDataAsString();
 		for (int i = 0; i < fileData.length(); i++){
-			if (fileData.charAt(i) == '1'){
-				fitnessScore++;
+			if (fileData.charAt(i)=='1'){
+				fitnessScore+=1;
 			}
 		}
-		this.fitnessScore = fitnessScore;
+		this.fitnessScore=(int)((double)((double)fitnessScore/(double)numOfGenes)*100);
 	}
 	
 	  public void fitnessSmiley() {
@@ -106,7 +109,7 @@ public class Chromosome implements Comparable {
 	 * ensures: that a numOfGenes Gene objects is initialized into the chromosome
 	 */
 	public void initiateGene() {
-		genes = new Gene[numOfGenes];
+		genes = new Gene[this.numOfGenes];
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int bit = r.nextInt(0,2);
@@ -117,11 +120,10 @@ public class Chromosome implements Comparable {
 
 		// TO SET THE FITNESS SCORE
 		this.calcFitnessFuction();
+		//this.fitnessSmiley();
 	}
 
-	/**
-	 * ensures: that a numOfGenes Gene objects is initialized into the chromosome
-	 */
+	
 	public void initiateGeneWithFile() {
 		genes = new Gene[numOfGenes];
 		numPerColumn = numOfGenes / NUM_PER_ROW;
@@ -134,11 +136,9 @@ public class Chromosome implements Comparable {
 
 		// TO SET THE FITNESS SCORE
 		this.calcFitnessFuction();
+		//this.fitnessSmiley();
 	}
 
-	/**
-	 * ensures: adjusts positioning of genes with a new border and new gene width
-	 */
 	public void adjustGenePosition(){
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
@@ -149,15 +149,12 @@ public class Chromosome implements Comparable {
 		}
 	}
 
-	/**
-	 * ensures: mutates the genes in the chromosome
-	 * @param mutationRate
-	 */
 	public void mutateGenes(double mutationRate){
 		for (Gene gene : this.genes){
 			gene.mutate(mutationRate, this.numOfGenes);
 		}
 		this.calcFitnessFuction();
+		//this.fitnessSmiley();
 	}
 
 	/**
@@ -198,18 +195,18 @@ public class Chromosome implements Comparable {
 	 */
 	public int getNumOfGenes() {return this.numOfGenes;} //getNumOfGenes
 
-	/**
-	 * ensures: that the fitness score of the chromosome is returned
-	 * @return fitness score of the chromosome
-	 */
-	public double getFitnessScore(){return this.fitnessScore;} //getFitnessScore
+	public double getFitnessScore(){
+		return this.fitnessScore;
+	}
+
+	// public int getGeneSide() {return geneSide;}
+
+	// public void setGeneSide(int geneSide) {
+	// 	for (int i = 0; i < this.genes.length; i++){
+	// 		this.genes[i].setGeneSide(geneSide)
+	// 	}
+	// }
 	
-	/**
-	 * ensures: genes in the chromosome are drawn onto the frame
-	 * @param g
-	 * @param geneWidth
-	 * @param border
-	 */
 	public void drawOn(Graphics g, int geneWidth, int border) {
 	    Graphics2D g2 = (Graphics2D) g;
 	    this.geneWidth = geneWidth;
@@ -227,11 +224,6 @@ public class Chromosome implements Comparable {
 		}
 	}
 
-	/**
-	 * ensures: compares
-	 * @param otherChromosome
-	 * @return
-	 */
 	public int compareTo(Object otherChromosome) {
 		double thisFitness = this.getFitnessScore();
 		double otherFitness = ((Chromosome)otherChromosome).getFitnessScore();
