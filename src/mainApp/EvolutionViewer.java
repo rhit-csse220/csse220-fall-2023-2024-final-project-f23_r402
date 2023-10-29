@@ -3,6 +3,8 @@ package mainApp;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -14,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
 public class EvolutionViewer {
@@ -80,7 +83,7 @@ public class EvolutionViewer {
 
         //Population
         JLabel population = new JLabel("Population ");
-        JTextField populationField = new JTextField();
+        JTextField populationField = new JTextField("1");
         textFields[1] = populationField;
 
         buttonPanel.add(population);
@@ -88,7 +91,7 @@ public class EvolutionViewer {
 
         //Generations
         JLabel generations = new JLabel("Generations ");
-        JTextField generationsField = new JTextField();
+        JTextField generationsField = new JTextField("1");
         textFields[2] = generationsField;
 
         buttonPanel.add(generations);
@@ -96,7 +99,7 @@ public class EvolutionViewer {
 
         //Genome length
         JLabel genomeLength = new JLabel("Genome Length ");
-        JTextField genomeLengthField = new JTextField();
+        JTextField genomeLengthField = new JTextField("1");
         textFields[3] = genomeLengthField;
 
         buttonPanel.add(genomeLength);
@@ -104,7 +107,7 @@ public class EvolutionViewer {
 
         //Elitism
         JLabel elitism = new JLabel("Elitism % ");
-        JTextField elitismField = new JTextField();
+        JTextField elitismField = new JTextField("1");
         textFields[4] = elitismField;
 
         buttonPanel.add(elitism);
@@ -112,6 +115,39 @@ public class EvolutionViewer {
 
         //Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
+        startEvolutionButton.addActionListener(new ActionListener() {
+            Timer timer = new Timer(1000/33, new ActionListener() {
+            int generationCount = 0;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (generationCount<=Integer.parseInt(generationsField.getText())){
+                    double mRate = Double.parseDouble(mRateField.getText());
+                    evComponent.handleTruncationSelection(mRate);
+                    generationCount++;
+                }
+                else{
+                    startEvolutionButton.setText("Start Evolution");
+                    timer.stop();
+                }
+            }
+            });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (startEvolutionButton.getText().equals("Start Evolution")){
+                    startEvolutionButton.setText("Pause");
+                    timer.start();
+                }
+                else if (startEvolutionButton.getText().equals("Pause")){
+                    startEvolutionButton.setText("Continue");
+                    timer.stop();
+                }
+                else if (startEvolutionButton.getText().equals("Continue")){
+                    startEvolutionButton.setText("Pause");
+                    timer.start();
+                }
+            }
+            
+        });
         
         buttonPanel.add(startEvolutionButton);
 
@@ -127,10 +163,10 @@ public class EvolutionViewer {
 
     public void handleDriverMain(){
         this.driverMain();
-         this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
-         for (int i = 0; i < 200; i++){
-        this.evComponent.population.truncationSelection(1);}
-         this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
+        //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
+        //  for (int i = 0; i < 200; i++){
+        // this.evComponent.population.truncationSelection(1);}
+        //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
     }
 
     public static void main(String[] args) {
