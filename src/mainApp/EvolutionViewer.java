@@ -63,7 +63,7 @@ public class EvolutionViewer {
 		dropdownPanel.add(dropdownLabel);
 
         //Modify this if you wish to add different numbers of things into the simulation
-		String[] selectionMethods = {"Truncation", "Parent"};
+		String[] selectionMethods = {"Truncation", "Roulette", "Rank"};
 		// create a combo box with the fixed array so you can pick how many things to add
 		JComboBox<String> addSelectionChooser = new JComboBox<String>(selectionMethods);
 		//set its maximum size to be its preferred size so it doesn't get too big
@@ -117,18 +117,28 @@ public class EvolutionViewer {
         JButton startEvolutionButton = new JButton("Start Evolution");
         startEvolutionButton.addActionListener(new ActionListener() {
             Timer timer = new Timer(1000/33, new ActionListener() {
-            int generationCount = 0;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (generationCount<=Integer.parseInt(generationsField.getText())){
-                    double mRate = Double.parseDouble(mRateField.getText());
-                    evComponent.handleTruncationSelection(mRate);
-                    generationCount++;
-                }
-                else{
-                    startEvolutionButton.setText("Start Evolution");
-                    timer.stop();
-                }
+                int generationCount = -1;
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (generationCount==-1){
+                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                        generationCount++;
+                    }
+                    if (generationCount<=Integer.parseInt(generationsField.getText())){
+                        evComponent.handleSelection();
+                        generationCount++;
+                    }
+                    else {
+                        startEvolutionButton.setText("Start Evolution");
+                        timer.restart();
+
+                        //TODO populationField might not be needed to be initialized here i think lawl
+                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                        
+                        evComponent.population = new Population(Integer.parseInt(populationField.getText()));
+                        generationCount=-1;
+                        timer.stop();
+                    }
             }
             });
             @Override
@@ -146,7 +156,6 @@ public class EvolutionViewer {
                     timer.start();
                 }
             }
-            
         });
         
         buttonPanel.add(startEvolutionButton);
@@ -167,7 +176,7 @@ public class EvolutionViewer {
         //  for (int i = 0; i < 200; i++){
         // this.evComponent.population.truncationSelection(1);}
         //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
-    }
+    }   
 
     public static void main(String[] args) {
         EvolutionViewer evViewer = new EvolutionViewer();

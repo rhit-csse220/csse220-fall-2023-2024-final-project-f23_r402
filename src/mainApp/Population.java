@@ -14,7 +14,6 @@ public class Population {
     public Population(int sizeOfPopulation){
         this.sizeOfPopulation = sizeOfPopulation;
         this.initiatePopulation();
-        this.sortPopulation();
     }
 
     public void initiatePopulation(){
