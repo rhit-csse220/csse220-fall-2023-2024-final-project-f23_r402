@@ -142,9 +142,9 @@ public class Chromosome implements Comparable {
 	public void adjustGenePosition(){
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
-				this.genes[i*numPerColumn+j].setX(this.geneWidth*j + this.border);
-				this.genes[i*numPerColumn+j].setY(this.geneWidth*i);
-				this.genes[i*numPerColumn+j].setGeneWidth(this.geneWidth);
+				this.genes[i*NUM_PER_ROW+j].setX(this.geneWidth*j + this.border);
+				this.genes[i*NUM_PER_ROW+j].setY(this.geneWidth*i);
+				this.genes[i*NUM_PER_ROW+j].setGeneWidth(this.geneWidth);
 			}
 		}
 	}
@@ -210,33 +210,17 @@ public class Chromosome implements Comparable {
 	    Graphics2D g2 = (Graphics2D) g;
 	    this.geneWidth = geneWidth;
 	    this.border = border;
+		adjustGenePosition();
  
-	    // Calculate the X and Y coordinates for each gene and draw them
 	    for (int i = 0; i < genes.length; i++) {
-	        // Calculate the row and column of the gene in the grid
-	        int row = i / NUM_PER_ROW;
-	        int col = i % NUM_PER_ROW;
- 
-	        // Calculate the X and Y coordinates based on the gene's position in the grid
-	        int geneX = col * geneWidth + border;
-	        int geneY = row * geneWidth;
- 
-	        // Set the position and width for the gene
-	        genes[i].setX(geneX);
-	        genes[i].setY(geneY);
-	        genes[i].setGeneWidth(geneWidth);
- 
-	        // Draw the gene
-	        genes[i].drawOn(g2);
- 
-	        if (genes[i].getBit() == '1') {
-	            g2.setColor(GENE_1_TEXT_COLOR);
-	        } else if (genes[i].getBit() == '0') {
-	            g2.setColor(GENE_0_TEXT_COLOR);
-	        }
- 
-	        g2.drawString((String)(i + ""), geneX + X_COORD_LETTER_OFFSET, Y_COORD_LETTER_OFFSET + geneY);
-	    }
+			genes[i].drawOn(g2);
+			if (genes[i].getBit()=='1') {
+				g2.setColor(GENE_1_TEXT_COLOR);
+			} else if (genes[i].getBit()=='0') {
+				g2.setColor(GENE_0_TEXT_COLOR);
+			}
+			g2.drawString((String)(i+""), genes[i].getX() + X_COORD_LETTER_OFFSET, Y_COORD_LETTER_OFFSET+genes[i].getY());
+		}
 	}
 
 	public int compareTo(Object otherChromosome) {
