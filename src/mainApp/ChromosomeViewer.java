@@ -71,17 +71,19 @@ public class ChromosomeViewer {
 				try {
 					double mutationRate = Double.parseDouble(mRateField.getText());
 
-					if (mutationRate < 0 || mutationRate > chComponent.getChromosome().getNumOfGenes()) {
+					if (mutationRate < 0 || mutationRate > chComponent.handleGetNumberOfGenesInChromosome()) {
 						// Handle invalid input, show an error message, etc.
 						JOptionPane.showMessageDialog(frame,
 								"Invalid mutation rate. Please enter an number between 0 and "
-										+ chComponent.getChromosome().getNumOfGenes(),
+										+ chComponent.handleGetNumberOfGenesInChromosome(),
 								"Invalid Input", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 
 					// Perform mutation for each gene based on the mutation rate
-					chComponent.getChromosome().mutateGenes(mutationRate);
+					chComponent.handleMutateGenesInChromosome(mutationRate);
+					// chComponent.getChromosome().mutateGenes(mutationRate);
+					
 					fileNameLabel.setText(fileName + " (mutated)");
 					// Repaint the frame to reflect the changes
 					frame.repaint();
@@ -89,7 +91,7 @@ public class ChromosomeViewer {
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(frame,
 							"Invalid mutation rate. Please enter an integer between 0 and "
-									+ chComponent.getChromosome().getNumOfGenes(),
+									+ chComponent.handleGetNumberOfGenesInChromosome(),
 							"Invalid Input", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -133,9 +135,12 @@ public class ChromosomeViewer {
 							throw new InvalidChromosomeCharacterException();
 						} else {
 		                    // Proceed with loading and initializing the data
-		                    chComponent.setChromosome(new Chromosome());
-		                    chComponent.handleStoreChromosomeData(fileData.toString());
-		                    chComponent.handleInitiateGeneWithFile();
+
+							chComponent.handleLoadDataFromFile(fileData.toString());  // TODO: change fileData type to String to avoid using toString everywhere 
+
+		                    // chComponent.setChromosome(new Chromosome());
+		                    // chComponent.handleStoreChromosomeData(fileData.toString());
+		                    // chComponent.handleInitiateGeneWithFile();
 		                    frame.repaint();
 		                }
 		            } catch (IOException | InvalidChromosomeFormatException | InvalidChromosomeCharacterException ex) {
@@ -157,7 +162,8 @@ public class ChromosomeViewer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
+				// Deleted because not everybody has the directory
+				// fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
 				int response = fileChooser.showSaveDialog(null);
 
 				if (response == JFileChooser.APPROVE_OPTION) {
@@ -167,10 +173,10 @@ public class ChromosomeViewer {
 					}
 
 					// Get the chromosome data in the required format (1 for black, 0 for green)
-					String chromosomeData = chComponent.getChromosome().getChromosomeDataAsString();
+					String chromosomeData = chComponent.handleGetChromosomeDataAsString(); // .getChromosome().getChromosomeDataAsString();
 
 					try (FileWriter writer = new FileWriter(file)) {
-						writer.write(chromosomeData);
+						writer.write(chromosomeData);  // TODO: do we ever close the writer?
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}

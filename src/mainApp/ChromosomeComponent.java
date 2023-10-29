@@ -98,4 +98,22 @@ public class ChromosomeComponent extends JComponent{
 		}
 		return null;
 	} //containsGene
+
+	public void handleLoadDataFromFile(String fileData) {
+		this.setChromosome(new Chromosome());
+		this.handleStoreChromosomeData(fileData);
+		this.handleInitiateGeneWithFile();
+	}
+
+	public void handleMutateGenesInChromosome(double mutationRate) {
+		this.chromosome.mutateGenes(mutationRate);
+	}
+
+	public int handleGetNumberOfGenesInChromosome() {
+		return this.chromosome.getNumOfGenes();
+	}
+
+	public String handleGetChromosomeDataAsString() {
+		return this.chromosome.getChromosomeDataAsString();
+	}
 }
