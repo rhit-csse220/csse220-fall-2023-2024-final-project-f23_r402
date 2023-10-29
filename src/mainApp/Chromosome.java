@@ -21,7 +21,7 @@ public class Chromosome implements Comparable {
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
 	
-	//Setting seed for the Random object (Are we supposed to reproduce the same genome data for each chromsome, cuz I think that's what the specifications seem to be implying by setting the seed)
+	//Setting seed for the Random object
 	Random r = new Random(100010001);
 	
 	/**
@@ -33,12 +33,8 @@ public class Chromosome implements Comparable {
 	 * Creates a new Chromosome object with different number of genes than the default 100
 	 * @param numOfGenes
 	 */
-	// Are we still adding the resizable geneSide according to frameWidth/Height?
-	// Will add it but not for Milestone 1 for now - need to ask Thomas
 	public Chromosome(int numOfGenes) {
 		this.numOfGenes = numOfGenes;
-		// this.geneSide = geneSide
-
 		this.numPerColumn = numOfGenes/NUM_PER_ROW;
 	}
 
@@ -53,15 +49,14 @@ public class Chromosome implements Comparable {
 	 * ensures: that the fitness score for the chromosome is calculated
 	 */
 	public void calcFitnessFuction() {
-		//TODO calc + store fitness score
 		int fitnessScore = 0;
 		String fileData = getChromosomeDataAsString();
 		for (int i = 0; i < fileData.length(); i++){
-			if (fileData.charAt(i)=='1'){
-				fitnessScore+=1;
+			if (fileData.charAt(i) == '1'){
+				fitnessScore++;
 			}
 		}
-		this.fitnessScore=fitnessScore;
+		this.fitnessScore = fitnessScore;
 	}
 	
 	  public void fitnessSmiley() {
@@ -124,13 +119,15 @@ public class Chromosome implements Comparable {
 		this.calcFitnessFuction();
 	}
 
-	
+	/**
+	 * ensures: that a numOfGenes Gene objects is initialized into the chromosome
+	 */
 	public void initiateGeneWithFile() {
 		genes = new Gene[numOfGenes];
 		numPerColumn = numOfGenes / NUM_PER_ROW;
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
-				char bit = this.fileData.charAt(i*numPerColumn+j);
+				char bit = this.fileData.charAt(i*NUM_PER_ROW+j);
 				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
@@ -139,6 +136,9 @@ public class Chromosome implements Comparable {
 		this.calcFitnessFuction();
 	}
 
+	/**
+	 * ensures: adjusts positioning of genes with a new border and new gene width
+	 */
 	public void adjustGenePosition(){
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
@@ -149,6 +149,10 @@ public class Chromosome implements Comparable {
 		}
 	}
 
+	/**
+	 * ensures: mutates the genes in the chromosome
+	 * @param mutationRate
+	 */
 	public void mutateGenes(double mutationRate){
 		for (Gene gene : this.genes){
 			gene.mutate(mutationRate, this.numOfGenes);
@@ -194,18 +198,18 @@ public class Chromosome implements Comparable {
 	 */
 	public int getNumOfGenes() {return this.numOfGenes;} //getNumOfGenes
 
-	public double getFitnessScore(){
-		return this.fitnessScore;
-	}
-
-	// public int getGeneSide() {return geneSide;}
-
-	// public void setGeneSide(int geneSide) {
-	// 	for (int i = 0; i < this.genes.length; i++){
-	// 		this.genes[i].setGeneSide(geneSide)
-	// 	}
-	// }
+	/**
+	 * ensures: that the fitness score of the chromosome is returned
+	 * @return fitness score of the chromosome
+	 */
+	public double getFitnessScore(){return this.fitnessScore;} //getFitnessScore
 	
+	/**
+	 * ensures: genes in the chromosome are drawn onto the frame
+	 * @param g
+	 * @param geneWidth
+	 * @param border
+	 */
 	public void drawOn(Graphics g, int geneWidth, int border) {
 	    Graphics2D g2 = (Graphics2D) g;
 	    this.geneWidth = geneWidth;
@@ -223,6 +227,11 @@ public class Chromosome implements Comparable {
 		}
 	}
 
+	/**
+	 * ensures: compares
+	 * @param otherChromosome
+	 * @return
+	 */
 	public int compareTo(Object otherChromosome) {
 		double thisFitness = this.getFitnessScore();
 		double otherFitness = ((Chromosome)otherChromosome).getFitnessScore();
