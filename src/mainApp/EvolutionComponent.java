@@ -36,7 +36,7 @@ public class EvolutionComponent extends JComponent {
     public EvolutionComponent() {
 		  this.population = new Population();
     }
-    
+
      /**
      * Gets the size of the population.
      *
@@ -211,15 +211,26 @@ public class EvolutionComponent extends JComponent {
     public void handleSelection(){
       String s = selection;
       if (s.equals("Truncation")){
-        this.population.truncationSelection(mutationRate);
+        this.handleTruncationSelection();
       }
       else if (s.equals("Roulette")){
-        this.population.rouletteRankedSelection(mutationRate, true);
+        this.handleRouletteSelection();
       }
       else if (s.equals("Rank")){
-        this.population.rouletteRankedSelection(mutationRate, false);
-
+        this.handleRankSelection();
       }
+    }
+
+    public void handleTruncationSelection(){
+      this.population.truncationSelection(mutationRate);
+    }
+
+    public void handleRouletteSelection(){
+      this.population.rouletteRankedSelection(mutationRate, true);
+    }
+
+    public void handleRankSelection(){
+      this.population.rouletteRankedSelection(mutationRate, false);
     }
 
 
