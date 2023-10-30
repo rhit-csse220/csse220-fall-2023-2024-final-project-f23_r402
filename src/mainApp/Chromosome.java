@@ -46,6 +46,16 @@ public class Chromosome implements Comparable {
 		//this.fitnessSmiley();
 	}
 
+	public Chromosome(String fileData, boolean mutate, double mutationRate){
+		this.fileData = fileData;
+		this.numOfGenes = this.fileData.length();
+		this.initiateGeneWithFile();
+		this.calcFitnessFuction();
+		//this.fitnessSmiley();
+
+		if (mutate){this.mutateGenes(mutationRate);}
+	}
+
 	//methods
 	/*
 	 * ensures: that the fitness score for the chromosome is calculated

@@ -100,7 +100,7 @@ public class EvolutionComponent extends JComponent {
         this.population.truncationSelection(mutationRate);
       }
       else if (s.equals("Roulette")){
-        //TODO Add roulette selection
+        this.population.rouletteSelection(mutationRate);
       }
       else if (s.equals("Rank")){
         //TODO Add rank selection

@@ -2,6 +2,7 @@ package mainApp;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Population {
     public ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
@@ -11,8 +12,9 @@ public class Population {
     public int prevCAvg,nextCAvg;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
-    public Population(){
-    }
+    Random r = new Random(); // TODO: do we need to seed this as well
+
+    public Population(){}
 
     public Population(int sizeOfPopulation, int genomeLength){
         this.sizeOfPopulation = sizeOfPopulation;
@@ -21,7 +23,6 @@ public class Population {
     }
 
     public void initiatePopulation(){
-        // chromosomes.removeAll(chromosomes);
         chromosomes = new ArrayList<Chromosome>();
         lineArray = new ArrayList<BestFitLine2D>();
         for (int i = 0; i<sizeOfPopulation; i++){
@@ -57,13 +58,59 @@ public class Population {
                 Chromosome newGenChromosome = new Chromosome(cloneArray.get(j).getChromosomeDataAsString());
                 newGenChromosome.mutateGenes(mutationRate);
                 this.chromosomes.add(newGenChromosome);
-        }
+            }
         }
         this.sortPopulation();
         // nextC = this.chromosomes.get(0);
         // nextCAvg = calculateAvgFitness();
         // nextCLow = this.chromosomes.get(this.chromosomes.size()-1);
         //this.giveFitness();
+    }
+
+
+    // roulette selection
+    public void rouletteSelection(double mutationRate){
+        ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(chromosomes);
+        ArrayList<Chromosome> chosenChromosomes = findRouletteScore(currentChromosomes, new ArrayList<Chromosome>());
+        chromosomes = new ArrayList<Chromosome>();
+        for (int i = 0; i < chromosomes.size(); i++){
+            String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
+            chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+            chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+        }
+        this.giveFitness();
+    }
+
+    public ArrayList<Chromosome> findRouletteScore(ArrayList<Chromosome> currentChromosomes, ArrayList<Chromosome> chosenChromosomes){
+        if (currentChromosomes.size() == chosenChromosomes.size()){
+            return chosenChromosomes;
+        }
+
+        ArrayList<Double> rouletteScores = new ArrayList<Double>();
+
+        // find total fitness Score
+        double totalFitness = 0;
+        for (Chromosome chromosome : currentChromosomes){
+            totalFitness += chromosome.getFitnessScore();
+        }
+
+        // find pctg range for each chromosome based of their fitness score
+        double currNum = 0;
+        for (Chromosome chromosome : currentChromosomes){
+            currNum += chromosome.getFitnessScore()/totalFitness;
+            rouletteScores.add(currNum);
+        }
+
+        // chose random chromosome
+        double randNum = r.nextDouble(0,1);
+        for (int i = 0; i < rouletteScores.size(); i++){
+            if (rouletteScores.get(i) >= randNum){
+                chosenChromosomes.add(currentChromosomes.get(i));
+                currentChromosomes.remove(i);
+                return findRouletteScore(currentChromosomes, chosenChromosomes);
+            }
+        }
+        return null;
     }
 
     public int calculateAvgFitness(){
@@ -77,7 +124,7 @@ public class Population {
 
     //Debugger to check if the sorting by fitness gave the correct result
     public void giveFitness(){
-        this.sortPopulation();
+        // this.sortPopulation();
         for (Chromosome chromosome : this.chromosomes){
             System.out.println(chromosome.getFitnessScore());
         }
