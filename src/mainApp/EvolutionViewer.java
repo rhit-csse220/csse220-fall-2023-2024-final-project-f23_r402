@@ -15,12 +15,25 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
+/**
+ * The EvolutionViewer class is responsible for creating a graphical user interface
+ * for viewing the evolution of populations. It allows users to configure various
+ * parameters for the evolution process and visualize the results.
+ */
+
 public class EvolutionViewer {
     public static final int TIMER_DELAY = 15;
 
+    
     public JFrame frame;
     public EvolutionComponent evComponent;
     public int generations;
+
+       /**
+     * The driverMain method initializes and sets up the Evolution Viewer application.
+     * It creates a graphical user interface, sets up user input fields, and handles
+     * the evolution process.
+     */
 
     public void driverMain(){
         final String frameTitle = "Evolution Viewer";
@@ -172,6 +185,12 @@ public class EvolutionViewer {
         }
     }
 
+
+    /**
+     * The handleDriverMain method is responsible for executing the Evolution Viewer.
+     * It calls the driverMain method to set up the application and start the evolution process.
+     */
+
     public void handleDriverMain(){
         this.driverMain();
         //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
@@ -184,6 +203,14 @@ public class EvolutionViewer {
         //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
     }   
 
+
+      /**
+     * The main method is the entry point of the Evolution Viewer application.
+     * It creates an instance of EvolutionViewer and initiates the application.
+     *
+     * @param args The command-line arguments (not used in this application).
+     */
+    
     public static void main(String[] args) {
         EvolutionViewer evViewer = new EvolutionViewer();
         evViewer.handleDriverMain();

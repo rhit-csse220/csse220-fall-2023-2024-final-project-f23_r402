@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
+/**
+ * The EvolutionComponent class represents a component for visualizing the evolution process
+ * of a population and drawing various data related to it.
+ */
 public class EvolutionComponent extends JComponent {
     public static final double X1_TO_FRAME_RATIO = 0.04;
     public static final double Y1_TO_FRAME_RATIO = 0.08;
@@ -26,65 +30,165 @@ public class EvolutionComponent extends JComponent {
     public int generationCount;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
 
+     /**
+     * Constructs a new EvolutionComponent with an initial population.
+     */
     public EvolutionComponent() {
 		  this.population = new Population();
     }
+     /**
+     * Gets the size of the population.
+     *
+     * @return The size of the population.
+     */
 
     public int getPopulationSize() {
       return populationSize;
     }
 
+       /**
+     * Sets the size of the population.
+     *
+     * @param populationSize The new size of the population.
+     */
+
     public void setPopulationSize(int populationSize) {
       this.populationSize = populationSize;
     }
+
+      /**
+     * Gets the number of generations for the evolution process.
+     *
+     * @return The number of generations.
+     */
 
     public int getGenerations() {
       return generations;
     }
 
+      /**
+     * Sets the number of generations for the evolution process.
+     *
+     * @param generations The new number of generations.
+     */
+
     public void setGenerations(int generations) {
       this.generations = generations;
     }
-
+  /**
+     * Gets the elitism value, which is the percentage of top individuals preserved in each generation.
+     *
+     * @return The elitism value.
+     */
     public int getElitism() {
       return elitism;
     }
+
+      /**
+     * Sets the elitism value, which is the percentage of top individuals preserved in each generation.
+     *
+     * @param elitism The new elitism value.
+     */
 
     public void setElitism(int elitism) {
       this.elitism = elitism;
     }
 
+
+      /**
+     * Gets the length of the genome for each individual in the population.
+     *
+     * @return The genome length.
+     */
+
     public int getGenomeLength() {
       return genomeLength;
     }
+
+        /**
+     * Sets the length of the genome for each individual in the population.
+     *
+     * @param genomeLength The new genome length.
+     */
 
     public void setGenomeLength(int genomeLength) {
       this.genomeLength = genomeLength;
     }
 
+    /**
+ * Gets the mutation rate.
+ *
+ * @return The mutation rate.
+ */
+
     public double getMutationRate() {
       return mutationRate;
     }
+
+    /**
+ * Sets the mutation rate.
+ *
+ * @param mutationRate The new mutation rate.
+ */
 
     public void setMutationRate(double mutationRate) {
       this.mutationRate = mutationRate;
     }
 
+
+    
+/**
+ * Gets the selection method.
+ *
+ * @return The selection method.
+ */
     public String getSelection() {
       return selection;
     }
+
+    /**
+ * Sets the selection method.
+ *
+ * @param selection The new selection method.
+ */
 
     public void setSelection(String selection) {
       this.selection = selection;
     }
 
+    /**
+ * Gets whether crossover is enabled.
+ *
+ * @return `true` if crossover is enabled, `false` otherwise.
+ */
+
     public Boolean getCrossover() {
       return crossover;
     }
 
+    /**
+ * Sets whether crossover is enabled.
+ *
+ * @param crossover `true` to enable crossover, `false` to disable it.
+ */
+
     public void setCrossover(Boolean crossover) {
       this.crossover = crossover;
     }
+
+    /**
+ * Sets various parameters for the evolution process, including population size,
+ * selection method, mutation rate, crossover, number of generations, genome length,
+ * and elitism.
+ *
+ * @param populationSize The new population size.
+ * @param selection The new selection method.
+ * @param mutationRate The new mutation rate.
+ * @param crossover `true` to enable crossover, `false` to disable it.
+ * @param generations The new number of generations.
+ * @param genomeLength The new genome length.
+ * @param elitism The new elitism percentage.
+ */
 
     public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism){
       this.setPopulationSize(Integer.parseInt(populationSize));
@@ -97,6 +201,11 @@ public class EvolutionComponent extends JComponent {
       this.lineArray.removeAll(lineArray);
       this.population = new Population(this.populationSize, this.genomeLength);
     }
+
+    /**
+ * Handles the selection of individuals in the population based on the specified
+ * selection method.
+ */
 
     public void handleSelection(){
       String s = selection;
@@ -112,6 +221,13 @@ public class EvolutionComponent extends JComponent {
       }
     }
 
+
+    /**
+ * Paints the component and draws various elements, including axes, divisions, lines, and legend.
+ *
+ * @param g The Graphics object used for painting.
+ */
+
     @Override
     protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
@@ -126,10 +242,21 @@ public class EvolutionComponent extends JComponent {
       g2.drawString("Fitness over Generations", -x + (this.getWidth()/2), 10);
     }
 
+    /**
+ * Draws various elements on the specified Graphics2D object, including axes and a legend.
+ *
+ * @param g2 The Graphics2D object for drawing.
+ */
     public void drawOn(Graphics2D g2){
       drawAxes(g2);
       drawLegend(g2);
     }
+
+    /**
+ * Draws the axes on the specified Graphics2D object, including divisions.
+ *
+ * @param g2 The Graphics2D object for drawing axes.
+ */
 
     public void drawAxes(Graphics2D g2){
       g2.drawRect(x, y, xLimit, yLimit);
@@ -137,6 +264,11 @@ public class EvolutionComponent extends JComponent {
       drawYDivisions(g2);
     }
 
+    /**
+ * Draws the divisions on the X-axis to indicate values.
+ *
+ * @param g2 The Graphics2D object for drawing X-axis divisions.
+ */
     public void drawXDivisions(Graphics2D g2){
       // TODO FIGURE OUT WHY IT DOESNT UPDATE WHEN NUM OF GENERATIONS CHANGES
       xWidth = xLimit - x;
@@ -155,6 +287,11 @@ public class EvolutionComponent extends JComponent {
       g2.translate(-x, -yHeight);
     }
 
+    /**
+ * Draws the divisions on the Y-axis to indicate values.
+ *
+ * @param g2 The Graphics2D object for drawing Y-axis divisions.
+ */
     public void drawYDivisions(Graphics2D g2){
       yHeight = yLimit - y;
       g2.translate(x, y);
@@ -171,6 +308,13 @@ public class EvolutionComponent extends JComponent {
       }
       g2.translate(-x, -y);
     }
+
+    
+/**
+ * Stores and draws lines on the specified Graphics2D object.
+ *
+ * @param g2 The Graphics2D object for storing and drawing lines.
+ */
 
     public void storeLines(Graphics2D g2){
       drawLines(g2);
@@ -195,14 +339,31 @@ public class EvolutionComponent extends JComponent {
     //   g2.translate(-x,-y);
     // }
 
+    /**
+ * Calculates the Y-coordinate based on a percentage value.
+ *
+ * @param y The percentage value for Y-coordinate calculation.
+ * @return The calculated Y-coordinate.
+ */
     public int calculateY(double y){
       return (int) (yHeight - (y * (yHeight / 100.0)));
     }
 
+    /**
+ * Calculates the X-coordinate based on the current generation.
+ *
+ * @param x The generation number for X-coordinate calculation.
+ * @return The calculated X-coordinate.
+ */
     public int calculateX(double x){
       return (int) (x * ((double) xWidth / generations));
     }
 
+/**
+ * Draws fitness lines on the specified Graphics2D object, including best fitness, average fitness, and lowest fitness.
+ *
+ * @param g2 The Graphics2D object for drawing fitness lines.
+ */
     public void drawLines(Graphics2D g2){
       g2.translate(x, y);
       // System.out.println(this.population.lineArray.size());
@@ -235,6 +396,12 @@ public class EvolutionComponent extends JComponent {
       }
       g2.translate(-x,-y);
     }
+    
+    /**
+ * Draws a legend on the specified Graphics2D object, including colored boxes and labels for fitness lines.
+ *
+ * @param g2 The Graphics2D object for drawing the legend.
+ */
 
     public void drawLegend(Graphics2D g2){
       g2.setColor(Color.green);
