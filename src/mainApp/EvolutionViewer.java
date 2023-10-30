@@ -113,6 +113,7 @@ public class EvolutionViewer {
         JLabel genomeLength = new JLabel("Genome Length: ");
         JTextField genomeLengthField = new JTextField("100", textFieldWidth);
         textFields[3] = genomeLengthField;
+        // TODO: notify user when genome length % 10 != 0
 
         buttonPanel.add(genomeLength);
         buttonPanel.add(genomeLengthField);

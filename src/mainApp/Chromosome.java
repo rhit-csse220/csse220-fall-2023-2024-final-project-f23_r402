@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class Chromosome implements Comparable {
@@ -14,10 +15,9 @@ public class Chromosome implements Comparable {
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
 	
-	private int numOfGenes = 100; //default values
-	private int numPerColumn = 10; //default values
-	private String fileData = "";
-	public Gene[] genes;
+	private int numOfGenes = 100;   //default values
+	private int numPerColumn = 10;  //default values
+	private Gene[] genes;
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
@@ -40,10 +40,11 @@ public class Chromosome implements Comparable {
 	}
 
 	public Chromosome(String fileData){
-		this.fileData = fileData;
-		this.numOfGenes = this.fileData.length();
-		this.initiateGeneWithFile();
-		this.calcFitnessFuction();
+		this.initiateGeneWithString(fileData);
+		// this.fileData = fileData;
+		// this.numOfGenes = this.fileData.length();
+		// this.initiateGeneWithFile();
+		// this.calcFitnessFuction();
 		//this.fitnessSmiley();
 	}
 
@@ -134,21 +135,36 @@ public class Chromosome implements Comparable {
 		//this.fitnessSmiley();
 	}
 
-	
-	public void initiateGeneWithFile() {
+	public void initiateGeneWithString(String s) {
+		this.numOfGenes = s.length();
+		
 		genes = new Gene[numOfGenes];
 		numPerColumn = numOfGenes / NUM_PER_ROW;
 		for (int i = 0; i < numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
-				char bit = this.fileData.charAt(i*NUM_PER_ROW+j);
+				char bit = s.charAt(i*NUM_PER_ROW+j);
 				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
-
 		// TO SET THE FITNESS SCORE
 		this.calcFitnessFuction();
-		//this.fitnessSmiley();
+
 	}
+	
+	// public void initiateGeneWithFile() {
+	// 	genes = new Gene[numOfGenes];
+	// 	numPerColumn = numOfGenes / NUM_PER_ROW;
+	// 	for (int i = 0; i < numPerColumn; i++) {
+	// 		for (int j = 0; j < NUM_PER_ROW; j++) {
+	// 			char bit = this.fileData.charAt(i*NUM_PER_ROW+j);
+	// 			this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
+	// 		}
+	// 	}
+
+	// 	// TO SET THE FITNESS SCORE
+	// 	this.calcFitnessFuction();
+	// 	//this.fitnessSmiley();
+	// }
 
 	public void adjustGenePosition(){
 		for (int i = 0; i < numPerColumn; i++) {
@@ -172,10 +188,10 @@ public class Chromosome implements Comparable {
 	 * ensures: that the data from the file is loaded into the chromosome's file data
 	 * @param s is the input for the method to add into the file data of the chromosome
 	 */
-	public void storeChromosomeData(String s) {
-		this.fileData = this.fileData.concat(s);
-		this.numOfGenes = this.fileData.length();
-	}
+	// public void storeChromosomeData(String s) {
+	// 	this.fileData = this.fileData.concat(s);
+	// 	this.numOfGenes = this.fileData.length();
+	// }
 
 	/**
 	 * ensures: that the chromosome data, i.e the genes and their values, are concatenated into a single string
@@ -248,5 +264,18 @@ public class Chromosome implements Comparable {
 		} else {
 			return 0;
 		}
+	}
+
+	public Gene handleGetSelectedGene(Rectangle2D.Double box) {
+		for (int i = 0; i < this.genes.length; i++) {
+			if (this.genes[i].isSelected(box)) {
+				return this.genes[i];
+			}
+		}
+		return null;
+	}
+
+	public void setGenes(Gene[] genes) {
+		this.genes = genes;
 	}
 }
