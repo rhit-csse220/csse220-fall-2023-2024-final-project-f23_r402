@@ -1,6 +1,7 @@
 package mainApp;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
@@ -8,7 +9,7 @@ import java.util.Random;
 public class Chromosome implements Comparable {
 	public static final int NUM_PER_ROW = 10;
 	public static final int X_COORD_LETTER_OFFSET = 5;
-	public static final int Y_COORD_LETTER_OFFSET = 10;
+	// public static final int Y_COORD_LETTER_OFFSET = 10;
 	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
@@ -21,7 +22,7 @@ public class Chromosome implements Comparable {
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
 	
-	//Setting seed for the Random object (Are we supposed to reproduce the same genome data for each chromsome, cuz I think that's what the specifications seem to be implying by setting the seed)
+	// Seeding the Random object
 	Random r = new Random(1000);
 	
 	/**
@@ -230,7 +231,8 @@ public class Chromosome implements Comparable {
 			} else if (genes[i].getBit()=='0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
 			}
-			g2.drawString((String)(i+""), genes[i].getX() + X_COORD_LETTER_OFFSET, Y_COORD_LETTER_OFFSET+genes[i].getY());
+			g2.setFont(new Font(null, Font.PLAIN, geneWidth/3));
+			g2.drawString((String)(i+""), genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + genes[i].getY());
 		}
 	}
 

@@ -22,7 +22,7 @@ import javax.swing.Timer;
  */
 
 public class EvolutionViewer {
-    public static final int TIMER_DELAY = 15;
+    public static final int TIMER_DELAY = 1500;
 
     
     public JFrame frame;
@@ -128,7 +128,7 @@ public class EvolutionViewer {
         //Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
         startEvolutionButton.addActionListener(new ActionListener() {
-            Timer timer = new Timer(TIMER_DELAY, new ActionListener() {
+            Timer timer = new Timer(0, new ActionListener() {
                 int generationCount = -1;
                 @Override
                 public void actionPerformed(ActionEvent e) {

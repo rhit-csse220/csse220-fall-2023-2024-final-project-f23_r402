@@ -1,5 +1,6 @@
 package mainApp;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -12,7 +13,8 @@ public class Population {
     public int prevAvgFitness, nextAvgFitness;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
-    Random r = new Random(); // TODO: do we need to seed this as well
+    // Seeding the Random object
+    Random r = new Random(1000);
 
     public Population(){}
 
@@ -33,13 +35,15 @@ public class Population {
     }
 
     /**
-     * ensures: sorts chromosomes ArrayList from highest to lowest fitness score?
-     * // TODO: check this
+     * sorts the chromosomes ArrayList from highest to lowest fitness score
      */
     public void sortPopulation(){
         Collections.sort(chromosomes);
     }
 
+    /**
+     * creates a BestFitLine2D object based on the previous best, average, and low fitness and add to lineArray
+     */
     public void createLine(){
         // find previous best + avg + lowest fitness
         prevBestFitness = this.chromosomes.get(0).getFitnessScore();
@@ -48,34 +52,12 @@ public class Population {
         lineArray.add(new BestFitLine2D(prevBestFitness, prevAvgFitness, prevLowFitness));
     }
 
-    public void truncationSelection(double mutationRate){
-        this.sortPopulation();
-
-        // create line
-        this.createLine();
-
-        ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(chromosomes);
-        
-        int middleIndex = this.chromosomes.size()/2;
-        for (int i = this.chromosomes.size()/2; i < this.chromosomes.size(); i++){
-            currentChromosomes.remove(middleIndex);
-        }
-
-        int initialSize = this.chromosomes.size();
-        this.chromosomes = new ArrayList<Chromosome>();
-        for (int i = 0; i < initialSize/2; i++){
-            String currChromosomeData = currentChromosomes.get(i).getChromosomeDataAsString();
-            this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
-            this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
-        }
-
-        // sort population
-        this.sortPopulation();
-    }
-
-
-    // roulette selection
-    public void rouletteRankedSelection(double mutationRate, boolean roulette){
+    /**
+     * performs truncation/roulette/ranked selection on the current population and updates this.population to the new population
+     * @param mutationRate
+     * @param selectionType 0 for truncation, 1 for roulette, 2 for ranked
+     */
+    public void performSelection(double mutationRate, int selectionType){
         // sort population
         this.sortPopulation();
 
@@ -84,10 +66,14 @@ public class Population {
 
         ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(chromosomes);
         ArrayList<Chromosome> chosenChromosomes = new ArrayList<Chromosome>();
-        if (roulette){
+        if (selectionType == 0){
+            chosenChromosomes = findTruncationList(currentChromosomes);
+        } else if (selectionType == 1){
             chosenChromosomes = findRouletteList(currentChromosomes, new ArrayList<Chromosome>());
-        } else{
+        } else if (selectionType == 2){
             chosenChromosomes = findRankedList(currentChromosomes, new ArrayList<Chromosome>());
+        } else{
+            throw new InvalidParameterException();
         }
        
         int initialSize = this.chromosomes.size();
@@ -104,6 +90,25 @@ public class Population {
         this.createLine();
     }
 
+    /**
+     * calculates the population after truncation selection
+     * @param currentChromosomes
+     * @return an ArrayList of chromosomes that have been chosen with the truncation selection
+     */
+    public ArrayList<Chromosome> findTruncationList(ArrayList<Chromosome> currentChromosomes){
+        int middleIndex = this.chromosomes.size()/2;
+        for (int i = this.chromosomes.size()/2; i < this.chromosomes.size(); i++){
+            currentChromosomes.remove(middleIndex);
+        }
+        return currentChromosomes;
+    }
+
+    /**
+     * calculates the population after roulette selection
+     * @param currentChromosomes
+     * @param chosenChromosomes
+     * @return an ArrayList of chromosomes that have been chosen with the roulette selection
+     */
     public ArrayList<Chromosome> findRouletteList(ArrayList<Chromosome> currentChromosomes, ArrayList<Chromosome> chosenChromosomes){
         if (currentChromosomes.size() == chosenChromosomes.size()){
             return chosenChromosomes;
@@ -136,6 +141,12 @@ public class Population {
         return findRouletteList(currentChromosomes, chosenChromosomes);
     }
 
+    /**
+     * calculates the population after ranked selection
+     * @param currentChromosomes
+     * @param chosenChromosomes
+     * @return an ArrayList of chromosomes that have been chosen with the ranked selection
+     */
     public ArrayList<Chromosome> findRankedList(ArrayList<Chromosome> currentChromosomes, ArrayList<Chromosome> chosenChromosomes){
         if (currentChromosomes.size() == chosenChromosomes.size()){
             return chosenChromosomes;
@@ -165,14 +176,10 @@ public class Population {
         return findRankedList(currentChromosomes, chosenChromosomes);
     }
 
-    // debugger method
-    public void printArrayList(ArrayList<Chromosome> chromosomes){
-        for (Chromosome c : chromosomes){
-            System.out.print(c.getFitnessScore() + ", ");
-        }
-        System.out.println();
-    }
-
+    /**
+     * calculates the average fitness of the population
+     * @return average fitness of the population
+     */
     public int calculateAvgFitness(){
         int avg = 0;
         for (Chromosome chromosome : chromosomes){
@@ -182,12 +189,22 @@ public class Population {
         return avg;
     }
 
-    //Debugger to check if the sorting by fitness gave the correct result
-    public void  Fitness(){
-        // this.sortPopulation();
-        for (Chromosome chromosome : this.chromosomes){
-            System.out.println(chromosome.getFitnessScore());
-        }
-        System.out.println(this.chromosomes.size());
-    }
+    // Debugger methods
+
+    // to check the fitness score of chromosomes in the ArrayList
+    // public void printArrayList(ArrayList<Chromosome> chromosomes){
+    //     for (Chromosome c : chromosomes){
+    //         System.out.print(c.getFitnessScore() + ", ");
+    //     }
+    //     System.out.println();
+    // }
+
+    // to check if the sorting by fitness gave the correct result
+    // public void Fitness(){
+    //     // this.sortPopulation();
+    //     for (Chromosome chromosome : this.chromosomes){
+    //         System.out.println(chromosome.getFitnessScore());
+    //     }
+    //     System.out.println(this.chromosomes.size());
+    // }
 }
