@@ -2,34 +2,33 @@ package mainApp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.border.Border;
 
 public class EvolutionViewer {
+    public static final int TIMER_DELAY = 15;
+
     public JFrame frame;
     public EvolutionComponent evComponent;
     public int generations;
+
     public void driverMain(){
         final String frameTitle = "Evolution Viewer";
 		final int frameWidth = 1000;
 		final int frameHeight = 400;
         final int textFieldWidth = 3;
         
-        this.frame=new JFrame();
+        this.frame = new JFrame();
         frame.setTitle(frameTitle);
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,8 +49,8 @@ public class EvolutionViewer {
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
         //Mutation rate
-        JLabel mRate = new JLabel("Mutation Rate (N/pop) ");
-		JTextField mRateField = new JTextField("1", 1);
+        JLabel mRate = new JLabel("Mutation Rate (N/pop): ");
+		JTextField mRateField = new JTextField("1", textFieldWidth);
         textFields[0]=mRateField;
 
         buttonPanel.add(mRate);
@@ -59,7 +58,7 @@ public class EvolutionViewer {
 
         //Dropdown panel for choosing a selection method
         JPanel dropdownPanel  = new JPanel();
-		JLabel dropdownLabel = new JLabel("Selection ");
+		JLabel dropdownLabel = new JLabel("Selection: ");
 		dropdownPanel.add(dropdownLabel);
 
         //Modify this if you wish to add different numbers of things into the simulation
@@ -82,32 +81,32 @@ public class EvolutionViewer {
         buttonPanel.add(checkCrossover);
 
         //Population
-        JLabel population = new JLabel("Population ");
-        JTextField populationField = new JTextField("100");
+        JLabel population = new JLabel("Population: ");
+        JTextField populationField = new JTextField("100", textFieldWidth);
         textFields[1] = populationField;
 
         buttonPanel.add(population);
         buttonPanel.add(populationField);
 
         //Generations
-        JLabel generations = new JLabel("Generations ");
-        JTextField generationsField = new JTextField("100");
+        JLabel generations = new JLabel("Generations: ");
+        JTextField generationsField = new JTextField("100", textFieldWidth);
         textFields[2] = generationsField;
 
         buttonPanel.add(generations);
         buttonPanel.add(generationsField);
 
         //Genome length
-        JLabel genomeLength = new JLabel("Genome Length ");
-        JTextField genomeLengthField = new JTextField("100");
+        JLabel genomeLength = new JLabel("Genome Length: ");
+        JTextField genomeLengthField = new JTextField("100", textFieldWidth);
         textFields[3] = genomeLengthField;
 
         buttonPanel.add(genomeLength);
         buttonPanel.add(genomeLengthField);
 
         //Elitism
-        JLabel elitism = new JLabel("Elitism % ");
-        JTextField elitismField = new JTextField("1");
+        JLabel elitism = new JLabel("Elitism %: ");
+        JTextField elitismField = new JTextField("1", textFieldWidth);
         textFields[4] = elitismField;
 
         buttonPanel.add(elitism);
@@ -116,46 +115,44 @@ public class EvolutionViewer {
         //Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
         startEvolutionButton.addActionListener(new ActionListener() {
-            Timer timer = new Timer(1000/330, new ActionListener() {
+            Timer timer = new Timer(TIMER_DELAY, new ActionListener() {
                 int generationCount = -1;
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (generationCount==-1){
+                    if (generationCount == -1){
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                         generationCount++;
                         frame.repaint();
                     }
-                    if (generationCount<=Integer.parseInt(generationsField.getText())){
+                    if (generationCount <= Integer.parseInt(generationsField.getText())){
                         evComponent.handleSelection();
                         generationCount++;
-                        evComponent.generationCount=generationCount;
+                        evComponent.generationCount = generationCount;
                         frame.repaint();
                     }
                     else {
                         startEvolutionButton.setText("Start Evolution");
-                        System.out.println(evComponent.population.chromosomes.get(0).getChromosomeDataAsString());
+                        // System.out.println(evComponent.population.chromosomes.get(0).getChromosomeDataAsString());
                         timer.restart();
 
                         //TODO populationField might not be needed to be initialized here i think lawl
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-                        frame.repaint();
-                        generationCount=-1;
+                        generationCount = -1;
                         timer.stop();
                     }
-            }
+                }
             });
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (startEvolutionButton.getText().equals("Start Evolution")){
                     evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                     startEvolutionButton.setText("Pause");
                     timer.start();
-                }
-                else if (startEvolutionButton.getText().equals("Pause")){
+                } else if (startEvolutionButton.getText().equals("Pause")){
                     startEvolutionButton.setText("Continue");
                     timer.stop();
-                }
-                else if (startEvolutionButton.getText().equals("Continue")){
+                } else if (startEvolutionButton.getText().equals("Continue")){
                     startEvolutionButton.setText("Pause");
                     timer.start();
                 }
@@ -165,7 +162,7 @@ public class EvolutionViewer {
         buttonPanel.add(startEvolutionButton);
 
         //Line plot chart
-        frame.add(new JLabel("population"), BorderLayout.NORTH);
+        frame.add(new JLabel("Population"), BorderLayout.NORTH);
         
         frame.pack();
 

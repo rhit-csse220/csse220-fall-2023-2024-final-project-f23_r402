@@ -4,12 +4,16 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
 public class EvolutionComponent extends JComponent {
+    public static final double X1_TO_FRAME_RATIO = 0.04;
+    public static final double Y1_TO_FRAME_RATIO = 0.08;
+    public static final double X2_TO_FRAME_RATIO = 0.96;
+    public static final double Y2_TO_FRAME_RATIO = 0.82;
+
     public Population population;
     private int populationSize;
     private int generations = 100;
@@ -100,10 +104,11 @@ public class EvolutionComponent extends JComponent {
         this.population.truncationSelection(mutationRate);
       }
       else if (s.equals("Roulette")){
-        this.population.rouletteSelection(mutationRate);
+        this.population.rouletteRankedSelection(mutationRate, true);
       }
       else if (s.equals("Rank")){
-        //TODO Add rank selection
+        this.population.rouletteRankedSelection(mutationRate, false);
+
       }
     }
 
@@ -111,14 +116,14 @@ public class EvolutionComponent extends JComponent {
     protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
     // TODO remove magic numbers
-      x = (int)(0.04*this.getWidth());
-      y = (int)(0.08*this.getHeight());
-      xLimit = (int)(this.getWidth()*0.92);
-      yLimit = (int)(this.getHeight()*0.82);  
+      x = (int) (X1_TO_FRAME_RATIO * this.getWidth());
+      y = (int) (Y1_TO_FRAME_RATIO * this.getHeight());
+      xLimit = (int) (this.getWidth() * X2_TO_FRAME_RATIO);
+      yLimit = (int) (this.getHeight() * Y2_TO_FRAME_RATIO);  
       this.drawOn(g2);
       this.drawLines(g2);
       this.drawLegend(g2);
-      g2.drawString("Fitness over Generations", -x+(this.getWidth()/2), 10);
+      g2.drawString("Fitness over Generations", -x + (this.getWidth()/2), 10);
     }
 
     public void drawOn(Graphics2D g2){
@@ -142,8 +147,8 @@ public class EvolutionComponent extends JComponent {
         String sNum = Integer.toString(num);
         g2.drawLine(i, -5, i, 5);
         g2.drawString(sNum, i, 20);
-        num+=generations/10;
-        if ((i+(xWidth/10))>=xWidth){
+        num += generations/10;
+        if ((i+(xWidth/10)) >= xWidth){
           xWidth = i;
         }
       }
@@ -156,10 +161,10 @@ public class EvolutionComponent extends JComponent {
       int num = 100;
       for (int i = 0; i <= yHeight; i+= yHeight/10){
         String sNum = Integer.toString(num);
-        g2.drawLine(5, i, -5, i);
+        g2.drawLine(5, i, -5, i); // TODO magic num
         g2.drawString(sNum, -25, i+5);
-        num-=10;
-        if ((i+yHeight/10)>=yHeight){
+        num -= 10;
+        if ((i + yHeight/10) >= yHeight){
           yHeight = i;
         }
         //System.out.println(i+","+yHeight);
@@ -191,18 +196,18 @@ public class EvolutionComponent extends JComponent {
     // }
 
     public int calculateY(double y){
-      return (int)(yHeight-((double)y*((double)yHeight/100.0)));
+      return (int) (yHeight - (y * (yHeight / 100.0)));
     }
 
     public int calculateX(double x){
-      return (int)(x*((double)xWidth/generations));
+      return (int) (x * ((double) xWidth / generations));
     }
 
     public void drawLines(Graphics2D g2){
       g2.translate(x, y);
-      System.out.println(this.population.lineArray.size());
+      // System.out.println(this.population.lineArray.size());
         for (int i = 1; i < generations; i++){
-          if (i<this.population.lineArray.size()){
+          if (i < this.population.lineArray.size()){
           //Line of best fit
           int pX = calculateX(i-1);
           int nX = calculateX(i);
