@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -74,7 +76,7 @@ public class ChromosomeViewer {
 					if (mutationRate < 0 || mutationRate > chComponent.handleGetNumberOfGenesInChromosome()) {
 						// Handle invalid input, show an error message, etc.
 						JOptionPane.showMessageDialog(frame,
-								"Invalid mutation rate. Please enter an number between 0 and "
+								"Invalid mutation rate. Please enter a number between 0 and "
 										+ chComponent.handleGetNumberOfGenesInChromosome(),
 								"Invalid Input", JOptionPane.ERROR_MESSAGE);
 						return;
@@ -82,7 +84,6 @@ public class ChromosomeViewer {
 
 					// Perform mutation for each gene based on the mutation rate
 					chComponent.handleMutateGenesInChromosome(mutationRate);
-					// chComponent.getChromosome().mutateGenes(mutationRate);
 					
 					fileNameLabel.setText(fileName + " (mutated)");
 					// Repaint the frame to reflect the changes
@@ -90,7 +91,7 @@ public class ChromosomeViewer {
 
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(frame,
-							"Invalid mutation rate. Please enter an integer between 0 and "
+							"Invalid mutation rate. Please enter a number between 0 and "
 									+ chComponent.handleGetNumberOfGenesInChromosome(),
 							"Invalid Input", JOptionPane.ERROR_MESSAGE);
 					return;

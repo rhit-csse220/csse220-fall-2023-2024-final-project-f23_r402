@@ -36,6 +36,7 @@ public class EvolutionComponent extends JComponent {
     public EvolutionComponent() {
 		  this.population = new Population();
     }
+    
      /**
      * Gets the size of the population.
      *

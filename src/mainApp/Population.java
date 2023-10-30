@@ -183,7 +183,7 @@ public class Population {
     }
 
     //Debugger to check if the sorting by fitness gave the correct result
-    public void giveFitness(){
+    public void  Fitness(){
         // this.sortPopulation();
         for (Chromosome chromosome : this.chromosomes){
             System.out.println(chromosome.getFitnessScore());
