@@ -55,5 +55,10 @@ public class ChromosomeTest {
         chromosome.initiateGene(); // Initialize genes with random data
         assertNotNull(chromosome.genes);
     }
+
+    @Test
+    public void testPrintOutChromosomes() {
+        // testing new branch
+    }
 }
 
