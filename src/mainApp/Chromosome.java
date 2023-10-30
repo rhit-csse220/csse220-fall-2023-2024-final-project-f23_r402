@@ -125,6 +125,8 @@ public class Chromosome implements Comparable {
 	}
 
 	public void initiateGeneWithString(String s) {
+		this.numOfGenes = s.length();
+		
 		genes = new Gene[numOfGenes];
 		numPerColumn = numOfGenes / NUM_PER_ROW;
 		for (int i = 0; i < numPerColumn; i++) {
