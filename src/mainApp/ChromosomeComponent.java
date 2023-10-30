@@ -94,7 +94,7 @@ public class ChromosomeComponent extends JComponent{
 		return chromosome.handleGetSelectedGene(box);
 	} //containsGene
 
-	public void handleLoadDataFromFile(String fileData) {
+	public void handleLoadDataFromFile(String fileData) throws InvalidChromosomeFormatException {
 		this.setChromosome(new Chromosome());
 		this.chromosome.initiateGeneWithString(fileData);
 		// this.handleStoreChromosomeData(fileData);

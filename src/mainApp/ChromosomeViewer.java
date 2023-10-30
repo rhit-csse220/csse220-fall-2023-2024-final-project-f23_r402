@@ -131,6 +131,8 @@ public class ChromosomeViewer {
 		                    //         "Invalid file data length. Expected a multiple of 10 characters, but loaded " + characterCount + " characters.",
 		                    //         "Invalid Data Length",
 		                    //         JOptionPane.ERROR_MESSAGE);
+
+							// TODO: we can delete this if since chComponent.handleLoadDataFromFile throws the exception anyways
 							throw new InvalidChromosomeFormatException(characterCount);
 		                } else if (!checkChromosomeData(fileData.toString())){
 							throw new InvalidChromosomeCharacterException();

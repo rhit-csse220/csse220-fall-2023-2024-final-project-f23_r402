@@ -39,7 +39,7 @@ public class Chromosome implements Comparable {
 		this.numPerColumn = numOfGenes/NUM_PER_ROW;
 	}
 
-	public Chromosome(String fileData){
+	public Chromosome(String fileData) throws InvalidChromosomeFormatException{
 		this.initiateGeneWithString(fileData);
 		// this.fileData = fileData;
 		// this.numOfGenes = this.fileData.length();
@@ -48,10 +48,10 @@ public class Chromosome implements Comparable {
 		//this.fitnessSmiley();
 	}
 
-	public Chromosome(String fileData, boolean mutate, double mutationRate){
-		this.fileData = fileData;
-		this.numOfGenes = this.fileData.length();
-		this.initiateGeneWithFile();
+	public Chromosome(String fileData, boolean mutate, double mutationRate) throws InvalidChromosomeFormatException{
+		//this.fileData = fileData;
+		this.numOfGenes = fileData.length();
+		this.initiateGeneWithString(fileData);
 		this.calcFitnessFuction();
 		//this.fitnessSmiley();
 
@@ -135,7 +135,11 @@ public class Chromosome implements Comparable {
 		//this.fitnessSmiley();
 	}
 
-	public void initiateGeneWithString(String s) {
+	public void initiateGeneWithString(String s) throws InvalidChromosomeFormatException {
+		if (s.length() % 10 != 0) {
+			throw new InvalidChromosomeFormatException(s.length());
+		}
+
 		this.numOfGenes = s.length();
 		
 		genes = new Gene[numOfGenes];
@@ -198,16 +202,11 @@ public class Chromosome implements Comparable {
 	 * @return the chromosome data
 	 */
 	public String getChromosomeDataAsString() {
-	    StringBuilder data = new StringBuilder();
-	    for (Gene gene : genes) {
-	        // Append '1' for black and '0' for green
-	        if (gene.getBit() == '0') {
-	            data.append('0');
-	        } else if (gene.getBit() == '1'){
-	            data.append('1');
-	        }
-	    }
-	    return data.toString();
+	    String data = "";
+		for (Gene gene : this.genes) {
+			data += gene.getBit();
+		}
+		return data;
 	}
 	
 	/**
@@ -277,5 +276,10 @@ public class Chromosome implements Comparable {
 
 	public void setGenes(Gene[] genes) {
 		this.genes = genes;
+	}
+
+	@Override
+	public String toString() {
+		return this.getChromosomeDataAsString();
 	}
 }

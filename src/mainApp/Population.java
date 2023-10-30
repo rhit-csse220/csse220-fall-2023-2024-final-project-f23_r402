@@ -80,8 +80,13 @@ public class Population {
         chromosomes = new ArrayList<Chromosome>();
         for (int i = 0; i < initialSize/2; i++){
             String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
-            chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
-            chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+            try {
+                chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+                chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+            } catch (InvalidChromosomeFormatException e) {
+                // TODO: see if we actually need to do sth here
+                e.printStackTrace();
+            }
         }
         // sort population
         this.sortPopulation();
