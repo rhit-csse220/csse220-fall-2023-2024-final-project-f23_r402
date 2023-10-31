@@ -12,7 +12,14 @@ import mainApp.Gene;
 import mainApp.InvalidChromosomeFormatException;
 import mainApp.Population;
 
-
+/**
+ * Class: ChromosomeTest
+ * @author: anisima and huaj1
+ * 
+ * Purpose: test the Chromosome class
+ * Example:
+ *   Run As -> JUnit Test
+ */
 public class ChromosomeTest {
     // checkChromosomeData method not used
     // @Test
@@ -29,6 +36,7 @@ public class ChromosomeTest {
     //     assertFalse(chromosome.checkChromosomeData());
     // }
 
+    // Testing that a chromosome can be printed out
     @Test
     public void testPrintOutChromosome() {
         Chromosome c = new Chromosome();
@@ -45,6 +53,7 @@ public class ChromosomeTest {
         assertEquals(c.toString(), genomeData);
     }
 
+    // Testing fintness score calculation
     @Test
     public void testCalculateFitnessScore() {
         HashMap<String, Double> genomesToFitnessScores = new HashMap<>() {{
@@ -65,6 +74,7 @@ public class ChromosomeTest {
         }
     }
 
+    // Testing storing genome data witin a chromosome
     @Test
     public void testStoreChromosomeData() {
         Chromosome c = new Chromosome();
@@ -81,17 +91,20 @@ public class ChromosomeTest {
         assertEquals(c.getChromosomeDataAsString(), c.toString());
     }
 
+    // Testing storing genome data witin a chromosome (invalid data)
     @Test(expected = InvalidChromosomeFormatException.class)
     public void testCreateChromosomeWithInvalidNumberOfGenes() throws InvalidChromosomeFormatException {
         Chromosome c = new Chromosome("01010");
     }
 
+    // Testing storing genome data witin a chromosome through a method (invalid data)
     @Test(expected = InvalidChromosomeFormatException.class)
     public void testInitialiazeChromosomeWithInvalidNumberOfGenes() throws InvalidChromosomeFormatException {
         Chromosome c1 = new Chromosome();
         c1.initiateGeneWithString("000101010");
     }
 
+    // Additional tests are in ChromosomeManualTest.java
     @Test
     public void runAllManualTests() {
         // Don't forget to run ChromosomeManualTest.java

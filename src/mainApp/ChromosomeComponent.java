@@ -94,6 +94,11 @@ public class ChromosomeComponent extends JComponent{
 		return chromosome.handleGetSelectedGene(box);
 	} //containsGene
 
+	/**
+	 * ensures: loads genome data with String similarly to Chromosome.initiateGeneWithString()
+	 * @param fileData data in the format of "01001001"
+	 * @throws InvalidChromosomeFormatException if fileData.length() % 10 != 0
+	 */
 	public void handleLoadDataFromFile(String fileData) throws InvalidChromosomeFormatException {
 		this.setChromosome(new Chromosome());
 		this.chromosome.initiateGeneWithString(fileData);
@@ -101,14 +106,26 @@ public class ChromosomeComponent extends JComponent{
 		// this.handleInitiateGeneWithFile();
 	}
 
+	/**
+	 * ensures: mutates genes in the chromosome
+	 * @param mutationRate
+	 */
 	public void handleMutateGenesInChromosome(double mutationRate) {
 		this.chromosome.mutateGenes(mutationRate);
 	}
 
+	/**
+	 * ensures: returns the length of the genome
+	 * @return length of the genome
+	 */
 	public int handleGetNumberOfGenesInChromosome() {
 		return this.chromosome.getNumOfGenes();
 	}
 
+	/**
+	 * ensures: returns chromosome data in te form of "10010100"
+	 * @return chromosome data
+	 */
 	public String handleGetChromosomeDataAsString() {
 		return this.chromosome.getChromosomeDataAsString();
 	}

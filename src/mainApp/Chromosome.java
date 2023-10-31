@@ -140,6 +140,11 @@ public class Chromosome implements Comparable {
 		//this.fitnessSmiley();
 	}
 	
+	/**
+	 * ensures: initiates the genome with a given data
+	 * @param s given data in a form of "0100101"
+	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
+	 */
 	public void initiateGeneWithString(String s) throws InvalidChromosomeFormatException {
 		if (s.length() % 10 != 0) {
 			throw new InvalidChromosomeFormatException(s.length());
@@ -277,6 +282,9 @@ public class Chromosome implements Comparable {
 		return null;
 	}
 	
+	/**
+	 * ensures: returns genome as a string for printing purposes
+	 */
 	@Override
 	public String toString() {
 		return this.getChromosomeDataAsString();
