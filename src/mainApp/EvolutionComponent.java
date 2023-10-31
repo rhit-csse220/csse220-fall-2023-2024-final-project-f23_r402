@@ -256,9 +256,6 @@ public class EvolutionComponent extends JComponent {
       g2.drawLine(i, -AXIS_LABEL_LINE_WIDTH, i, AXIS_LABEL_LINE_WIDTH);
       g2.drawString(sNum, i + X_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, X_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
       num += this.generations / GENERATION_INTERVAL;
-      if ((i + (this.xWidth / GENERATION_INTERVAL)) >= this.xWidth){
-        this.xWidth = i;
-      }
     }
     g2.translate(-this.x, -this.yHeight);
   }

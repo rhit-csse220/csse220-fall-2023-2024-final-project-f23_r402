@@ -126,7 +126,7 @@ public class EvolutionViewer {
         JButton startEvolutionButton = new JButton("Start Evolution");
         startEvolutionButton.addActionListener(new ActionListener() {
             private boolean passedErrorCheck = true;
-
+            
             Timer timer = new Timer(TIMER_DELAY/Integer.parseInt(generationsField.getText()), new ActionListener() {
                 int generationCount = -1;
                 @Override
@@ -184,36 +184,33 @@ public class EvolutionViewer {
         });
         
         buttonPanel.add(startEvolutionButton);
-
-
-final EvolutionWorker[] evolutionWorker = {null}; // Declare as an array to make it effectively final
-
-JButton startFastButton = new JButton("FAST Evolution");
-
-
-class EvolutionActionListener implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (startFastButton.getText().equals("FAST Evolution")) {
-            evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-            startFastButton.setText("Pause");
-
-            evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startFastButton);
-            evolutionWorker[0].execute();
-        } else if (startFastButton.getText().equals("Pause")) {
-            startFastButton.setText("FAST Evolution");
-
-            if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
-                evolutionWorker[0].cancel(true);
-            }
-        }
-    }
-}        
-
-    startFastButton.addActionListener(new EvolutionActionListener());
-
-
         
+        
+        final EvolutionWorker[] evolutionWorker = {null}; // Declare as an array to make it effectively final
+        
+        JButton startFastButton = new JButton("FAST Evolution");
+        
+        
+        class EvolutionActionListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (startFastButton.getText().equals("FAST Evolution")) {
+                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                    startFastButton.setText("Pause");
+                    
+                    evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startFastButton);
+                    evolutionWorker[0].execute();
+                } else if (startFastButton.getText().equals("Pause")) {
+                    startFastButton.setText("FAST Evolution");
+                    
+                    if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
+                        evolutionWorker[0].cancel(true);
+                    }
+                }
+            }
+        }        
+        
+        startFastButton.addActionListener(new EvolutionActionListener());
         buttonPanel.add(startFastButton);
         
         //Line plot chart
@@ -224,7 +221,7 @@ class EvolutionActionListener implements ActionListener {
             textField.setBounds(textField.getX(), textField.getY()+8, textField.getWidth(), 20); // TODO Substitute Magic Numbers Here!
         }
     }
-
+    
     public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(false);
@@ -240,7 +237,7 @@ class EvolutionActionListener implements ActionListener {
         addSelectionChooser.setEnabled(true);
         checkCrossover.setEnabled(true);
     }
-
+    
     public void checkFields(JTextField[] textFields, boolean[] hasError) throws Exception{
         // textFields[0] - mRateField
         try{
@@ -254,7 +251,7 @@ class EvolutionActionListener implements ActionListener {
             }
             return;
         }
-
+        
         // textFields[1] - populationField
         try{
             if (Integer.parseInt(textFields[1].getText()) <= 0){
@@ -306,27 +303,27 @@ class EvolutionActionListener implements ActionListener {
             }
             return;
         }
-
+        
         // no error
         hasError[0] = true;
     }
-
-
-/**
-* The handleDriverMain method is responsible for executing the Evolution Viewer.
-* It calls the driverMain method to set up the application and start the evolution process.
-*/
-public void handleDriverMain(){
-    this.driverMain();
-}   
-
-/**
-* The main method is the entry point of the Evolution Viewer application.
-* It creates an instance of EvolutionViewer and initiates the application.
-* @param args The command-line arguments (not used in this application).
-*/
-public static void main(String[] args) {
-    EvolutionViewer evViewer = new EvolutionViewer();
-    evViewer.handleDriverMain();
-}
+    
+    
+    /**
+    * The handleDriverMain method is responsible for executing the Evolution Viewer.
+    * It calls the driverMain method to set up the application and start the evolution process.
+    */
+    public void handleDriverMain(){
+        this.driverMain();
+    }   
+    
+    /**
+    * The main method is the entry point of the Evolution Viewer application.
+    * It creates an instance of EvolutionViewer and initiates the application.
+    * @param args The command-line arguments (not used in this application).
+    */
+    public static void main(String[] args) {
+        EvolutionViewer evViewer = new EvolutionViewer();
+        evViewer.handleDriverMain();
+    }
 }
