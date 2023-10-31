@@ -184,6 +184,37 @@ public class EvolutionViewer {
         });
         
         buttonPanel.add(startEvolutionButton);
+
+
+final EvolutionWorker[] evolutionWorker = {null}; // Declare as an array to make it effectively final
+
+JButton startFastButton = new JButton("FAST Evolution");
+
+
+class EvolutionActionListener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (startFastButton.getText().equals("FAST Evolution")) {
+            evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+            startFastButton.setText("Pause");
+
+            evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startFastButton);
+            evolutionWorker[0].execute();
+        } else if (startFastButton.getText().equals("Pause")) {
+            startFastButton.setText("FAST Evolution");
+
+            if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
+                evolutionWorker[0].cancel(true);
+            }
+        }
+    }
+}        
+
+    startFastButton.addActionListener(new EvolutionActionListener());
+
+
+        
+        buttonPanel.add(startFastButton);
         
         //Line plot chart
         frame.add(new JLabel("Population"), BorderLayout.NORTH);
