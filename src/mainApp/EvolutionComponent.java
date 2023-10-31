@@ -13,9 +13,10 @@ import javax.swing.JComponent;
 * of a population and drawing various data related to it.
 */
 public class EvolutionComponent extends JComponent {
+  public static final int TITLE_Y_VALUE = 10;
   public static final double X1_TO_FRAME_RATIO = 0.04;
   public static final double Y1_TO_FRAME_RATIO = 0.08;
-  public static final double X2_TO_FRAME_RATIO = 0.96;
+  public static final double X2_TO_FRAME_RATIO = 0.94;
   public static final double Y2_TO_FRAME_RATIO = 0.82;
   public static final int MAX_FITNESS_SCORE = 100;
   public static final int GENERATION_INTERVAL = 10;
@@ -249,14 +250,14 @@ public class EvolutionComponent extends JComponent {
   @Override
   protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g;
-    x = (int) (X1_TO_FRAME_RATIO * this.getWidth());
-    y = (int) (Y1_TO_FRAME_RATIO * this.getHeight());
-    xLimit = (int) (this.getWidth() * X2_TO_FRAME_RATIO);
-    yLimit = (int) (this.getHeight() * Y2_TO_FRAME_RATIO);  
+    this.x = (int) (X1_TO_FRAME_RATIO * this.getWidth());
+    this.y = (int) (Y1_TO_FRAME_RATIO * this.getHeight());
+    this.xLimit = (int) (this.getWidth() * X2_TO_FRAME_RATIO);
+    this.yLimit = (int) (this.getHeight() * Y2_TO_FRAME_RATIO); 
     this.drawOn(g2);
     this.drawLines(g2);
     this.drawLegend(g2);
-    g2.drawString("Fitness over Generations", -x + (this.getWidth()/2), 10); //TODO magic num
+    g2.drawString("Fitness over Generations", -x + (this.getWidth()/2), TITLE_Y_VALUE);
   }
   
   /**
@@ -287,9 +288,10 @@ public class EvolutionComponent extends JComponent {
   * @param g2 The Graphics2D object for drawing X-axis divisions.
   */
   public void drawXDivisions(Graphics2D g2){
-    xWidth = xLimit - x;
-    yHeight = yLimit + y;
-    g2.translate(x, yHeight);
+    this.xWidth = this.xLimit - this.x;
+    this.yHeight = this.yLimit + this.y;
+    g2.translate(this.x, this.yHeight);
+    
     int num = 0;
     for (int i = 0; i <= xWidth; i += xWidth / GENERATION_INTERVAL){
       String sNum = Integer.toString(num);
@@ -312,10 +314,10 @@ public class EvolutionComponent extends JComponent {
     yHeight = yLimit - y;
     g2.translate(x, y);
     int num = MAX_FITNESS_SCORE;
-    for (int i = 0; i <= yHeight; i+= yHeight/10){
+    for (int i = 0; i <= yHeight; i += yHeight / GENERATION_INTERVAL){
       String sNum = Integer.toString(num);
       g2.drawLine(AXIS_LABEL_LINE_WIDTH, i, -AXIS_LABEL_LINE_WIDTH, i);
-      g2.drawString(sNum, Y_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, i+Y_AXIS_LABEL_TO_LINE_VERTICAL_PADDING); // TODO magic num
+      g2.drawString(sNum, Y_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, i+Y_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
       num -= FITNESS_SCORE_INTERVAL;
       if ((i + yHeight/FITNESS_SCORE_INTERVAL) >= yHeight){
         yHeight = i;
@@ -332,7 +334,7 @@ public class EvolutionComponent extends JComponent {
   * @return The calculated Y-coordinate.
   */
   public int calculateY(double y){
-    return (int) (yHeight - (y * (yHeight / 100.0)));
+    return (int) (yHeight - (y * (yHeight / (double) MAX_FITNESS_SCORE)));
   }
   
   /**
@@ -374,7 +376,6 @@ public class EvolutionComponent extends JComponent {
         nY = calculateY(this.population.lineArray.get(i).getAvgFitness());
         g2.setColor(Color.orange);
         g2.drawLine(pX, pY, nX, nY);
-        
         
         //Line of lowest
         //TODO FIGURE OUT LOGIC FOR WHY THIS IS SO JAGGED; Assumably, u can use the array in such a way that the newest chromosome is preserved, and then the previous index where the last chromosome was preserved can be used to find the initial x,y, with the current chromsome being the final x,y. this may require restructuring of linearray rn.

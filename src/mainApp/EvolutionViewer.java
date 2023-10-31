@@ -24,7 +24,6 @@ import javax.swing.Timer;
 public class EvolutionViewer {
     public static final int TIMER_DELAY = 1500;
 
-    
     public JFrame frame;
     public EvolutionComponent evComponent;
     public int generations;
