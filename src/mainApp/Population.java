@@ -89,9 +89,6 @@ public class Population {
         }
         // sort population
         this.sortPopulation();
-
-        // create line
-        this.createLine();
     }
 
     /**
