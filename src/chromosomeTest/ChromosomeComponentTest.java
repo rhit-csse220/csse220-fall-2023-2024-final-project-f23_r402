@@ -8,7 +8,16 @@ import mainApp.ChromosomeComponent;
 import mainApp.Gene;
 import mainApp.InvalidChromosomeFormatException;
 
+/**
+ * Class: ChromosomeComponentTest
+ * @author: anisima and huaj1
+ * 
+ * Purpose: test the ChromosomeComponentTest class
+ * Example:
+ *  Run As -> JUnit Test
+ */
 public class ChromosomeComponentTest {
+    // Testing intialization of genes
     @Test
     public void testChromosomeComponentInitialization() {
         ChromosomeComponent component = new ChromosomeComponent();
@@ -19,9 +28,9 @@ public class ChromosomeComponentTest {
         assertEquals(100, chromosome.getNumOfGenes());
     }
 
-    
+    // Testing handinling loading invalid data
     @Test(expected = InvalidChromosomeFormatException.class)
-    public void testHandleStoreInvalidChromosomeData() throws InvalidChromosomeFormatException {
+    public void testHandleLoadInvalidChromosomeData() throws InvalidChromosomeFormatException {
         ChromosomeComponent component = new ChromosomeComponent();
         // Chromosome chromosome = component.getChromosome();
 
@@ -34,6 +43,7 @@ public class ChromosomeComponentTest {
         // assertEquals("100", chromosome.getChromosomeDataAsString());
     }
 
+    // Testing handling loading and storing valid data
     @Test
     public void testHandleStoreValidChromosomeData() {
         ChromosomeComponent component = new ChromosomeComponent();
@@ -51,7 +61,8 @@ public class ChromosomeComponentTest {
         assertEquals("1001011001", chromosome.getChromosomeDataAsString());
     }
 
-
+    // Testing the .containsGene() method
+    // TODO: fix
     @Test
     public void testContainsGene() {
         ChromosomeComponent component = new ChromosomeComponent();
