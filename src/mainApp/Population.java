@@ -9,8 +9,7 @@ public class Population {
     public ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
     private int sizeOfPopulation = 100; // default
     private int genomeLength = 100; // default
-    public double prevBestFitness, nextBestFitness, prevLowFitness, nextLowFitness;
-    public int prevAvgFitness, nextAvgFitness;
+    public double prevBestFitness, prevLowFitness, prevAvgFitness;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
     // Seeding the Random object
@@ -25,11 +24,11 @@ public class Population {
     }
 
     public void initiatePopulation(){
-        chromosomes = new ArrayList<Chromosome>();
-        lineArray = new ArrayList<BestFitLine2D>();
-        for (int i = 0; i<sizeOfPopulation; i++){
-            chromosomes.add(new Chromosome(genomeLength));
-            chromosomes.get(i).initiateGene();
+        this.chromosomes = new ArrayList<Chromosome>();
+        this.lineArray = new ArrayList<BestFitLine2D>();
+        for (int i = 0; i < this.sizeOfPopulation; i++){
+            this.chromosomes.add(new Chromosome(genomeLength));
+            this.chromosomes.get(i).initiateGene();
         }
         this.sortPopulation();
     }
@@ -38,7 +37,7 @@ public class Population {
      * sorts the chromosomes ArrayList from highest to lowest fitness score
      */
     public void sortPopulation(){
-        Collections.sort(chromosomes);
+        Collections.sort(this.chromosomes);
     }
 
     /**
@@ -46,10 +45,10 @@ public class Population {
      */
     public void createLine(){
         // find previous best + avg + lowest fitness
-        prevBestFitness = this.chromosomes.get(0).getFitnessScore();
-        prevAvgFitness = calculateAvgFitness();
-        prevLowFitness = this.chromosomes.get(chromosomes.size()-1).getFitnessScore();
-        lineArray.add(new BestFitLine2D(prevBestFitness, prevAvgFitness, prevLowFitness));
+        this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
+        this.prevAvgFitness = calculateAvgFitness();
+        this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
+        this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness));
     }
 
     /**
@@ -77,12 +76,12 @@ public class Population {
         }
        
         int initialSize = this.chromosomes.size();
-        chromosomes = new ArrayList<Chromosome>();
+        this.chromosomes = new ArrayList<Chromosome>();
         for (int i = 0; i < initialSize/2; i++){
             String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
             try {
-                chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
-                chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
             } catch (InvalidChromosomeFormatException e) {
                 // TODO: see if we actually need to do sth here
                 e.printStackTrace();
@@ -185,12 +184,12 @@ public class Population {
      * calculates the average fitness of the population
      * @return average fitness of the population
      */
-    public int calculateAvgFitness(){
-        int avg = 0;
-        for (Chromosome chromosome : chromosomes){
-            avg+= chromosome.getFitnessScore();
+    public double calculateAvgFitness(){
+        double avg = 0;
+        for (Chromosome chromosome : this.chromosomes){
+            avg += chromosome.getFitnessScore();
         }
-        avg = avg/chromosomes.size();
+        avg = avg / this.chromosomes.size();
         return avg;
     }
 

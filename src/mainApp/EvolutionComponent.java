@@ -62,123 +62,85 @@ public class EvolutionComponent extends JComponent {
   * Gets the size of the population.
   * @return The size of the population.
   */
-  public int getPopulationSize() {
-    return populationSize;
-  }
+  public int getPopulationSize() {return this.populationSize;}
   
   /**
   * Sets the size of the population.
   * @param populationSize The new size of the population.
   */
-  public void setPopulationSize(int populationSize) {
-    this.populationSize = populationSize;
-  }
+  public void setPopulationSize(int populationSize) {this.populationSize = populationSize;}
   
   /**
   * Gets the number of generations for the evolution process.
   * @return The number of generations.
   */
-  
-  public int getGenerations() {
-    return generations;
-  }
+  public int getGenerations() {return this.generations;}
   
   /**
   * Sets the number of generations for the evolution process.
   * @param generations The new number of generations.
   */
-  
-  public void setGenerations(int generations) {
-    this.generations = generations;
-  }
+  public void setGenerations(int generations) {this.generations = generations;}
   
   /**
   * Gets the elitism value, which is the percentage of top individuals preserved in each generation.
   * @return The elitism value.
   */
-  public int getElitism() {
-    return elitism;
-  }
+  public int getElitism() {return this.elitism;}
   
   /**
   * Sets the elitism value, which is the percentage of top individuals preserved in each generation.
   * @param elitism The new elitism value.
   */
-  
-  public void setElitism(int elitism) {
-    this.elitism = elitism;
-  }
-  
+  public void setElitism(int elitism) {this.elitism = elitism;}
   
   /**
   * Gets the length of the genome for each individual in the population.
   * @return The genome length.
   */
-  
-  public int getGenomeLength() {
-    return genomeLength;
-  }
+  public int getGenomeLength() {return this.genomeLength;}
   
   /**
   * Sets the length of the genome for each individual in the population.
   * @param genomeLength The new genome length.
   */
-  public void setGenomeLength(int genomeLength) {
-    this.genomeLength = genomeLength;
-  }
+  public void setGenomeLength(int genomeLength) {this.genomeLength = genomeLength;}
   
   /**
   * Gets the mutation rate.
   * @return The mutation rate.
   */
-  public double getMutationRate() {
-    return mutationRate;
-  }
+  public double getMutationRate() {return this.mutationRate;}
   
   /**
   * Sets the mutation rate.
   * @param mutationRate The new mutation rate.
   */
-  public void setMutationRate(double mutationRate) {
-    this.mutationRate = mutationRate;
-  }
-  
-  
+  public void setMutationRate(double mutationRate) {this.mutationRate = mutationRate;}
   
   /**
   * Gets the selection method.
   * @return The selection method.
   */
-  public String getSelection() {
-    return selection;
-  }
+  public String getSelection() {return this.selection;}
   
   /**
   * Sets the selection method.
   * @param selection The new selection method.
   */
-  
-  public void setSelection(String selection) {
-    this.selection = selection;
-  }
+  public void setSelection(String selection) {this.selection = selection;}
   
   /**
   * Gets whether crossover is enabled.
   * @return `true` if crossover is enabled, `false` otherwise.
   */
-  
-  public Boolean getCrossover() {
-    return crossover;
-  }
+  public Boolean getCrossover() {return this.crossover;}
   
   /**
   * Sets whether crossover is enabled.
   * @param crossover `true` to enable crossover, `false` to disable it.
   */
-  
-  public void setCrossover(Boolean crossover) {
-    this.crossover = crossover;
-  }
+  public void setCrossover(Boolean crossover) {this.crossover = crossover;}
   
   /**
   * Sets various parameters for the evolution process, including population size,
@@ -225,21 +187,21 @@ public class EvolutionComponent extends JComponent {
   * handles truncation selection of the population
   */
   public void handleTruncationSelection(){
-    this.population.performSelection(mutationRate, 0);
+    this.population.performSelection(this.mutationRate, 0);
   }
   
   /**
   * handles roulette selection of the population
   */
   public void handleRouletteSelection(){
-    this.population.performSelection(mutationRate, 1);
+    this.population.performSelection(this.mutationRate, 1);
   }
   
   /**
   * handles ranked selection of the population
   */
   public void handleRankSelection(){
-    this.population.performSelection(mutationRate, 2);
+    this.population.performSelection(this.mutationRate, 2);
   }
   
   
@@ -262,29 +224,25 @@ public class EvolutionComponent extends JComponent {
   
   /**
   * Draws various elements on the specified Graphics2D object, including axes and a legend.
-  *
   * @param g2 The Graphics2D object for drawing.
   */
   public void drawOn(Graphics2D g2){
-    drawAxes(g2);
-    drawLegend(g2);
+    this.drawAxes(g2);
+    this.drawLegend(g2);
   }
   
   /**
   * Draws the axes on the specified Graphics2D object, including divisions.
-  *
   * @param g2 The Graphics2D object for drawing axes.
   */
-  
   public void drawAxes(Graphics2D g2){
-    g2.drawRect(x, y, xLimit, yLimit);
-    drawXDivisions(g2);
-    drawYDivisions(g2);
+    g2.drawRect(this.x, this.y, this.xLimit, this.yLimit);
+    this.drawXDivisions(g2);
+    this.drawYDivisions(g2);
   }
   
   /**
   * Draws the divisions on the X-axis to indicate values.
-  *
   * @param g2 The Graphics2D object for drawing X-axis divisions.
   */
   public void drawXDivisions(Graphics2D g2){
@@ -293,82 +251,78 @@ public class EvolutionComponent extends JComponent {
     g2.translate(this.x, this.yHeight);
     
     int num = 0;
-    for (int i = 0; i <= xWidth; i += xWidth / GENERATION_INTERVAL){
+    for (int i = 0; i <= this.xWidth; i += this.xWidth / GENERATION_INTERVAL){
       String sNum = Integer.toString(num);
       g2.drawLine(i, -AXIS_LABEL_LINE_WIDTH, i, AXIS_LABEL_LINE_WIDTH);
       g2.drawString(sNum, i + X_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, X_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
-      num += generations / GENERATION_INTERVAL;
-      if ((i + (xWidth / GENERATION_INTERVAL)) >= xWidth){
-        xWidth = i;
+      num += this.generations / GENERATION_INTERVAL;
+      if ((i + (this.xWidth / GENERATION_INTERVAL)) >= this.xWidth){
+        this.xWidth = i;
       }
     }
-    g2.translate(-x, -yHeight);
+    g2.translate(-this.x, -this.yHeight);
   }
   
   /**
   * Draws the divisions on the Y-axis to indicate values.
-  *
   * @param g2 The Graphics2D object for drawing Y-axis divisions.
   */
   public void drawYDivisions(Graphics2D g2){
-    yHeight = yLimit - y;
-    g2.translate(x, y);
+    this.yHeight = this.yLimit - this.y;
+    g2.translate(this.x, this.y);
     int num = MAX_FITNESS_SCORE;
-    for (int i = 0; i <= yHeight; i += yHeight / GENERATION_INTERVAL){
+    for (int i = 0; i <= this.yHeight; i += this.yHeight / GENERATION_INTERVAL){
       String sNum = Integer.toString(num);
       g2.drawLine(AXIS_LABEL_LINE_WIDTH, i, -AXIS_LABEL_LINE_WIDTH, i);
       g2.drawString(sNum, Y_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, i+Y_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
       num -= FITNESS_SCORE_INTERVAL;
-      if ((i + yHeight/FITNESS_SCORE_INTERVAL) >= yHeight){
-        yHeight = i;
+      if ((i + this.yHeight / FITNESS_SCORE_INTERVAL) >= this.yHeight){
+        this.yHeight = i;
       }
       //System.out.println(i+","+yHeight);
     }
-    g2.translate(-x, -y);
+    g2.translate(-this.x, -this.y);
   }
   
   /**
   * Calculates the Y-coordinate based on a percentage value.
-  *
   * @param y The percentage value for Y-coordinate calculation.
   * @return The calculated Y-coordinate.
   */
   public int calculateY(double y){
-    return (int) (yHeight - (y * (yHeight / (double) MAX_FITNESS_SCORE)));
+    return (int) (this.yHeight - (y * (this.yHeight / (double) MAX_FITNESS_SCORE)));
   }
   
   /**
   * Calculates the X-coordinate based on the current generation.
-  *
   * @param x The generation number for X-coordinate calculation.
   * @return The calculated X-coordinate.
   */
   public int calculateX(double x){
-    return (int) (x * ((double) xWidth / generations));
+    return (int) (x * ((double) this.xWidth / this.generations));
   }
   
   /**
   * Draws fitness lines on the specified Graphics2D object, including best fitness, average fitness, and lowest fitness.
-  *
   * @param g2 The Graphics2D object for drawing fitness lines.
   */
   public void drawLines(Graphics2D g2){
-    g2.translate(x, y);
+    g2.translate(this.x, this.y);
     // System.out.println(this.population.lineArray.size());
-    for (int i = 1; i < generations; i++){
+    if (this.generations <= 100){
+      g2.setStroke(new BasicStroke(DEFAULT_STROKE / DEFAULT_GENERATION));
+    } else {
+      g2.setStroke(new BasicStroke(DEFAULT_STROKE / this.generations));
+    }
+
+    for (int i = 1; i < this.generations; i++){
       if (i < this.population.lineArray.size()){
         //Line of best fit
         int pX = calculateX(i-1);
         int nX = calculateX(i);
         int pY = calculateY(this.population.lineArray.get(i-1).getBestFitness());
         int nY = calculateY(this.population.lineArray.get(i).getBestFitness());
-        g2.setColor(Color.green);
-        if (generations <= 100){
-          g2.setStroke(new BasicStroke(DEFAULT_STROKE / DEFAULT_GENERATION));
-        } else {
-          g2.setStroke(new BasicStroke(DEFAULT_STROKE / generations));
-        }
-        
+        g2.setColor(Color.green);  
         g2.drawLine(pX, pY, nX, nY);
         
         //Line of avg
@@ -383,31 +337,29 @@ public class EvolutionComponent extends JComponent {
         nY = calculateY(this.population.lineArray.get(i).getLowFitness());
         g2.setColor(Color.red);
         g2.drawLine(pX, pY, nX, nY);
-        
       }
     }
-    g2.translate(-x,-y);
+    g2.translate(-this.x,-this.y);
   }
   
   /**
   * Draws a legend on the specified Graphics2D object, including colored boxes and labels for fitness lines.
-  *
   * @param g2 The Graphics2D object for drawing the legend.
   */
   
   public void drawLegend(Graphics2D g2){
     g2.setColor(Color.green);
-    g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_GREEN_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
+    g2.fillRect(calculateX(KEY_X_RATIO * this.generations), calculateY(KEY_GREEN_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
     
     g2.setColor(Color.orange);
-    g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_ORANGE_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
+    g2.fillRect(calculateX(KEY_X_RATIO * this.generations), calculateY(KEY_ORANGE_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
     
     g2.setColor(Color.red);
-    g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_RED_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
+    g2.fillRect(calculateX(KEY_X_RATIO * this.generations), calculateY(KEY_RED_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
     
     g2.setColor(Color.black);
-    g2.drawString("Best fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_GREEN_Y + KEY_LABEL_OFFSET));
-    g2.drawString("Average fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_ORANGE_Y + KEY_LABEL_OFFSET));
-    g2.drawString("Low fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_RED_Y + KEY_LABEL_OFFSET));
+    g2.drawString("Best fitness", calculateX(KEY_LABEL_X_RATIO * this.generations), calculateY(KEY_GREEN_Y + KEY_LABEL_OFFSET));
+    g2.drawString("Average fitness", calculateX(KEY_LABEL_X_RATIO * this.generations), calculateY(KEY_ORANGE_Y + KEY_LABEL_OFFSET));
+    g2.drawString("Low fitness", calculateX(KEY_LABEL_X_RATIO * this.generations), calculateY(KEY_RED_Y + KEY_LABEL_OFFSET));
   }
 }

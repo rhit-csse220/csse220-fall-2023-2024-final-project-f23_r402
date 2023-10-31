@@ -20,27 +20,24 @@ import javax.swing.Timer;
  * for viewing the evolution of populations. It allows users to configure various
  * parameters for the evolution process and visualize the results.
  */
-
 public class EvolutionViewer {
     public static final int TIMER_DELAY = 1500;
 
-    public JFrame frame;
+    // public JFrame frame;
     public EvolutionComponent evComponent;
-    public int generations;
 
-       /**
+    /**
      * The driverMain method initializes and sets up the Evolution Viewer application.
      * It creates a graphical user interface, sets up user input fields, and handles
      * the evolution process.
      */
-
     public void driverMain(){
         final String frameTitle = "Evolution Viewer";
 		final int frameWidth = 1000;
 		final int frameHeight = 400;
         final int textFieldWidth = 3;
         
-        this.frame = new JFrame();
+        JFrame frame = new JFrame();
         frame.setTitle(frameTitle);
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,8 +45,8 @@ public class EvolutionViewer {
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
         
-        evComponent = new EvolutionComponent();
-        frame.add(evComponent, BorderLayout.CENTER);
+        this.evComponent = new EvolutionComponent();
+        frame.add(this.evComponent, BorderLayout.CENTER);
 
         //Text fields array
         JTextField[] textFields = new JTextField[5];
@@ -61,7 +58,7 @@ public class EvolutionViewer {
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
         //Mutation rate
-        JLabel mRate = new JLabel("Mutation Rate (N/pop): ");
+        JLabel mRate = new JLabel("Mutation Rate (%): ");
 		JTextField mRateField = new JTextField("1", textFieldWidth);
         textFields[0]=mRateField;
 
@@ -128,7 +125,7 @@ public class EvolutionViewer {
         //Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
         startEvolutionButton.addActionListener(new ActionListener() {
-            Timer timer = new Timer(0, new ActionListener() {
+            Timer timer = new Timer(TIMER_DELAY/Integer.parseInt(generationsField.getText()), new ActionListener() {
                 int generationCount = -1;
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -136,19 +133,15 @@ public class EvolutionViewer {
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                         generationCount++;
                         frame.repaint();
-                    }
-                    if (generationCount <= Integer.parseInt(generationsField.getText())){
+                    } else if (generationCount <= Integer.parseInt(generationsField.getText())){
                         evComponent.handleSelection();
                         generationCount++;
                         evComponent.generationCount = generationCount;
                         frame.repaint();
-                    }
-                    else {
+                    } else {
                         startEvolutionButton.setText("Start Evolution");
                         // System.out.println(evComponent.population.chromosomes.get(0).getChromosomeDataAsString());
                         timer.restart();
-
-                        //TODO populationField might not be needed to be initialized here i think lawl
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                         generationCount = -1;
                         timer.stop();
@@ -176,41 +169,26 @@ public class EvolutionViewer {
 
         //Line plot chart
         frame.add(new JLabel("Population"), BorderLayout.NORTH);
-        
         frame.pack();
 
-        // Modify the dimensions of the given text fields (Has to be after frame.pack(), i can't explain why)
         for (JTextField textField : textFields) {
             textField.setBounds(textField.getX(), textField.getY()+8, textField.getWidth(), 20); // TODO Substitute Magic Numbers Here!
         }
     }
 
-
     /**
      * The handleDriverMain method is responsible for executing the Evolution Viewer.
      * It calls the driverMain method to set up the application and start the evolution process.
      */
-
     public void handleDriverMain(){
         this.driverMain();
-        //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
-        // this.evComponent.population = new Population(200, 150); 
-        // for (int i = 0; i < 200; i++){
-        //     this.evComponent.population.truncationSelection(1);
-        //     this.evComponent.population.giveFitness();
-        // }
-        // System.out.println(this.evComponent.population.chromosomes.get(0).getChromosomeDataAsString());
-        //  this.evComponent.population.giveFitness(); //To check if the chromosomes were sorted according to fitness
     }   
-
 
       /**
      * The main method is the entry point of the Evolution Viewer application.
      * It creates an instance of EvolutionViewer and initiates the application.
-     *
      * @param args The command-line arguments (not used in this application).
      */
-    
     public static void main(String[] args) {
         EvolutionViewer evViewer = new EvolutionViewer();
         evViewer.handleDriverMain();

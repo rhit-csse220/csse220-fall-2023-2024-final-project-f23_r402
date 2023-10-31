@@ -17,7 +17,7 @@ public class BestFitLine2D {
     private double bestFitness, avgFitness, lowFitness;
 
     public double getBestFitness() {
-        return bestFitness;
+        return this.bestFitness;
     }
 
     public void setBestFitness(double bestFitness) {
@@ -25,7 +25,7 @@ public class BestFitLine2D {
     }
 
     public double getAvgFitness() {
-        return avgFitness;
+        return this.avgFitness;
     }
 
     public void setAvgFitness(double avgFitness) {
@@ -33,7 +33,7 @@ public class BestFitLine2D {
     }
 
     public double getLowFitness() {
-        return lowFitness;
+        return this.lowFitness;
     }
 
     public void setLowFitness(double lowFitness) {

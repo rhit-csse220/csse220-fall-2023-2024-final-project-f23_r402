@@ -36,6 +36,10 @@ public class Gene {
 	} //Gene
 	
 	// methods
+	/**
+	 * ensures: the gene object is drawn
+	 * @param g
+	 */
 	public void drawOn(Graphics g) {
 	    // Treat Graphics as a Graphics2D
 	    Graphics2D g2 = (Graphics2D) g;
@@ -45,7 +49,7 @@ public class Gene {
             g2.setColor(GENE_1_COLOR);
         }
         // g2.fillRect(x, y, this.geneSide, this.geneSide);
-		g2.fillRect(x+this.border, y, this.geneWidth, this.geneWidth);
+		g2.fillRect(this.x + this.border, this.y, this.geneWidth, this.geneWidth);
     }
 	
 	/**
@@ -122,7 +126,6 @@ public class Gene {
 	 */
 	public void setY(int y) {this.y = y;} //setY
 
-
 	/**
 	 * @return side length of gene
 	 */
@@ -135,11 +138,16 @@ public class Gene {
 	public void setGeneWidth(int geneWidth){this.geneWidth = geneWidth;}
 
     /**
-     * @return the current dimensions of the gene when drawn on the frame
-     */
-	// public int getGeneSide() {return GENE_SIDE;} //getGeneSide
+	 * ensures: the border is updated
+	 * @param border
+	 */
 	public void setBorder(int border) {this.border = border;}
 
+	/**
+	 * ensures: mutate the gene
+	 * @param mutationRate
+	 * @param numOfGenes
+	 */
 	public void mutate(double mutationRate, int numOfGenes){
 		int randomNum = (int)(Math.random() * numOfGenes) + 1;
 		if (randomNum <= mutationRate) {
