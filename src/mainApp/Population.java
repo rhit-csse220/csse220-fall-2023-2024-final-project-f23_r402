@@ -212,4 +212,8 @@ public class Population {
     //     }
     //     System.out.println(this.chromosomes.size());
     // }
+
+    public ArrayList<Chromosome> getChromosomes() {
+        return this.chromosomes;
+    }
 }

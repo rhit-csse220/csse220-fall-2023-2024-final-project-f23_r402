@@ -278,6 +278,10 @@ public class Chromosome implements Comparable {
 		this.genes = genes;
 	}
 
+	public Gene[] getGenes() {
+		return this.genes;
+	}
+
 	@Override
 	public String toString() {
 		return this.getChromosomeDataAsString();

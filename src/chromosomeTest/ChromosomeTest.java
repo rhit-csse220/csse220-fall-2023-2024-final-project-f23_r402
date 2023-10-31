@@ -3,12 +3,14 @@ package chromosomeTest;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.Scanner;
 
 import org.junit.Test;
 
 import mainApp.Chromosome;
 import mainApp.Gene;
 import mainApp.InvalidChromosomeFormatException;
+import mainApp.Population;
 
 
 public class ChromosomeTest {
@@ -88,7 +90,13 @@ public class ChromosomeTest {
     public void testInitialiazeChromosomeWithInvalidNumberOfGenes() throws InvalidChromosomeFormatException {
         Chromosome c1 = new Chromosome();
         c1.initiateGeneWithString("000101010");
-    } 
+    }
+
+    @Test
+    public void runAllManualTests() {
+        // Don't forget to run ChromosomeManualTest.java
+        assertTrue(true);
+    }
 
     // @Test
     // public void testStoreChromosomeData() {
