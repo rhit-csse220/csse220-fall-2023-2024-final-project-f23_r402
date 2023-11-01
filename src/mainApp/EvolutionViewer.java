@@ -51,13 +51,13 @@ public class EvolutionViewer {
         //Text fields array
         JTextField[] textFields = new JTextField[5];
         
-        //create a panel for buttons
+        // create a panel for buttons
         JPanel buttonPanel = new JPanel();
-        //Set up the panel to use a horizontal layout and give it a background color
+        // Set up the panel to use a horizontal layout and give it a background color
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         frame.add(buttonPanel, BorderLayout.SOUTH);
         
-        //Mutation rate
+        // Mutation rate
         JLabel mRate = new JLabel("Mutation Rate %: ");
         JTextField mRateField = new JTextField("1", textFieldWidth);
         textFields[0] = mRateField;
@@ -65,12 +65,12 @@ public class EvolutionViewer {
         buttonPanel.add(mRate);
         buttonPanel.add(mRateField);
         
-        //Dropdown panel for choosing a selection method
+        // Dropdown panel for choosing a selection method
         JPanel dropdownPanel  = new JPanel();
         JLabel dropdownLabel = new JLabel("Selection: ");
         dropdownPanel.add(dropdownLabel);
         
-        //Modify this if you wish to add different numbers of things into the simulation
+        // Modify this if you wish to add different numbers of things into the simulation
         String[] selectionMethods = {"Truncation", "Roulette", "Rank"};
         // create a combo box with the fixed array so you can pick how many things to add
         JComboBox<String> addSelectionChooser = new JComboBox<String>(selectionMethods);
@@ -82,14 +82,14 @@ public class EvolutionViewer {
         
         buttonPanel.add(dropdownPanel);
         
-        //Crossover
+        // Crossover
         JLabel crossover = new JLabel("Crossover? ");
         JCheckBox checkCrossover = new JCheckBox();
         
         buttonPanel.add(crossover);
         buttonPanel.add(checkCrossover);
         
-        //Population
+        // Population
         JLabel population = new JLabel("Population: ");
         JTextField populationField = new JTextField("100", textFieldWidth);
         textFields[1] = populationField;
@@ -97,7 +97,7 @@ public class EvolutionViewer {
         buttonPanel.add(population);
         buttonPanel.add(populationField);
         
-        //Generations
+        // Generations
         JLabel generations = new JLabel("Generations: ");
         JTextField generationsField = new JTextField("100", textFieldWidth);
         textFields[2] = generationsField;
@@ -105,53 +105,61 @@ public class EvolutionViewer {
         buttonPanel.add(generations);
         buttonPanel.add(generationsField);
         
-        //Genome length
+        // Genome length
         JLabel genomeLength = new JLabel("Genome Length: ");
         JTextField genomeLengthField = new JTextField("100", textFieldWidth);
         textFields[3] = genomeLengthField;
-        // TODO: notify user when genome length % 10 != 0
         
         buttonPanel.add(genomeLength);
         buttonPanel.add(genomeLengthField);
         
-        //Elitism
+        // Elitism
         JLabel elitism = new JLabel("Elitism %: ");
         JTextField elitismField = new JTextField("1", textFieldWidth);
         textFields[4] = elitismField;
         
         buttonPanel.add(elitism);
         buttonPanel.add(elitismField);
+
+        // Fast Evolution
+        JLabel fastEvolutionLabel = new JLabel("Fast? ");
+        JCheckBox fastEvolutionCheckBox = new JCheckBox();
         
-        //Start Evolution
+        buttonPanel.add(fastEvolutionLabel);
+        buttonPanel.add(fastEvolutionCheckBox);
+        
+        // Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
         startEvolutionButton.addActionListener(new ActionListener() {
-            private boolean passedErrorCheck = true;
             
+            private boolean passedErrorCheck = true;
             Timer timer = new Timer(TIMER_DELAY/Integer.parseInt(generationsField.getText()), new ActionListener() {
                 int generationCount = -1;
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // System.out.println(passedErrorCheck);
-                    if (passedErrorCheck){
-                        if (generationCount == -1){
-                            evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-                            generationCount++;
-                            frame.repaint();
-                        } else if (generationCount <= Integer.parseInt(generationsField.getText())){
-                            evComponent.handleSelection();
-                            generationCount++;
-                            evComponent.generationCount = generationCount;
-                            frame.repaint();
-                        } else {
-                            startEvolutionButton.setText("Start Evolution");
-                            // System.out.println(evComponent.population.chromosomes.get(0).getChromosomeDataAsString());
-                            timer.restart();
-                            makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover);
-                            evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-                            generationCount = -1;
+                    if (!fastEvolutionCheckBox.isSelected()){
+                        if (passedErrorCheck){
+                            if (generationCount == -1){
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                generationCount++;
+                                frame.repaint();
+                            } else if (generationCount <= Integer.parseInt(generationsField.getText())){
+                                evComponent.handleSelection();
+                                generationCount++;
+                                evComponent.generationCount = generationCount;
+                                frame.repaint();
+                            } else {
+                                startEvolutionButton.setText("Start Evolution");
+                                timer.restart();
+                                makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover);
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                generationCount = -1;
+                                timer.stop();
+                            }
+                        } else{
                             timer.stop();
                         }
-                    } else{
+                    } else {
                         timer.stop();
                     }
                 }
@@ -159,59 +167,66 @@ public class EvolutionViewer {
             
             @Override
             public void actionPerformed(ActionEvent e){
-                try{
-                    boolean[] checkForError = new boolean[1];
-                    checkFields(textFields, checkForError);
-                    if (checkForError[0]){
-                        this.passedErrorCheck = true;
-                        makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover);
-                        if (startEvolutionButton.getText().equals("Start Evolution")){
-                            evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-                            startEvolutionButton.setText("Pause");
-                            timer.start();
-                        } else if (startEvolutionButton.getText().equals("Pause")){
-                            startEvolutionButton.setText("Continue");
-                            timer.stop();
-                        } else if (startEvolutionButton.getText().equals("Continue")){
-                            startEvolutionButton.setText("Pause");
-                            timer.start();
+                if (!fastEvolutionCheckBox.isSelected()){
+                    try{
+                        boolean[] checkForError = new boolean[1];
+                        checkFields(textFields, checkForError);
+                        if (checkForError[0]){
+                            this.passedErrorCheck = true;
+                            makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover);
+                            if (startEvolutionButton.getText().equals("Start Evolution")){
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                startEvolutionButton.setText("Pause");
+                                timer.start();
+                            } else if (startEvolutionButton.getText().equals("Pause")){
+                                startEvolutionButton.setText("Continue");
+                                timer.stop();
+                            } else if (startEvolutionButton.getText().equals("Continue")){
+                                startEvolutionButton.setText("Pause");
+                                timer.start();
+                            }
+                        } else{
+                            this.passedErrorCheck = false;
                         }
-                    } else{
-                        this.passedErrorCheck = false;
-                    }
-                } catch (Exception ex){}
+                    } catch (Exception ex){}
+                }
             }
         });
         
-        buttonPanel.add(startEvolutionButton);
-        
-        
         final EvolutionWorker[] evolutionWorker = {null}; // Declare as an array to make it effectively final
-        
-        JButton startFastButton = new JButton("FAST Evolution");
-        
-        
         class EvolutionActionListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (startFastButton.getText().equals("FAST Evolution")) {
-                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-                    startFastButton.setText("Pause");
-                    
-                    evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startFastButton);
-                    evolutionWorker[0].execute();
-                } else if (startFastButton.getText().equals("Pause")) {
-                    startFastButton.setText("FAST Evolution");
-                    
-                    if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
-                        evolutionWorker[0].cancel(true);
+                if (fastEvolutionCheckBox.isSelected()){
+                    if (startEvolutionButton.getText().equals("Start Evolution")) {
+                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                        startEvolutionButton.setText("Pause");
+                        
+                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0].execute();
+                    } else if (startEvolutionButton.getText().equals("Pause")) {
+                        startEvolutionButton.setText("Start Evolution");
+                        
+                        if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
+                            evolutionWorker[0].cancel(true);
+                        }
                     }
                 }
             }
-        }        
+        }
+
+        startEvolutionButton.addActionListener(new EvolutionActionListener());
+
+        buttonPanel.add(startEvolutionButton);
         
-        startFastButton.addActionListener(new EvolutionActionListener());
-        buttonPanel.add(startFastButton);
+        
+        
+
+        // JButton startFastButton = new JButton("FAST Evolution");
+                
+        
+        // startFastButton.addActionListener(new EvolutionActionListener());
+        // buttonPanel.add(startFastButton);
         
         //Line plot chart
         frame.add(new JLabel("Population"), BorderLayout.NORTH);

@@ -22,13 +22,13 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
             evComponent.handleSelection();
             evComponent.generationCount = generationCount;
             publish();
-            System.out.println("Generation " + generationCount + " completed");
+            // System.out.println("Generation " + generationCount + " completed");
         }
-        System.out.println("Evolution process completed");
+        // System.out.println("Evolution process completed");
 
         // Update the button label when the evolution is completed
         SwingUtilities.invokeLater(() -> {
-            startEvolutionButton.setText("FAST Evolution");
+            startEvolutionButton.setText("Start Evolution");
         });
 
         return null;
