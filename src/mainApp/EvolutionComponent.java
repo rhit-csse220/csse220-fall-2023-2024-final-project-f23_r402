@@ -46,7 +46,7 @@ public class EvolutionComponent extends JComponent {
   private int genomeLength;
   private double mutationRate;
   private String selection;
-  private Boolean crossover;
+  private boolean crossover;
   private int x,y,xLimit,yLimit,xWidth,yHeight;
   public int generationCount;
   public ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
@@ -179,7 +179,7 @@ public class EvolutionComponent extends JComponent {
       this.handleRouletteSelection();
     }
     else if (s.equals("Rank")){
-      this.handleRankSelection();
+      this.handleRankedSelection();
     }
   }
   
@@ -200,7 +200,7 @@ public class EvolutionComponent extends JComponent {
   /**
   * handles ranked selection of the population
   */
-  public void handleRankSelection(){
+  public void handleRankedSelection(){
     this.population.performSelection(this.mutationRate, 2);
   }
   
