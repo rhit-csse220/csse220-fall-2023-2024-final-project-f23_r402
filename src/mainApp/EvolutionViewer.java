@@ -193,20 +193,33 @@ public class EvolutionViewer {
             }
         });
         
+        buttonPanel.add(startEvolutionButton);
+        /**
+        * This block of code defines an array of `EvolutionWorker` objects, a button for starting Fast Evolution,
+        * and an action listener to handle the button's behavior.
+        */
         final EvolutionWorker[] evolutionWorker = {null}; // Declare as an array to make it effectively final
+        
+        /**
+        * An ActionListener implementation to control the behavior of Fast Evolution when the fastEvolutionCheckBox is selected.
+        */
         class EvolutionActionListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (fastEvolutionCheckBox.isSelected()){
                     if (startEvolutionButton.getText().equals("Start Evolution")) {
+                        // Start the FAST Evolution process
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                         startEvolutionButton.setText("Pause");
                         
+                        // Create and execute an EvolutionWorker to run the evolution in the background
                         evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
                         evolutionWorker[0].execute();
                     } else if (startEvolutionButton.getText().equals("Pause")) {
+                        // Pause the FAST Evolution process
                         startEvolutionButton.setText("Start Evolution");
                         
+                        // Cancel the running EvolutionWorker if it exists and is not yet done
                         if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
                             evolutionWorker[0].cancel(true);
                         }
@@ -218,15 +231,6 @@ public class EvolutionViewer {
         startEvolutionButton.addActionListener(new EvolutionActionListener());
 
         buttonPanel.add(startEvolutionButton);
-        
-        
-        
-
-        // JButton startFastButton = new JButton("FAST Evolution");
-                
-        
-        // startFastButton.addActionListener(new EvolutionActionListener());
-        // buttonPanel.add(startFastButton);
         
         //Line plot chart
         frame.add(new JLabel("Population"), BorderLayout.NORTH);
