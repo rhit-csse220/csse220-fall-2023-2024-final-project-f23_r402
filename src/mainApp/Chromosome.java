@@ -24,7 +24,7 @@ public class Chromosome implements Comparable {
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
 	
 	// Seeding the Random object
-	Random r = new Random(1000);
+	Random r = new Random();
 	
 	/**
 	* Creates a new Chromosome object

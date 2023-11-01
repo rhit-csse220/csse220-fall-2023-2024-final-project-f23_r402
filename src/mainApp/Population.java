@@ -13,7 +13,7 @@ public class Population {
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
     // Seeding the Random object
-    Random r = new Random(1000);
+    Random r = new Random();
 
     public Population(){}
 
