@@ -182,28 +182,27 @@ public class EvolutionComponent extends JComponent {
       this.handleRankedSelection();
     }
   }
-  
+
   /**
   * handles truncation selection of the population
   */
   public void handleTruncationSelection(){
-    this.population.performSelection(this.mutationRate, 0);
+    this.population.performSelection(this.mutationRate, 0, elitism);
   }
   
   /**
   * handles roulette selection of the population
   */
   public void handleRouletteSelection(){
-    this.population.performSelection(this.mutationRate, 1);
+    this.population.performSelection(this.mutationRate, 1, elitism);
   }
   
   /**
   * handles ranked selection of the population
   */
   public void handleRankedSelection(){
-    this.population.performSelection(this.mutationRate, 2);
+    this.population.performSelection(this.mutationRate, 2, elitism);
   }
-  
   
   /**
   * Paints the component and draws various elements, including axes, divisions, lines, and legend.

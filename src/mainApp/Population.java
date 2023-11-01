@@ -45,6 +45,7 @@ public class Population {
      */
     public void createLine(){
         // find previous best + avg + lowest fitness
+        System.out.println(this.chromosomes.size());
         this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
         this.prevAvgFitness = calculateAvgFitness();
         this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
@@ -56,7 +57,7 @@ public class Population {
      * @param mutationRate
      * @param selectionType 0 for truncation, 1 for roulette, 2 for ranked
      */
-    public void performSelection(double mutationRate, int selectionType){
+    public void performSelection(double mutationRate, int selectionType, double elitism){
         // sort population
         this.sortPopulation();
 
@@ -76,7 +77,20 @@ public class Population {
         }
        
         int initialSize = this.chromosomes.size();
+        
+        // The amount of the most fit population to be retained from the initial collection of chromosomes. 
+        int elitistSize = (int)((elitism/100)*initialSize);
+        //System.out.println(elitistSize);
+
+        // The collection is initially initialized to the initial collection of chromosomes
+        ArrayList<Chromosome> eliteChromosomes = new ArrayList<Chromosome>(chromosomes);
+
+        // This removes all the chromosomes from bottom to top, until only the most fit chromosomes remain from 0 to elitistSize-1, eg. 0 to 9, i.e 10 elements
+        for (int i = initialSize-1; i>elitistSize-1; i--){
+            eliteChromosomes.remove(i);
+        }
         this.chromosomes = new ArrayList<Chromosome>();
+
         for (int i = 0; i < initialSize/2; i++){
             String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
             try {
@@ -87,6 +101,18 @@ public class Population {
                 e.printStackTrace();
             }
         }
+
+        // This sets the newly initialized generation and replaces the existing chromosomes with the previously elite chromosomes through replacing it at their assigned index
+        for (int i = 0; i < elitistSize; i++){
+            String currChromosomeData = eliteChromosomes.get(i).getChromosomeDataAsString();
+            try {
+                this.chromosomes.set(i, new Chromosome(currChromosomeData, false, mutationRate));
+            } catch (InvalidChromosomeFormatException e) {
+                // TODO: see if we actually need to do sth here
+                e.printStackTrace();
+            }
+        }
+
         // sort population
         this.sortPopulation();
     }
