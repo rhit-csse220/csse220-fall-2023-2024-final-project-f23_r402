@@ -14,7 +14,15 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class BestFitLine2D {
-    private double bestFitness, avgFitness, lowFitness;
+    private double bestFitness, avgFitness, lowFitness, hammingDistance;
+
+    public double getHammingDistance() {
+        return hammingDistance;
+    }
+
+    public void setHammingDistance(double hammingDistance) {
+        this.hammingDistance = hammingDistance;
+    }
 
     public double getBestFitness() {
         return this.bestFitness;
@@ -40,9 +48,10 @@ public class BestFitLine2D {
         this.lowFitness = lowFitness;
     }
 
-    public BestFitLine2D(double bestFitness, double avgFitness, double lowFitness) {
+    public BestFitLine2D(double bestFitness, double avgFitness, double lowFitness, double hammingDistance) {
         this.bestFitness = bestFitness;
         this.avgFitness = avgFitness;
         this.lowFitness = lowFitness;
+        this.hammingDistance = hammingDistance;
     }
 }
