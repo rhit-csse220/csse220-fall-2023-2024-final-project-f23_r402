@@ -42,7 +42,7 @@ public class EvolutionComponent extends JComponent {
   public Population population;
   private int populationSize;
   private int generations = 100;
-  private int elitism;
+  private double elitism;
   private int genomeLength;
   private double mutationRate;
   private String selection;
@@ -86,13 +86,13 @@ public class EvolutionComponent extends JComponent {
   * Gets the elitism value, which is the percentage of top individuals preserved in each generation.
   * @return The elitism value.
   */
-  public int getElitism() {return this.elitism;}
+  public double getElitism() {return this.elitism;}
   
   /**
   * Sets the elitism value, which is the percentage of top individuals preserved in each generation.
   * @param elitism The new elitism value.
   */
-  public void setElitism(int elitism) {this.elitism = elitism;}
+  public void setElitism(double elitism) {this.elitism = elitism;}
   
   /**
   * Gets the length of the genome for each individual in the population.
@@ -161,7 +161,7 @@ public class EvolutionComponent extends JComponent {
     this.setCrossover(crossover);
     this.setGenerations(Integer.parseInt(generations));
     this.setGenomeLength(Integer.parseInt(genomeLength));
-    this.setElitism(Integer.parseInt(elitism));
+    this.setElitism(Double.parseDouble(elitism));
     this.lineArray.removeAll(lineArray);
     this.population = new Population(this.populationSize, this.genomeLength);
   }
