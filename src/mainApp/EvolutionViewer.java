@@ -46,6 +46,20 @@ public class EvolutionViewer implements Runnable {
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
+
+        // JFrame bestFrame = new JFrame();
+        // bestFrame.setTitle("Individual Viewer");
+        // bestFrame.setSize(400, 400);
+        // bestFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // bestFrame.setLayout(new BorderLayout());
+        // bestFrame.setVisible(false);
+
+        // JFrame popFrame = new JFrame();
+        // popFrame.setTitle("Population Viewer");
+        // popFrame.setSize(400, 400);
+        // popFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // popFrame.setLayout(new BorderLayout());
+        // popFrame.setVisible(false);
         
         this.evComponent = new EvolutionComponent();
         frame.add(this.evComponent, BorderLayout.CENTER);

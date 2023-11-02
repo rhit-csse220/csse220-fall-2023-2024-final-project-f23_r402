@@ -226,18 +226,24 @@ public class Population {
         return avg;
     }
 
+    //USED THE GUIDE FOR THIS CHECK THE SPECIFICAITONS DOC
     public double calculateHammingDistance(){
         double hammingDistance = 0;
         int[][][] position1n0Array = new int[genomeLength][sizeOfPopulation][sizeOfPopulation];
         int numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2;
+        //CALLS THIS PARALLELY AND SOMEHOW MAKES THE FAST EVOLUTION THING WORK WITH IT
         this.chromosomes.parallelStream().forEach(chromosome -> readData1n0(chromosome, position1n0Array));
         for (int i = 0; i < genomeLength; i++){
             hammingDistance+= (position1n0Array[i][0][0]*position1n0Array[i][0][1]);
         }
+        //DEBUG TO TEST IF IT IS APPROPRIATE VALUES
         System.out.println(((hammingDistance/(numPairs))/genomeLength));
+
+        // RETURNS THE VALUE THAT CAN THEN BE PLOTTED ON GRAPH, AS ACTUAL VALUE IS TOO SMALL AND WILL BE LIKE 0 
         return ((hammingDistance/(numPairs))/genomeLength)*100;
     }
 
+    // USING THE GUIDE FOR CALC OF HAMMING DISTANCE, CAME UP WITH THIS; FOR THE GIVEN CHARACTER, IT WILL EITHER ADD +1 TO THE NUMBER OF 0s, [i][0][0], or 1s, [i][0][1]; THIS WAS MY BS WAY U GUYS CAN PROBABLY THINK OF SMTH BETTER
     public void readData1n0(Chromosome chromosome, int[][][] position1n0Array){
         String geneticData = chromosome.getChromosomeDataAsString();
         for (int i = 0; i < geneticData.length(); i++){

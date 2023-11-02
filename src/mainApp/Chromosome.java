@@ -24,6 +24,8 @@ public class Chromosome implements Comparable {
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
+
+	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
 	public int x = 0;
 	public int y = 0;
 	
@@ -262,8 +264,10 @@ public class Chromosome implements Comparable {
 		}
 	}
 
+	//Is the drawing method called for drawing the chromosomes; In hindsight, can be removed/edited, as it is code duplication
 	public void drawPopulationView(Graphics2D g, int geneWidth, int border) {
 		Graphics2D g2 = (Graphics2D) g;
+		//This could just be replaced with Chromosome.drawOn(?), the only part that matters is that the chromosome is drawn at the given coordinates
 		g2.translate(x,y);
 		this.geneWidth = geneWidth;
 		this.border = border;
@@ -272,6 +276,7 @@ public class Chromosome implements Comparable {
 		g2.translate(-x,-y);
 	}
 
+	//Is the drawing method called for drawing the best chromosome; In hindsight, can be removed/edited, as it is code duplcation.
 	public void drawBestView(Graphics2D g, int geneWidth, int border, int x, int y) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.translate(x,y);

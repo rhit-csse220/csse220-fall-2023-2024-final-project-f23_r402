@@ -11,7 +11,9 @@ import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.Timer;
+import javax.swing.border.Border;
 
 public class IndividualViewer implements Runnable {
     
@@ -56,7 +58,7 @@ public class IndividualViewer implements Runnable {
         frame = new JFrame();
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
-        frame.setLocation(1000, 0);
+        frame.setLocation(1000, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
@@ -64,11 +66,17 @@ public class IndividualViewer implements Runnable {
 
         frame.add(indComponent);
 
+        //Adds the top label that constantly updates with the newest average hamming distance
+        String hammingText = "Average hamming distance: ";
+        JLabel hammingDistance = new JLabel(hammingText);
+        frame.add(hammingDistance, BorderLayout.NORTH);
+
         timer = new Timer(1000/33, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                indComponent.getChromosome();
+                // In order to fit it on the graph, the average hamming distance had to be multiplied by 100. Here, we divide it to obtain the actual value
+                hammingDistance.setText(hammingText+indComponent.getPopulation().prevHammingDistance/100);
                 frame.repaint();
             }
         });
