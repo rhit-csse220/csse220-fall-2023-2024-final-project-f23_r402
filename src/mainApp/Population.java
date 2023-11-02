@@ -227,7 +227,7 @@ public class Population {
         for (int i = 0; i < sizeOfPopulation; i++){
             hammingDistance+= (position1n0Array[i][0][0]*position1n0Array[i][0][1]);
         }
-        return ((hammingDistance/(numPairs*genomeLength))*sizeOfPopulation);
+        return ((hammingDistance/(numPairs))/genomeLength)*100;
     }
 
     public void readData1n0(Chromosome chromosome, int[][][] position1n0Array){
