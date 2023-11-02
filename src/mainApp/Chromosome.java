@@ -12,6 +12,8 @@ public class Chromosome implements Comparable {
 	public static final int X_COORD_LETTER_OFFSET = 5;
 	// public static final int Y_COORD_LETTER_OFFSET = 10;
 	public static final double MAX_FITNESS_SCORE = 100.0;
+	public static final int ORIGIN = 1;
+	public static final int CROSSOVER_OFFSET = 2;
 	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
@@ -40,7 +42,7 @@ public class Chromosome implements Comparable {
 		this.numPerColumn = numOfGenes/NUM_PER_ROW;
 	}
 	
-	public Chromosome(String fileData) throws InvalidChromosomeFormatException{
+	public Chromosome(String fileData) throws InvalidChromosomeFormatException{ 
 		this.initiateGeneWithString(fileData);
 		// this.fileData = fileData;
 		// this.numOfGenes = this.fileData.length();
@@ -181,6 +183,15 @@ public class Chromosome implements Comparable {
 		}
 		this.calcFitnessFuction();
 		//this.fitnessSmiley();
+	}
+
+	public void doCrossover(Chromosome other){
+		int crossoverPoint = r.nextInt(ORIGIN, numOfGenes-CROSSOVER_OFFSET); // set to 1 and numOfGenes-2 because there would no crossover if the point was at the last index, or at 0 as it would replace the entirety of the chromosome's data
+		String crossoverData = other.getChromosomeDataAsString();
+		System.out.println(crossoverPoint);
+		for (int i = crossoverPoint; i<crossoverData.length(); i++){
+			this.genes[i].setBit(crossoverData.charAt(i));
+		}
 	}
 	
 	/**

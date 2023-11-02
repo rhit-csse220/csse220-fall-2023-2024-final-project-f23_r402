@@ -4,12 +4,13 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class Population {
     public ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
     private int sizeOfPopulation = 100; // default
     private int genomeLength = 100; // default
-    public double prevBestFitness, prevLowFitness, prevAvgFitness;
+    public double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
     // Seeding the Random object
@@ -49,7 +50,9 @@ public class Population {
         this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
         this.prevAvgFitness = calculateAvgFitness();
         this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
-        this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness));
+        this.prevHammingDistance = calculateHammingDistance();
+        //this.prevHammingDistance = calculateUniqueStrings();
+        this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance));
     }
 
     /**
@@ -215,6 +218,41 @@ public class Population {
         avg = avg / this.chromosomes.size();
         return avg;
     }
+
+    public double calculateHammingDistance(){
+        double hammingDistance = 0;
+        int[][][] position1n0Array = new int[genomeLength][sizeOfPopulation][sizeOfPopulation];
+        int numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2;
+        this.chromosomes.parallelStream().forEach(chromosome -> readData1n0(chromosome, position1n0Array));
+        for (int i = 0; i < sizeOfPopulation; i++){
+            hammingDistance+= (position1n0Array[i][0][0]*position1n0Array[i][0][1]);
+        }
+        return ((hammingDistance/(numPairs*genomeLength))*sizeOfPopulation);
+    }
+
+    public void readData1n0(Chromosome chromosome, int[][][] position1n0Array){
+        String geneticData = chromosome.getChromosomeDataAsString();
+        for (int i = 0; i < geneticData.length(); i++){
+            if (geneticData.charAt(i)=='0'){
+                position1n0Array[i][0][0]++;
+            }
+            else{
+                position1n0Array[i][0][1]++;
+            }
+        }
+    }
+
+    // Was another measure of diversity but idk how to code it 
+    // public double calculateUniqueStrings(){
+    //     int uniqueCount = 0;
+    //     for (int i = 1; i < sizeOfPopulation; i++){
+    //         if (!this.chromosomes.get(i).getChromosomeDataAsString().equals(this.chromosomes.get(i-1).getChromosomeDataAsString())){
+    //             uniqueCount++;
+    //         }
+    //     }
+    //     return ((double)uniqueCount/sizeOfPopulation);
+    // }
+
 
     // Debugger methods
 

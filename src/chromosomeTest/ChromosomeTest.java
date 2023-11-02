@@ -104,6 +104,11 @@ public class ChromosomeTest {
         c1.initiateGeneWithString("000101010");
     }
 
+    //Testing crossover
+    // public void testDoCrossover(){
+    //     Chromosome p1 = new Chromosome("00")
+    // }
+
     // Additional tests are in ChromosomeManualTest.java
     @Test
     public void runAllManualTests() {

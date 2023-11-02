@@ -32,9 +32,10 @@ public class EvolutionComponent extends JComponent {
   public static final double KEY_GREEN_Y = 30.0;
   public static final double KEY_ORANGE_Y = KEY_GREEN_Y - KEY_DISTANCE;
   public static final double KEY_RED_Y = KEY_ORANGE_Y - KEY_DISTANCE;
+  public static final double KEY_YELLOW_Y  = KEY_RED_Y - KEY_DISTANCE;
   public static final double KEY_LABEL_OFFSET = -6;
   public static final double KEY_X_RATIO = 0.95;
-  public static final double KEY_LABEL_X_RATIO = 0.98;
+  public static final double KEY_LABEL_X_RATIO = 0.975;
   
   public static final int DEFAULT_STROKE = 500;
   public static final int DEFAULT_GENERATION = 100;
@@ -328,10 +329,15 @@ public class EvolutionComponent extends JComponent {
         g2.drawLine(pX, pY, nX, nY);
         
         //Line of lowest
-        //TODO FIGURE OUT LOGIC FOR WHY THIS IS SO JAGGED; Assumably, u can use the array in such a way that the newest chromosome is preserved, and then the previous index where the last chromosome was preserved can be used to find the initial x,y, with the current chromsome being the final x,y. this may require restructuring of linearray rn.
         pY = calculateY(this.population.lineArray.get(i-1).getLowFitness());
         nY = calculateY(this.population.lineArray.get(i).getLowFitness());
         g2.setColor(Color.red);
+        g2.drawLine(pX, pY, nX, nY);
+
+        //Line of hamming
+        pY = calculateY(this.population.lineArray.get(i-1).getHammingDistance());
+        nY = calculateY(this.population.lineArray.get(i).getHammingDistance());
+        g2.setColor(Color.yellow);
         g2.drawLine(pX, pY, nX, nY);
       }
     }
@@ -352,10 +358,14 @@ public class EvolutionComponent extends JComponent {
     
     g2.setColor(Color.red);
     g2.fillRect(calculateX(KEY_X_RATIO * this.generations), calculateY(KEY_RED_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
+
+    g2.setColor(Color.yellow);
+    g2.fillRect(calculateX(KEY_X_RATIO * this.generations), calculateY(KEY_YELLOW_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
     
     g2.setColor(Color.black);
     g2.drawString("Best fitness", calculateX(KEY_LABEL_X_RATIO * this.generations), calculateY(KEY_GREEN_Y + KEY_LABEL_OFFSET));
     g2.drawString("Average fitness", calculateX(KEY_LABEL_X_RATIO * this.generations), calculateY(KEY_ORANGE_Y + KEY_LABEL_OFFSET));
     g2.drawString("Low fitness", calculateX(KEY_LABEL_X_RATIO * this.generations), calculateY(KEY_RED_Y + KEY_LABEL_OFFSET));
+    g2.drawString("Hamming distance", calculateX(KEY_LABEL_X_RATIO * this.generations), calculateY(KEY_YELLOW_Y + KEY_LABEL_OFFSET));
   }
 }
