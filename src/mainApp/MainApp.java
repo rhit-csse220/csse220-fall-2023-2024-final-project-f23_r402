@@ -8,15 +8,16 @@ package mainApp;
  * <br>Restrictions: None
  */
 public class MainApp {
+	EvolutionViewer evViewer = new EvolutionViewer();
+	IndividualViewer indViewer = new IndividualViewer();
+
 	public void runApp() {
-		System.out.println("Write your cool arcade game here!");	
-		System.out.println("I found it!");
+		evViewer.handleDriverMain();
+		evViewer.handleDriverMain();
 	} // runApp
 
 	/**
 	 * ensures: runs the application
 	 * @param args unused
 	 */
-	
-
 }

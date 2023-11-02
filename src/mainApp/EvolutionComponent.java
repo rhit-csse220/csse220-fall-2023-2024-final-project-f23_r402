@@ -157,6 +157,7 @@ public class EvolutionComponent extends JComponent {
   */
   public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism){
     this.setPopulationSize(Integer.parseInt(populationSize));
+    this.population.setSizeOfPopulation(this.populationSize);
     this.setSelection(selection);
     this.setMutationRate(Integer.parseInt(mutationRate));
     this.setCrossover(crossover);

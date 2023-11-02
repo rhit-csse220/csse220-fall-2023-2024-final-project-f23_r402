@@ -13,27 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class IndividualViewer implements Runnable {
+public class PopulationViewer implements Runnable {
     
-    private IndividualComponent indComponent = new IndividualComponent();
-    private int timerDelay;
-    public int getTimerDelay() {
-        return timerDelay;
-    }
-
-    public void setTimerDelay(int timerDelay) {
-        this.timerDelay = timerDelay;
-    }
-
-    public IndividualComponent getIndComponent() {
-        return indComponent;
-    }
-
-    public void setIndComponent(IndividualComponent indComponent) {
-        this.indComponent = indComponent;
-    }
-
     private JFrame frame;
+    private PopulationComponent populationComponent = new PopulationComponent();
     private Timer timer;
 
     public Timer getTimer() {
@@ -44,31 +27,30 @@ public class IndividualViewer implements Runnable {
         this.timer = timer;
     }
 
-    public void stopTimer() {
-        this.timer.stop();
+    public void stopTimer(){
+        timer.stop();
     }
-
+    
     public void driverMain(){
-        final String frameTitle = "Individual Viewer";
+        final String frameTitle = "Population Viewer";
         final int frameWidth = 400;
-        final int frameHeight = 390;
+        final int frameHeight = 400;
 
         frame = new JFrame();
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
-        frame.setLocation(1000, 0);
+        frame.setLocation(1000, 200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
 
-        frame.add(indComponent);
+        frame.add(populationComponent);
 
         timer = new Timer(1000/33, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                indComponent.getChromosome();
                 frame.repaint();
             }
         });
@@ -76,6 +58,14 @@ public class IndividualViewer implements Runnable {
         timer.start();
 
         frame.pack();
+    }
+
+    public void handleSetPopulation(Population population){
+        this.populationComponent.setPopulation(population);
+    }
+
+    public PopulationComponent getPopComponent(){
+        return this.populationComponent;
     }
 
     public void shutDownFrame(){
@@ -86,15 +76,4 @@ public class IndividualViewer implements Runnable {
     public void run() {
         this.driverMain();
     }
-
-    public void setSize(int width, int height){
-        frame.setSize(width, height);
-        frame.pack();
-    }
-
-    // public static void main(String[] args) {
-    //     IndividualViewer indViewer = new IndividualViewer();
-    //     indViewer.getIndComponent().setPopulation(new Population(100, 100));
-    //     indViewer.driverMain();
-    // }
 }

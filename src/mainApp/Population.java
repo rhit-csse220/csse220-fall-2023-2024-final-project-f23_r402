@@ -13,6 +13,14 @@ public class Population {
     public double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
+    public int getSizeOfPopulation() {
+        return sizeOfPopulation;
+    }
+
+    public void setSizeOfPopulation(int sizeOfPopulation) {
+        this.sizeOfPopulation = sizeOfPopulation;
+    }
+    
     // Seeding the Random object
     Random r = new Random();
 
@@ -46,7 +54,6 @@ public class Population {
      */
     public void createLine(){
         // find previous best + avg + lowest fitness
-        System.out.println(this.chromosomes.size());
         this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
         this.prevAvgFitness = calculateAvgFitness();
         this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
@@ -78,7 +85,7 @@ public class Population {
         } else{
             throw new InvalidParameterException();
         }
-       
+
         int initialSize = this.chromosomes.size();
         
         // The amount of the most fit population to be retained from the initial collection of chromosomes. 
@@ -224,10 +231,11 @@ public class Population {
         int[][][] position1n0Array = new int[genomeLength][sizeOfPopulation][sizeOfPopulation];
         int numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2;
         this.chromosomes.parallelStream().forEach(chromosome -> readData1n0(chromosome, position1n0Array));
-        for (int i = 0; i < sizeOfPopulation; i++){
+        for (int i = 0; i < genomeLength; i++){
             hammingDistance+= (position1n0Array[i][0][0]*position1n0Array[i][0][1]);
         }
-        return ((hammingDistance/(numPairs*genomeLength))*sizeOfPopulation);
+        System.out.println(((hammingDistance/(numPairs))/genomeLength));
+        return ((hammingDistance/(numPairs))/genomeLength)*100;
     }
 
     public void readData1n0(Chromosome chromosome, int[][][] position1n0Array){

@@ -20,11 +20,13 @@ import javax.swing.Timer;
 * for viewing the evolution of populations. It allows users to configure various
 * parameters for the evolution process and visualize the results.
 */
-public class EvolutionViewer {
+public class EvolutionViewer implements Runnable {
     public static final int TIMER_DELAY = 1500;
     
     // public JFrame frame;
     public EvolutionComponent evComponent;
+    private IndividualViewer indViewer;
+    private PopulationViewer popViewer;
     
     /**
     * The driverMain method initializes and sets up the Evolution Viewer application.
@@ -47,7 +49,7 @@ public class EvolutionViewer {
         
         this.evComponent = new EvolutionComponent();
         frame.add(this.evComponent, BorderLayout.CENTER);
-        
+                
         //Text fields array
         JTextField[] textFields = new JTextField[5];
         
@@ -140,7 +142,21 @@ public class EvolutionViewer {
                     if (!fastEvolutionCheckBox.isSelected()){
                         if (passedErrorCheck){
                             if (generationCount == -1){
+                                //TODO ADD SAME FUNCTIONALITY INTO FAST EVOLUTION
                                 evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                if (indViewer!=null){
+                                    indViewer.shutDownFrame();
+                                    popViewer.shutDownFrame();
+                                }
+                                indViewer = new IndividualViewer();
+                                indViewer.getIndComponent().setPopulation(evComponent.population);
+                                indViewer.setTimerDelay(timer.getDelay());
+                                //new Thread(indViewer).start();
+                                indViewer.driverMain();
+                                popViewer = new PopulationViewer();
+                                popViewer.handleSetPopulation(evComponent.population);
+                                popViewer.driverMain();
+                                //new Thread(popViewer).start();
                                 generationCount++;
                                 frame.repaint();
                             } else if (generationCount <= Integer.parseInt(generationsField.getText())){
@@ -155,6 +171,8 @@ public class EvolutionViewer {
                                 evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                                 generationCount = -1;
                                 timer.stop();
+                                indViewer.stopTimer();
+                                popViewer.stopTimer();
                             }
                         } else{
                             timer.stop();
@@ -209,11 +227,23 @@ public class EvolutionViewer {
                 if (fastEvolutionCheckBox.isSelected()){
                     if (startEvolutionButton.getText().equals("Start Evolution")) {
                         // Start the FAST Evolution process
+                        if (evolutionWorker[0] != null){
+                            if (evolutionWorker[0].isShutAllFrames()){
+                                indViewer.shutDownFrame();
+                                popViewer.shutDownFrame();  
+                            }
+                        }
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                        indViewer = new IndividualViewer();
+                        indViewer.getIndComponent().setPopulation(evComponent.population);
+                        indViewer.driverMain();
+                        popViewer = new PopulationViewer();
+                        popViewer.handleSetPopulation(evComponent.population);
+                        popViewer.driverMain();
                         startEvolutionButton.setText("Pause");
                         
                         // Create and execute an EvolutionWorker to run the evolution in the background
-                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
                         evolutionWorker[0].execute();
                     } else if (startEvolutionButton.getText().equals("Pause")) {
                         // Pause the FAST Evolution process
@@ -337,6 +367,11 @@ public class EvolutionViewer {
     public void handleDriverMain(){
         this.driverMain();
     }   
+
+    @Override
+    public void run() {
+        this.driverMain();
+    }
     
     /**
     * The main method is the entry point of the Evolution Viewer application.

@@ -24,6 +24,8 @@ public class Chromosome implements Comparable {
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
+	public int x = 0;
+	public int y = 0;
 	
 	// Seeding the Random object
 	Random r = new Random();
@@ -257,6 +259,36 @@ public class Chromosome implements Comparable {
 			}
 			g2.setFont(new Font(null, Font.PLAIN, geneWidth/3));
 			g2.drawString((String)(i+""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + this.genes[i].getY());
+		}
+	}
+
+	public void drawPopulationView(Graphics2D g, int geneWidth, int border) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.translate(x,y);
+		this.geneWidth = geneWidth;
+		this.border = border;
+		this.adjustGenePosition();
+		drawGenes(g2);
+		g2.translate(-x,-y);
+	}
+
+	public void drawBestView(Graphics2D g, int geneWidth, int border, int x, int y) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.translate(x,y);
+		this.geneWidth = geneWidth;
+		this.border = border;
+		this.adjustGenePosition();
+		drawGenes(g2);
+	}
+
+	public void drawGenes(Graphics2D g2){
+		for (int i = 0; i < this.genes.length; i++) {
+			this.genes[i].drawOn(g2);
+			if (this.genes[i].getBit()=='1') {
+				g2.setColor(GENE_1_TEXT_COLOR);
+			} else if (this.genes[i].getBit()=='0') {
+				g2.setColor(GENE_0_TEXT_COLOR);
+			}
 		}
 	}
 	
