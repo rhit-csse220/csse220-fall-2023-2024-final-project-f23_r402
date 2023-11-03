@@ -51,7 +51,7 @@ public class IndividualViewer implements Runnable {
     }
 
     public void driverMain(){
-        final String frameTitle = "Individual Viewer";
+        final String frameTitle = "Best Chromosome";
         final int frameWidth = 400;
         final int frameHeight = 390;
 

@@ -60,6 +60,7 @@ public class Population {
         this.prevHammingDistance = calculateHammingDistance();
         //this.prevHammingDistance = calculateUniqueStrings();
         this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance));
+        // System.out.println(this.prevBestFitness);
     }
 
     /**
@@ -89,16 +90,17 @@ public class Population {
         int initialSize = this.chromosomes.size();
         
         // The amount of the most fit population to be retained from the initial collection of chromosomes. 
-        int elitistSize = (int)((elitism/100)*initialSize);
-        //System.out.println(elitistSize);
+        int elitistSize = (int) ((elitism / 100) * initialSize);
 
         // The collection is initially initialized to the initial collection of chromosomes
-        ArrayList<Chromosome> eliteChromosomes = new ArrayList<Chromosome>(chromosomes);
-
-        // This removes all the chromosomes from bottom to top, until only the most fit chromosomes remain from 0 to elitistSize-1, eg. 0 to 9, i.e 10 elements
-        for (int i = initialSize-1; i>elitistSize-1; i--){
-            eliteChromosomes.remove(i);
+        ArrayList<Chromosome> eliteChromosomes = new ArrayList<Chromosome>();
+        
+        this.sortPopulation();
+        for (int i = 0; i < elitistSize; i++){
+            eliteChromosomes.add(this.chromosomes.get(i));
         }
+
+        // initiating 
         this.chromosomes = new ArrayList<Chromosome>();
 
         for (int i = 0; i < initialSize/2; i++){
@@ -107,20 +109,16 @@ public class Population {
                 this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
                 this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
             } catch (InvalidChromosomeFormatException e) {
-                // TODO: see if we actually need to do sth here
                 e.printStackTrace();
             }
         }
 
-        // This sets the newly initialized generation and replaces the existing chromosomes with the previously elite chromosomes through replacing it at their assigned index
-        for (int i = 0; i < elitistSize; i++){
-            String currChromosomeData = eliteChromosomes.get(i).getChromosomeDataAsString();
-            try {
-                this.chromosomes.set(i, new Chromosome(currChromosomeData, false, mutationRate));
-            } catch (InvalidChromosomeFormatException e) {
-                // TODO: see if we actually need to do sth here
-                e.printStackTrace();
-            }
+        this.sortPopulation();
+
+        int index = 0;
+        for (int i = initialSize - 1; i >= initialSize - elitistSize; i--){
+            this.chromosomes.set(i, eliteChromosomes.get(index));
+            index++;
         }
 
         // sort population
@@ -213,6 +211,12 @@ public class Population {
         return findRankedList(currentChromosomes, chosenChromosomes);
     }
 
+    public void performCrossover(ArrayList<Chromosome> selectedParents){
+        // genomeLength
+        
+
+    }
+
     /**
      * calculates the average fitness of the population
      * @return average fitness of the population
@@ -226,24 +230,18 @@ public class Population {
         return avg;
     }
 
-    //USED THE GUIDE FOR THIS CHECK THE SPECIFICAITONS DOC
     public double calculateHammingDistance(){
         double hammingDistance = 0;
         int[][][] position1n0Array = new int[genomeLength][sizeOfPopulation][sizeOfPopulation];
         int numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2;
-        //CALLS THIS PARALLELY AND SOMEHOW MAKES THE FAST EVOLUTION THING WORK WITH IT
         this.chromosomes.parallelStream().forEach(chromosome -> readData1n0(chromosome, position1n0Array));
         for (int i = 0; i < genomeLength; i++){
             hammingDistance+= (position1n0Array[i][0][0]*position1n0Array[i][0][1]);
         }
-        //DEBUG TO TEST IF IT IS APPROPRIATE VALUES
-        System.out.println(((hammingDistance/(numPairs))/genomeLength));
-
-        // RETURNS THE VALUE THAT CAN THEN BE PLOTTED ON GRAPH, AS ACTUAL VALUE IS TOO SMALL AND WILL BE LIKE 0 
+        //System.out.println(((hammingDistance/(numPairs))/genomeLength));
         return ((hammingDistance/(numPairs))/genomeLength)*100;
     }
 
-    // USING THE GUIDE FOR CALC OF HAMMING DISTANCE, CAME UP WITH THIS; FOR THE GIVEN CHARACTER, IT WILL EITHER ADD +1 TO THE NUMBER OF 0s, [i][0][0], or 1s, [i][0][1]; THIS WAS MY BS WAY U GUYS CAN PROBABLY THINK OF SMTH BETTER
     public void readData1n0(Chromosome chromosome, int[][][] position1n0Array){
         String geneticData = chromosome.getChromosomeDataAsString();
         for (int i = 0; i < geneticData.length(); i++){
