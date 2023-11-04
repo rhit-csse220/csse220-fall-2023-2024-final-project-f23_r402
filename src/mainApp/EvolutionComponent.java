@@ -59,6 +59,16 @@ public class EvolutionComponent extends JComponent {
     this.population = new Population();
   }
   
+
+  public boolean checkForFitness100() {
+    for (Chromosome chromosome : population.getChromosomes()) {
+        if (chromosome.getFitnessScore() == 100) {
+            return true;
+        }
+    }
+    return false;
+}
+
   /**
   * Gets the size of the population.
   * @return The size of the population.

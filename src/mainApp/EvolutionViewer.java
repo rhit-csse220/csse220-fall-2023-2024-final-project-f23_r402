@@ -143,19 +143,42 @@ public class EvolutionViewer implements Runnable {
         
         buttonPanel.add(fastEvolutionLabel);
         buttonPanel.add(fastEvolutionCheckBox);
+
+        
         
         // Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
+
+        
         startEvolutionButton.addActionListener(new ActionListener() {
             
             private boolean passedErrorCheck = true;
             Timer timer = new Timer(TIMER_DELAY/Integer.parseInt(generationsField.getText()), new ActionListener() {
                 int generationCount = -1;
+
+
+                private void resetEvolution() {
+                    startEvolutionButton.setText("Start Evolution");
+                    timer.restart();
+                    makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
+                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                    generationCount = -1;
+                    timer.stop();
+                    indViewer.stopTimer();
+                    popViewer.stopTimer();
+                }
+
+                
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (!fastEvolutionCheckBox.isSelected()){
                         if (passedErrorCheck){
-                            if (generationCount == -1){
+
+                             if (evComponent.checkForFitness100()) {
+                                resetEvolution();
+                            }
+
+                            else if (generationCount == -1){
                                 //TODO ADD SAME FUNCTIONALITY INTO FAST EVOLUTION
                                 evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                                 if (indViewer!=null){
@@ -178,15 +201,11 @@ public class EvolutionViewer implements Runnable {
                                 generationCount++;
                                 evComponent.generationCount = generationCount;
                                 frame.repaint();
-                            } else {
-                                startEvolutionButton.setText("Start Evolution");
-                                timer.restart();
-                                makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-                                generationCount = -1;
-                                timer.stop();
-                                indViewer.stopTimer();
-                                popViewer.stopTimer();
+                            
+                            } 
+                            
+                            else {
+                              resetEvolution();
                             }
                         } else{
                             timer.stop();
@@ -238,13 +257,13 @@ public class EvolutionViewer implements Runnable {
         class EvolutionActionListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (fastEvolutionCheckBox.isSelected()){
+                if (fastEvolutionCheckBox.isSelected()) {
                     if (startEvolutionButton.getText().equals("Start Evolution")) {
                         // Start the FAST Evolution process
-                        if (evolutionWorker[0] != null){
-                            if (evolutionWorker[0].isShutAllFrames()){
+                        if (evolutionWorker[0] != null) {
+                            if (evolutionWorker[0].isShutAllFrames()) {
                                 indViewer.shutDownFrame();
-                                popViewer.shutDownFrame();  
+                                popViewer.shutDownFrame();
                             }
                         }
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
@@ -255,23 +274,41 @@ public class EvolutionViewer implements Runnable {
                         popViewer.handleSetPopulation(evComponent.population);
                         popViewer.driverMain();
                         startEvolutionButton.setText("Pause");
-                        
+        
                         // Create and execute an EvolutionWorker to run the evolution in the background
                         evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
                         evolutionWorker[0].execute();
                     } else if (startEvolutionButton.getText().equals("Pause")) {
                         // Pause the FAST Evolution process
                         startEvolutionButton.setText("Start Evolution");
-                        
+        
                         // Cancel the running EvolutionWorker if it exists and is not yet done
                         if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
                             evolutionWorker[0].cancel(true);
                         }
                     }
                 }
+                
+                // Check if any chromosome's fitness score is 100
+                if (evComponent.population != null && evComponent.population.getChromosomes() != null) {
+                    for (Chromosome chromosome : evComponent.population.getChromosomes()) {
+                        if (chromosome.getFitnessScore() == 100) {
+                            // Pause the FAST Evolution process when fitness score is 100
+                            startEvolutionButton.setText("Start Evolution");
+                            
+                            // Cancel the running EvolutionWorker if it exists and is not yet done
+                            if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
+                                evolutionWorker[0].cancel(true);
+                            }
+                            break;  // No need to check further, as we found one with a fitness score of 100
+                        }
+                    }
+                }
             }
         }
+        
 
+        
         startEvolutionButton.addActionListener(new EvolutionActionListener());
 
         buttonPanel.add(startEvolutionButton);
@@ -386,6 +423,7 @@ public class EvolutionViewer implements Runnable {
     public void run() {
         this.driverMain();
     }
+    
     
     /**
     * The main method is the entry point of the Evolution Viewer application.

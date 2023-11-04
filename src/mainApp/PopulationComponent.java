@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 public class PopulationComponent extends JComponent{
     private Population population;
     private ArrayList<Chromosome> chromosomes; 
+    private boolean foundPerfectChromosome = false; // Flag to track if a perfect chromosome is found
 
     public PopulationComponent(){}
 
@@ -35,7 +36,10 @@ public class PopulationComponent extends JComponent{
                 currChromosome.x = (int) (1.1 * x + geneWidth);
                 currChromosome.y = (int) (1.1 * y + geneWidth);
                 currChromosome.drawPopulationView(g2, geneWidth, 0);
+            
+
             }
         }
+
     }
 }
