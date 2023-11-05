@@ -2,8 +2,11 @@ package mainApp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,6 +25,8 @@ import javax.swing.Timer;
 */
 public class EvolutionViewer {
     public static final int TIMER_DELAY = 1500;
+    
+    private static final int SUBMIT_FORM_KEY = KeyEvent.VK_ENTER;
     
     // public JFrame frame;
     public EvolutionComponent evComponent;
@@ -194,6 +199,42 @@ public class EvolutionViewer {
         });
         
         buttonPanel.add(startEvolutionButton);
+
+        // Adding an Enter-button shortcut for "submitting the form" and starting the evolution and a Space-Bar shortcut
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) { }
+
+            @Override
+            public void keyPressed(KeyEvent e) { }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == SUBMIT_FORM_KEY) {
+                    startEvolutionButton.doClick();
+                }
+            }
+            
+        });
+        
+        for (JTextField textField : textFields) {
+            textField.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) { }
+
+                @Override
+                public void keyPressed(KeyEvent e) { }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    if (e.getKeyCode() == SUBMIT_FORM_KEY) {
+                        startEvolutionButton.doClick();
+                    }
+                }
+                
+            });
+        }
+
         /**
         * This block of code defines an array of `EvolutionWorker` objects, a button for starting Fast Evolution,
         * and an action listener to handle the button's behavior.
