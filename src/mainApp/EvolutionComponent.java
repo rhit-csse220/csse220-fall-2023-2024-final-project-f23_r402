@@ -59,6 +59,16 @@ public class EvolutionComponent extends JComponent {
     this.population = new Population();
   }
   
+
+  public boolean checkForFitness100() {
+    for (Chromosome chromosome : population.getChromosomes()) {
+        if (chromosome.getFitnessScore() == 100) {
+            return true;
+        }
+    }
+    return false;
+}
+
   /**
   * Gets the size of the population.
   * @return The size of the population.
@@ -157,7 +167,9 @@ public class EvolutionComponent extends JComponent {
    * @throws InvalidGenomeLengthException
   */
   public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism, String fitnessFunction) throws InvalidGenomeLengthException{
+    System.out.println("=====setAll() is called=====");
     this.setPopulationSize(Integer.parseInt(populationSize));
+    this.population.setSizeOfPopulation(this.populationSize);
     this.setSelection(selection);
     this.setMutationRate(Integer.parseInt(mutationRate));
     this.setCrossover(crossover);
@@ -165,14 +177,13 @@ public class EvolutionComponent extends JComponent {
     this.setGenomeLength(Integer.parseInt(genomeLength));
     this.setElitism(Double.parseDouble(elitism));
     this.lineArray.removeAll(lineArray);
-    this.population = new Population(this.populationSize, this.genomeLength);
-
-    this.setFitnessFunctionForChromosomes(fitnessFunction);
+    this.population = new Population(this.populationSize, this.genomeLength, fitnessFunction);
+    // this.setFitnessFunctionForChromosomes(fitnessFunction);
   }
   
-  private void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
-    this.population.setFitnessFunctionForChromosomes(fitnessFunction);
-  }
+  // private void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
+  //   this.population.setFitnessFunctionForChromosomes(fitnessFunction);
+  // }
 
   /**
   * Handles the selection of individuals in the population based on the specified

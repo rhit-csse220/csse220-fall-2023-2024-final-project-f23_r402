@@ -13,8 +13,19 @@ import java.util.List;
 
 public class EvolutionWorker extends SwingWorker<Void, Void> {
     private EvolutionComponent evComponent;
+    private IndividualComponent individualComponent;
+    private PopulationComponent populationComponent;
     private int generations;
     private JButton startEvolutionButton;
+    private boolean shutAllFrames;
+
+    public boolean isShutAllFrames() {
+        return shutAllFrames;
+    }
+
+    public void setShutAllFrames(boolean shutAllFrames) {
+        this.shutAllFrames = shutAllFrames;
+    }
 
     /**
      * Constructs an `EvolutionWorker` with the specified parameters.
@@ -23,10 +34,13 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
      * @param generations         The number of generations to simulate in the evolution process.
      * @param startEvolutionButton The button used to control the evolution process.
      */
-    public EvolutionWorker(EvolutionComponent evComponent, int generations, JButton startEvolutionButton) {
+    public EvolutionWorker(EvolutionComponent evComponent, IndividualComponent individualComponent, PopulationComponent populationComponent, int generations, JButton startEvolutionButton) {
         this.evComponent = evComponent;
+        this.individualComponent = individualComponent;
+        this.populationComponent = populationComponent;
         this.generations = generations;
         this.startEvolutionButton = startEvolutionButton;
+        this.shutAllFrames = false;
     }
 
     /**
@@ -49,6 +63,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
         // Update the button label when the evolution is completed
         SwingUtilities.invokeLater(() -> {
             startEvolutionButton.setText("Start Evolution");
+            this.shutAllFrames = true;
         });
 
         return null;

@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+import javax.swing.JOptionPane;
+
 public class Population {
     // TODO: change to privates
     public ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
@@ -14,6 +16,16 @@ public class Population {
     public double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
+    private int fitnessFunctionType = 0;
+
+    public int getSizeOfPopulation() {
+        return sizeOfPopulation;
+    }
+
+    public void setSizeOfPopulation(int sizeOfPopulation) {
+        this.sizeOfPopulation = sizeOfPopulation;
+    }
+    
     // Seeding the Random object
     Random r = new Random();
 
@@ -25,11 +37,22 @@ public class Population {
         this.initiatePopulation();
     }
 
+    public Population(int sizeOfPopulation, int genomeLength, String fitnessFunction) {
+        this.sizeOfPopulation = sizeOfPopulation;
+        this.genomeLength = genomeLength;
+        if (fitnessFunction.equals("Default"))
+			this.fitnessFunctionType = 0;
+		else if (fitnessFunction.contains("Smiley"))
+			this.fitnessFunctionType = 1;
+        this.initiatePopulation();
+    }
+
     public void initiatePopulation(){
+        System.out.println("Population.initiatePopulation() " + this.fitnessFunctionType);
         this.chromosomes = new ArrayList<Chromosome>();
         this.lineArray = new ArrayList<BestFitLine2D>();
         for (int i = 0; i < this.sizeOfPopulation; i++){
-            this.chromosomes.add(new Chromosome(genomeLength));
+            this.chromosomes.add(new Chromosome(genomeLength, this.fitnessFunctionType));
             this.chromosomes.get(i).initiateGene();
         }
         this.sortPopulation();
@@ -47,13 +70,13 @@ public class Population {
      */
     public void createLine(){
         // find previous best + avg + lowest fitness
-        System.out.println(this.chromosomes.size());
         this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
         this.prevAvgFitness = calculateAvgFitness();
         this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
         this.prevHammingDistance = calculateHammingDistance();
         //this.prevHammingDistance = calculateUniqueStrings();
         this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance));
+        // System.out.println(this.prevBestFitness);
     }
 
     /**
@@ -79,42 +102,39 @@ public class Population {
         } else{
             throw new InvalidParameterException();
         }
-       
+
         int initialSize = this.chromosomes.size();
         
         // The amount of the most fit population to be retained from the initial collection of chromosomes. 
-        int elitistSize = (int)((elitism/100)*initialSize);
-        //System.out.println(elitistSize);
+        int elitistSize = (int) ((elitism / 100) * initialSize);
 
         // The collection is initially initialized to the initial collection of chromosomes
-        ArrayList<Chromosome> eliteChromosomes = new ArrayList<Chromosome>(chromosomes);
-
-        // This removes all the chromosomes from bottom to top, until only the most fit chromosomes remain from 0 to elitistSize-1, eg. 0 to 9, i.e 10 elements
-        for (int i = initialSize-1; i>elitistSize-1; i--){
-            eliteChromosomes.remove(i);
+        ArrayList<Chromosome> eliteChromosomes = new ArrayList<Chromosome>();
+        
+        this.sortPopulation();
+        for (int i = 0; i < elitistSize; i++){
+            eliteChromosomes.add(this.chromosomes.get(i));
         }
+
+        // initiating 
         this.chromosomes = new ArrayList<Chromosome>();
 
         for (int i = 0; i < initialSize/2; i++){
             String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
             try {
-                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
-                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate, this.fitnessFunctionType));
+                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate, this.fitnessFunctionType));
             } catch (InvalidChromosomeFormatException e) {
-                // TODO: see if we actually need to do sth here
                 e.printStackTrace();
             }
         }
 
-        // This sets the newly initialized generation and replaces the existing chromosomes with the previously elite chromosomes through replacing it at their assigned index
-        for (int i = 0; i < elitistSize; i++){
-            String currChromosomeData = eliteChromosomes.get(i).getChromosomeDataAsString();
-            try {
-                this.chromosomes.set(i, new Chromosome(currChromosomeData, false, mutationRate));
-            } catch (InvalidChromosomeFormatException e) {
-                // TODO: see if we actually need to do sth here
-                e.printStackTrace();
-            }
+        this.sortPopulation();
+
+        int index = 0;
+        for (int i = initialSize - 1; i >= initialSize - elitistSize; i--){
+            this.chromosomes.set(i, eliteChromosomes.get(index));
+            index++;
         }
 
         // sort population
@@ -207,6 +227,12 @@ public class Population {
         return findRankedList(currentChromosomes, chosenChromosomes);
     }
 
+    public void performCrossover(ArrayList<Chromosome> selectedParents){
+        // genomeLength
+        
+
+    }
+
     /**
      * calculates the average fitness of the population
      * @return average fitness of the population
@@ -225,9 +251,10 @@ public class Population {
         int[][][] position1n0Array = new int[genomeLength][sizeOfPopulation][sizeOfPopulation];
         int numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2;
         this.chromosomes.parallelStream().forEach(chromosome -> readData1n0(chromosome, position1n0Array));
-        for (int i = 0; i < sizeOfPopulation; i++){
+        for (int i = 0; i < genomeLength; i++){
             hammingDistance+= (position1n0Array[i][0][0]*position1n0Array[i][0][1]);
         }
+        //System.out.println(((hammingDistance/(numPairs))/genomeLength));
         return ((hammingDistance/(numPairs))/genomeLength)*100;
     }
 
@@ -278,12 +305,13 @@ public class Population {
         return this.chromosomes;
     }
 
-    public void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
-        if (fitnessFunction.contains("only") && fitnessFunction.contains("100") && this.genomeLength != 100) {
-            throw new InvalidGenomeLengthException(100);
-        }
-        for (Chromosome chromosome : this.chromosomes) {
-            chromosome.setFitnessFunctionType(fitnessFunction);
-        }
-    }
+    // public void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
+    //     if (fitnessFunction.contains("only") && fitnessFunction.contains("100") && this.genomeLength != 100) {
+    //         throw new InvalidGenomeLengthException(100);
+    //     }
+    //     if (fitnessFunction.equals("Default"))
+	// 		this.fitnessFunctionType = 0;
+	// 	else if (fitnessFunction.contains("Smiley"))
+	// 		this.fitnessFunctionType = 1;
+    // }
 }

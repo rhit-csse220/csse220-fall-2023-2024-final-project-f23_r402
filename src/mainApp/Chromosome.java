@@ -25,6 +25,10 @@ public class Chromosome implements Comparable {
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
+
+	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
+	public int x = 0;
+	public int y = 0;
 	
 	// Seeding the Random object
 	Random r = new Random();
@@ -41,6 +45,16 @@ public class Chromosome implements Comparable {
 	public Chromosome(int numOfGenes) {
 		this.numOfGenes = numOfGenes;
 		this.numPerColumn = numOfGenes/NUM_PER_ROW;
+	}
+
+	/**
+	 * Initializes with specific fitness function type
+	 * @param numOfGenes
+	 * @param fitnessFunctionType
+	 */
+	public Chromosome(int numOfGenes, int fitnessFunctionType) {
+		this(numOfGenes);
+		this.fitnessFunctionType = fitnessFunctionType;
 	}
 	
 	public Chromosome(String fileData) throws InvalidChromosomeFormatException{ 
@@ -61,18 +75,30 @@ public class Chromosome implements Comparable {
 		
 		if (mutate){this.mutateGenes(mutationRate);}
 	}
+
+	public Chromosome(String fileData, boolean mutate, double mutationRate, int fitnessFunctionType) throws InvalidChromosomeFormatException{
+		//this.fileData = fileData;
+		this.numOfGenes = fileData.length();
+		this.fitnessFunctionType = fitnessFunctionType;
+		this.initiateGeneWithString(fileData);
+		this.calcFitnessFuction();
+		//this.fitnessSmiley();
+		
+		if (mutate){this.mutateGenes(mutationRate);}
+	}
 	
 	//methods
 	/*
 	* ensures: that the fitness score for the chromosome is calculated
 	*/
 	public void calcFitnessFuction() {
-		if (this.fitnessFunctionType == 0)
+		if (this.fitnessFunctionType == 0) {
 			this.calculateDefaultFitnessFunction();
-		else if (this.fitnessFunctionType == 1)
+		} else if (this.fitnessFunctionType == 1) {
 			this.fitnessSmiley();
-		else
+		} else {
 			System.out.println("Warning. Wrong fitness function selected.");
+		}
 	}
 
 	public void calculateDefaultFitnessFunction() {
@@ -269,6 +295,39 @@ public class Chromosome implements Comparable {
 			g2.drawString((String)(i+""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + this.genes[i].getY());
 		}
 	}
+
+	//Is the drawing method called for drawing the chromosomes; In hindsight, can be removed/edited, as it is code duplication
+	public void drawPopulationView(Graphics2D g, int geneWidth, int border) {
+		Graphics2D g2 = (Graphics2D) g;
+		//This could just be replaced with Chromosome.drawOn(?), the only part that matters is that the chromosome is drawn at the given coordinates
+		g2.translate(x,y);
+		this.geneWidth = geneWidth;
+		this.border = border;
+		this.adjustGenePosition();
+		drawGenes(g2);
+		g2.translate(-x,-y);
+	}
+
+	//Is the drawing method called for drawing the best chromosome; In hindsight, can be removed/edited, as it is code duplcation.
+	public void drawBestView(Graphics2D g, int geneWidth, int border, int x, int y) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.translate(x,y);
+		this.geneWidth = geneWidth;
+		this.border = border;
+		this.adjustGenePosition();
+		drawGenes(g2);
+	}
+
+	public void drawGenes(Graphics2D g2){
+		for (int i = 0; i < this.genes.length; i++) {
+			this.genes[i].drawOn(g2);
+			if (this.genes[i].getBit()=='1') {
+				g2.setColor(GENE_1_TEXT_COLOR);
+			} else if (this.genes[i].getBit()=='0') {
+				g2.setColor(GENE_0_TEXT_COLOR);
+			}
+		}
+	}
 	
 	/**
 	 * ensures: fitness of this chromosome and another chromosome passed in as param is compared
@@ -311,10 +370,7 @@ public class Chromosome implements Comparable {
 		return this.getChromosomeDataAsString();
 	}
 
-	public void setFitnessFunctionType(String fitnessFunction) {
-		if (fitnessFunction.equals("Default"))
-			this.fitnessFunctionType = 0;
-		else if (fitnessFunction.contains("Smiley"))
-			this.fitnessFunctionType = 1;
+	public void setFitnessFunctionType(int fitnessFunction) {
+		this.fitnessFunctionType = fitnessFunction;
 	}
 }

@@ -23,13 +23,15 @@ import javax.swing.Timer;
 * for viewing the evolution of populations. It allows users to configure various
 * parameters for the evolution process and visualize the results.
 */
-public class EvolutionViewer {
+public class EvolutionViewer implements Runnable {
     public static final int TIMER_DELAY = 1500;
     
     private static final int SUBMIT_FORM_KEY = KeyEvent.VK_ENTER;
     
     // public JFrame frame;
     public EvolutionComponent evComponent;
+    private IndividualViewer indViewer;
+    private PopulationViewer popViewer;
     
     /**
     * The driverMain method initializes and sets up the Evolution Viewer application.
@@ -49,10 +51,24 @@ public class EvolutionViewer {
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
         frame.setVisible(true);
+
+        // JFrame bestFrame = new JFrame();
+        // bestFrame.setTitle("Individual Viewer");
+        // bestFrame.setSize(400, 400);
+        // bestFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // bestFrame.setLayout(new BorderLayout());
+        // bestFrame.setVisible(false);
+
+        // JFrame popFrame = new JFrame();
+        // popFrame.setTitle("Population Viewer");
+        // popFrame.setSize(400, 400);
+        // popFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // popFrame.setLayout(new BorderLayout());
+        // popFrame.setVisible(false);
         
         this.evComponent = new EvolutionComponent();
         frame.add(this.evComponent, BorderLayout.CENTER);
-        
+                
         //Text fields array
         JTextField[] textFields = new JTextField[5];
         
@@ -149,19 +165,56 @@ public class EvolutionViewer {
         
         // Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
+
+        
         startEvolutionButton.addActionListener(new ActionListener() {
             
             private boolean passedErrorCheck = true;
             Timer timer = new Timer(TIMER_DELAY/Integer.parseInt(generationsField.getText()), new ActionListener() {
                 int generationCount = -1;
+
+
+                private void resetEvolution() {
+                    startEvolutionButton.setText("Start Evolution");
+                    timer.restart();
+                    makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
+                    try {
+                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                    } catch (InvalidGenomeLengthException e) { }
+                    generationCount = -1;
+                    timer.stop();
+                    indViewer.stopTimer();
+                    popViewer.stopTimer();
+                }
+
+                
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (!fastEvolutionCheckBox.isSelected()){
                         if (passedErrorCheck){
-                            if (generationCount == -1){
+
+                             if (evComponent.checkForFitness100()) {
+                                resetEvolution();
+                            }
+
+                            else if (generationCount == -1){
+                                //TODO ADD SAME FUNCTIONALITY INTO FAST EVOLUTION
                                 try {
                                     evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                                 } catch (InvalidGenomeLengthException e1) { }
+                                if (indViewer!=null){
+                                    indViewer.shutDownFrame();
+                                    popViewer.shutDownFrame();
+                                }
+                                indViewer = new IndividualViewer();
+                                indViewer.getIndComponent().setPopulation(evComponent.population);
+                                indViewer.setTimerDelay(timer.getDelay());
+                                //new Thread(indViewer).start();
+                                indViewer.driverMain();
+                                popViewer = new PopulationViewer();
+                                popViewer.handleSetPopulation(evComponent.population);
+                                popViewer.driverMain();
+                                //new Thread(popViewer).start();
                                 generationCount++;
                                 frame.repaint();
                             } else if (generationCount <= Integer.parseInt(generationsField.getText())){
@@ -169,15 +222,10 @@ public class EvolutionViewer {
                                 generationCount++;
                                 evComponent.generationCount = generationCount;
                                 frame.repaint();
-                            } else {
-                                startEvolutionButton.setText("Start Evolution");
-                                timer.restart();
-                                makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
-                                try {
-                                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
-                                } catch (InvalidGenomeLengthException e1) { }
-                                generationCount = -1;
-                                timer.stop();
+                            } 
+                            
+                            else {
+                              resetEvolution();
                             }
                         } else{
                             timer.stop();
@@ -265,30 +313,61 @@ public class EvolutionViewer {
         class EvolutionActionListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (fastEvolutionCheckBox.isSelected()){
+                if (fastEvolutionCheckBox.isSelected()) {
                     if (startEvolutionButton.getText().equals("Start Evolution")) {
                         // Start the FAST Evolution process
+                        if (evolutionWorker[0] != null) {
+                            if (evolutionWorker[0].isShutAllFrames()) {
+                                indViewer.shutDownFrame();
+                                popViewer.shutDownFrame();
+                            }
+                        }
                         try {
                             evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                         } catch (InvalidGenomeLengthException e1) { }
-                        startEvolutionButton.setText("Pause");
                         
+                        indViewer = new IndividualViewer();
+                        indViewer.getIndComponent().setPopulation(evComponent.population);
+                        indViewer.driverMain();
+                        popViewer = new PopulationViewer();
+                        popViewer.handleSetPopulation(evComponent.population);
+                        popViewer.driverMain();
+                        startEvolutionButton.setText("Pause");
+        
                         // Create and execute an EvolutionWorker to run the evolution in the background
-                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
                         evolutionWorker[0].execute();
                     } else if (startEvolutionButton.getText().equals("Pause")) {
                         // Pause the FAST Evolution process
                         startEvolutionButton.setText("Start Evolution");
-                        
+        
                         // Cancel the running EvolutionWorker if it exists and is not yet done
                         if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
                             evolutionWorker[0].cancel(true);
                         }
                     }
                 }
+                
+                // Check if any chromosome's fitness score is 100
+                if (evComponent.population != null && evComponent.population.getChromosomes() != null) {
+                    for (Chromosome chromosome : evComponent.population.getChromosomes()) {
+                        if (chromosome.getFitnessScore() == 100) {
+                            // Pause the FAST Evolution process when fitness score is 100
+                            startEvolutionButton.setText("Start Evolution");
+                            
+                            // Cancel the running EvolutionWorker if it exists and is not yet done
+                            if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
+                                evolutionWorker[0].cancel(true);
+                            }
+                            break;  // No need to check further, as we found one with a fitness score of 100
+                        }
+                    }
+                }
             }
         }
+        
 
+        
         startEvolutionButton.addActionListener(new EvolutionActionListener());
 
         buttonPanel.add(startEvolutionButton);
@@ -398,6 +477,12 @@ public class EvolutionViewer {
     public void handleDriverMain(){
         this.driverMain();
     }   
+
+    @Override
+    public void run() {
+        this.driverMain();
+    }
+    
     
     /**
     * The main method is the entry point of the Evolution Viewer application.
