@@ -147,7 +147,10 @@ public class EvolutionViewer implements Runnable {
         buttonPanel.add(fastEvolutionLabel);
         buttonPanel.add(fastEvolutionCheckBox);
 
-        
+        JLabel autoStopLabel = new JLabel("Auto Stop? ");
+        JCheckBox autoStopCheckBox = new JCheckBox();
+        buttonPanel.add(autoStopLabel);
+        buttonPanel.add(autoStopCheckBox);
         
         // Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
@@ -195,15 +198,16 @@ public class EvolutionViewer implements Runnable {
                 public void actionPerformed(ActionEvent e) {
                     if (!fastEvolutionCheckBox.isSelected()){
                         if (passedErrorCheck){
-                            if (evComponent.checkForFitness100()) {
+                            if (autoStopCheckBox.isSelected() && evComponent.checkForFitness100()) {
                                 count++;
-                                if (count == 5){
+                                if (count == 5) {
                                     resetEvolution();
                                     timer.stop();
                                     count = 0;
                                     return;
                                 }
                             }
+                            
                             if (generationCount == -1){
                                 //TODO ADD SAME FUNCTIONALITY INTO FAST EVOLUTION
                                 evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
@@ -276,12 +280,12 @@ public class EvolutionViewer implements Runnable {
         */
         class EvolutionActionListener implements ActionListener {
             private volatile boolean paused = false; // Initially, not paused
+            private boolean autoStopEnabled = false;
         
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (fastEvolutionCheckBox.isSelected()) {
                     if (startEvolutionButton.getText().equals("Start Evolution")) {
-                        // Start the FAST Evolution process
                         if (evolutionWorker[0] != null) {
                             if (evolutionWorker[0].isShutAllFrames()) {
                                 indViewer.shutDownFrame();
@@ -290,38 +294,46 @@ public class EvolutionViewer implements Runnable {
                             }
                         }
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
-                        
+        
                         indViewer = new IndividualViewer();
                         indViewer.getIndComponent().setPopulation(evComponent.population);
                         indViewer.driverMain();
-                        
                         popViewer = new PopulationViewer();
                         popViewer.handleSetPopulation(evComponent.population);
                         popViewer.driverMain();
-                        
                         histViewer = new HistogramViewer();
                         histViewer.handleSetPopulation(evComponent.population);
                         histViewer.driverMain();
-
+        
                         startEvolutionButton.setText("Pause");
+                        autoStopEnabled = autoStopCheckBox.isSelected();
         
                         // Create and execute an EvolutionWorker to run the evolution in the background
                         evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
-                        evolutionWorker[0].setPaused(false); // Initially, not paused
+                        evolutionWorker[0].setPaused(false);
+        
+                        // Pass the autoStopEnabled flag to EvolutionWorker
+                        evolutionWorker[0].setAutoStopEnabled(autoStopEnabled);
                         evolutionWorker[0].execute();
                     } else if (startEvolutionButton.getText().equals("Pause")) {
-                        // Pause the FAST Evolution process
-                        startEvolutionButton.setText("Resume");
-                        evolutionWorker[0].setPaused(true); // Set the paused flag
+                        if (!autoStopCheckBox.isSelected() && !autoStopEnabled) {
+                            // Pause the FAST Evolution process
+                            startEvolutionButton.setText("Resume");
+                            paused = true;
         
-                        // Cancel the running EvolutionWorker if it exists and is not yet done
-                        if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
-                            evolutionWorker[0].cancel(true);
+                            // Cancel the running EvolutionWorker if it exists and is not yet done
+                            if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
+                                evolutionWorker[0].cancel(true);
+                            }
+                        } else {
+                            // Reset the button
+                            startEvolutionButton.setText("Start Evolution");
+                            paused = false;
                         }
                     } else if (startEvolutionButton.getText().equals("Resume")) {
                         // Resume the FAST Evolution process
                         startEvolutionButton.setText("Pause");
-                        evolutionWorker[0].setPaused(false); // Not paused
+                        paused = false;
         
                         // Create a new EvolutionWorker to continue the evolution
                         evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
@@ -331,6 +343,9 @@ public class EvolutionViewer implements Runnable {
             }
         }
         
+        
+        
+
         
     
         

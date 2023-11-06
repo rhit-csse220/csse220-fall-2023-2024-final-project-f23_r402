@@ -15,6 +15,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
     private boolean shutAllFrames;
     private volatile boolean paused = false;
     private CountDownLatch pauseLatch = new CountDownLatch(1);
+    private boolean autoStopEnabled = false;
 
     public void setPaused(boolean paused) {
         this.paused = paused;
@@ -23,6 +24,11 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
         }
     }
 
+
+    public void setAutoStopEnabled(boolean autoStopEnabled) {
+        this.autoStopEnabled = autoStopEnabled;
+    }
+    
     public boolean isShutAllFrames() {
         return shutAllFrames;
     }
@@ -46,27 +52,27 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
             evComponent.handleSelection();
             evComponent.generationCount = generationCount;
             publish();
-    
+
             // Check if paused and wait
-            while (paused || evComponent.checkForFitness100()) {
+            while (paused || (autoStopEnabled && evComponent.checkForFitness100())) {
                 try {
                     pauseLatch.await(); // Wait until signaled to resume
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             }
-    
+
             // Repaint the graph (update the UI)
             SwingUtilities.invokeLater(() -> {
                 evComponent.repaint();
             });
         }
-    
+
         SwingUtilities.invokeLater(() -> {
-            startEvolutionButton.setText("Start Evolution");
+            startEvolutionButton.setText("Start Evolution"); // Reset the button
             this.shutAllFrames = true;
         });
-    
+
         return null;
     }
     
