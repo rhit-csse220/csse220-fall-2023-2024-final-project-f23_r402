@@ -6,7 +6,10 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+import javax.swing.JOptionPane;
+
 public class Population {
+    // TODO: change to privates
     public ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
     private int sizeOfPopulation = 100; // default
     private int genomeLength = 100; // default
@@ -14,6 +17,8 @@ public class Population {
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
     public static final int CROSSOVER_OFFSET = 1;
+
+    private int fitnessFunctionType = 0;
 
     public int getSizeOfPopulation() {
         return sizeOfPopulation;
@@ -34,11 +39,22 @@ public class Population {
         this.initiatePopulation();
     }
 
+    public Population(int sizeOfPopulation, int genomeLength, String fitnessFunction) {
+        this.sizeOfPopulation = sizeOfPopulation;
+        this.genomeLength = genomeLength;
+        if (fitnessFunction.equals("Default"))
+			this.fitnessFunctionType = 0;
+		else if (fitnessFunction.contains("Smiley"))
+			this.fitnessFunctionType = 1;
+        this.initiatePopulation();
+    }
+
     public void initiatePopulation(){
+        System.out.println("Population.initiatePopulation() " + this.fitnessFunctionType);
         this.chromosomes = new ArrayList<Chromosome>();
         this.lineArray = new ArrayList<BestFitLine2D>();
         for (int i = 0; i < this.sizeOfPopulation; i++){
-            this.chromosomes.add(new Chromosome(genomeLength));
+            this.chromosomes.add(new Chromosome(genomeLength, this.fitnessFunctionType));
             this.chromosomes.get(i).initiateGene();
         }
         this.sortPopulation();
@@ -114,8 +130,8 @@ public class Population {
         for (int i = 0; i < initialSize/2; i++){
             String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
             try {
-                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
-                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate));
+                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate, this.fitnessFunctionType));
+                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate, this.fitnessFunctionType));
             } catch (InvalidChromosomeFormatException e) {
                 e.printStackTrace();
             }
@@ -318,4 +334,14 @@ public class Population {
     public ArrayList<Chromosome> getChromosomes() {
         return this.chromosomes;
     }
+
+    // public void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
+    //     if (fitnessFunction.contains("only") && fitnessFunction.contains("100") && this.genomeLength != 100) {
+    //         throw new InvalidGenomeLengthException(100);
+    //     }
+    //     if (fitnessFunction.equals("Default"))
+	// 		this.fitnessFunctionType = 0;
+	// 	else if (fitnessFunction.contains("Smiley"))
+	// 		this.fitnessFunctionType = 1;
+    // }
 }

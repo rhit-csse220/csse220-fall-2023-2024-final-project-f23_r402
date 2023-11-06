@@ -18,8 +18,9 @@ public class Chromosome implements Comparable {
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
 	
-	private int numOfGenes = 100;   //default values
-	private int numPerColumn = 10;  //default values
+	private int numOfGenes = 100;           //default values
+	private int numPerColumn = 10;          //default values
+	private int fitnessFunctionType = 0;;   //default values
 	private Gene[] genes;
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
@@ -45,6 +46,16 @@ public class Chromosome implements Comparable {
 		this.numOfGenes = numOfGenes;
 		this.numPerColumn = numOfGenes/NUM_PER_ROW;
 	}
+
+	/**
+	 * Initializes with specific fitness function type
+	 * @param numOfGenes
+	 * @param fitnessFunctionType
+	 */
+	public Chromosome(int numOfGenes, int fitnessFunctionType) {
+		this(numOfGenes);
+		this.fitnessFunctionType = fitnessFunctionType;
+	}
 	
 	public Chromosome(String fileData) throws InvalidChromosomeFormatException{ 
 		this.initiateGeneWithString(fileData);
@@ -64,12 +75,33 @@ public class Chromosome implements Comparable {
 		
 		if (mutate){this.mutateGenes(mutationRate);}
 	}
+
+	public Chromosome(String fileData, boolean mutate, double mutationRate, int fitnessFunctionType) throws InvalidChromosomeFormatException{
+		//this.fileData = fileData;
+		this.numOfGenes = fileData.length();
+		this.fitnessFunctionType = fitnessFunctionType;
+		this.initiateGeneWithString(fileData);
+		this.calcFitnessFuction();
+		//this.fitnessSmiley();
+		
+		if (mutate){this.mutateGenes(mutationRate);}
+	}
 	
 	//methods
 	/*
 	* ensures: that the fitness score for the chromosome is calculated
 	*/
 	public void calcFitnessFuction() {
+		if (this.fitnessFunctionType == 0) {
+			this.calculateDefaultFitnessFunction();
+		} else if (this.fitnessFunctionType == 1) {
+			this.fitnessSmiley();
+		} else {
+			System.out.println("Warning. Wrong fitness function selected.");
+		}
+	}
+
+	public void calculateDefaultFitnessFunction() {
 		int score = 0;
 		String fileData = getChromosomeDataAsString();
 		for (int i = 0; i < fileData.length(); i++){
@@ -338,5 +370,9 @@ public class Chromosome implements Comparable {
 	@Override
 	public String toString() {
 		return this.getChromosomeDataAsString();
+	}
+
+	public void setFitnessFunctionType(int fitnessFunction) {
+		this.fitnessFunctionType = fitnessFunction;
 	}
 }
