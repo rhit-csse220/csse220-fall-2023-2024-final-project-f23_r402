@@ -46,29 +46,30 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
             evComponent.handleSelection();
             evComponent.generationCount = generationCount;
             publish();
-
+    
             // Check if paused and wait
-            while (paused) {
+            while (paused || evComponent.checkForFitness100()) {
                 try {
                     pauseLatch.await(); // Wait until signaled to resume
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             }
-
+    
             // Repaint the graph (update the UI)
             SwingUtilities.invokeLater(() -> {
                 evComponent.repaint();
             });
         }
-
+    
         SwingUtilities.invokeLater(() -> {
             startEvolutionButton.setText("Start Evolution");
             this.shutAllFrames = true;
         });
-
+    
         return null;
     }
+    
 }
 
 
