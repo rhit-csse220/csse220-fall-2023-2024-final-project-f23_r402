@@ -3,14 +3,13 @@ package mainApp;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class Viewer {
+public abstract class Viewer {
     protected Component component;
     protected JFrame frame;
     protected int timerDelay;
     protected Timer timer;
 
-    public void driverMain(){
-    }
+    public abstract void driverMain();
 
     public void shutDownFrame(){
         frame.dispose();

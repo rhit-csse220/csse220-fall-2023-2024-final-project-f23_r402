@@ -48,7 +48,7 @@ public class EvolutionComponent extends JComponent {
   private double mutationRate;
   private String selection;
   private boolean crossover;
-  private int x,y,xLimit,yLimit,xWidth,yHeight;
+  protected int x,y,xLimit,yLimit,xWidth,yHeight;
   public int generationCount;
   public ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
   
