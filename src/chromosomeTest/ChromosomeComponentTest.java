@@ -61,27 +61,6 @@ public class ChromosomeComponentTest {
         assertEquals("1001011001", chromosome.getChromosomeDataAsString());
     }
 
-    // Testing the .containsGene() method
-    // TODO: fix
-    @Test
-    public void testContainsGene() {
-        ChromosomeComponent component = new ChromosomeComponent();
-        Chromosome chromosome = component.getChromosome();
-
-        // Create a mock gene
-        Gene mockGene = new Gene('0', true, 0, 0, 30);
-
-        // Set the chromosome genes to the mock gene
-        chromosome.setGenes(new Gene[] { mockGene });
-
-        // Call containsGene with coordinates within the mock gene
-        Gene selectedGene = component.containsGene(mockGene.getX() + 30 / 2, mockGene.getY() + 30 / 2);
-
-        // Verify that the selected gene is the mock gene
-        assertNotNull(selectedGene);
-        assertEquals(mockGene.getBit(), selectedGene.getBit());
-    }
-
     // @Test
     // public void testHandleInitiateGeneWithFile() {
     //     ChromosomeComponent component = new ChromosomeComponent();

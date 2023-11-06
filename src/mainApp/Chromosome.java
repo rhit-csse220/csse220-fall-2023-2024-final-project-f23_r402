@@ -13,7 +13,7 @@ public class Chromosome implements Comparable {
 	// public static final int Y_COORD_LETTER_OFFSET = 10;
 	public static final double MAX_FITNESS_SCORE = 100.0;
 	public static final int ORIGIN = 1;
-	public static final int CROSSOVER_OFFSET = 2;
+	public static final int CROSSOVER_OFFSET = 1;
 	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
@@ -24,8 +24,12 @@ public class Chromosome implements Comparable {
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
+
+	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
+	public int x = 0;
+	public int y = 0;
 	
-	// Seeding the Random object
+	// Create a Random object
 	Random r = new Random();
 	
 	/**
@@ -185,14 +189,16 @@ public class Chromosome implements Comparable {
 		//this.fitnessSmiley();
 	}
 
-	public void doCrossover(Chromosome other){
-		int crossoverPoint = r.nextInt(ORIGIN, numOfGenes-CROSSOVER_OFFSET); // set to 1 and numOfGenes-2 because there would no crossover if the point was at the last index, or at 0 as it would replace the entirety of the chromosome's data
-		String crossoverData = other.getChromosomeDataAsString();
-		System.out.println(crossoverPoint);
-		for (int i = crossoverPoint; i<crossoverData.length(); i++){
-			this.genes[i].setBit(crossoverData.charAt(i));
-		}
-	}
+	// think this would make more sense to be done in population?
+
+	// public void doCrossover(Chromosome other){
+	// 	int crossoverPoint = r.nextInt(CROSSOVER_OFFSET, numOfGenes-CROSSOVER_OFFSET); // set to 1 and numOfGenes-1 because there would no crossover if the point was at the last index, or at 0 as it would replace the entirety of the chromosome's data
+	// 	String crossoverData = other.getChromosomeDataAsString();
+	// 	System.out.println(crossoverPoint);
+	// 	for (int i = crossoverPoint; i<crossoverData.length(); i++){
+	// 		this.genes[i].setBit(crossoverData.charAt(i));
+	// 	}
+	// }
 	
 	/**
 	* ensures: that the chromosome data, i.e the genes and their values, are concatenated into a single string
@@ -257,6 +263,39 @@ public class Chromosome implements Comparable {
 			}
 			g2.setFont(new Font(null, Font.PLAIN, geneWidth/3));
 			g2.drawString((String)(i+""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + this.genes[i].getY());
+		}
+	}
+
+	//Is the drawing method called for drawing the chromosomes; In hindsight, can be removed/edited, as it is code duplication
+	public void drawPopulationView(Graphics2D g, int geneWidth, int border) {
+		Graphics2D g2 = (Graphics2D) g;
+		//This could just be replaced with Chromosome.drawOn(?), the only part that matters is that the chromosome is drawn at the given coordinates
+		g2.translate(x,y);
+		this.geneWidth = geneWidth;
+		this.border = border;
+		this.adjustGenePosition();
+		drawGenes(g2);
+		g2.translate(-x,-y);
+	}
+
+	//Is the drawing method called for drawing the best chromosome; In hindsight, can be removed/edited, as it is code duplcation.
+	public void drawBestView(Graphics2D g, int geneWidth, int border, int x, int y) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.translate(x,y);
+		this.geneWidth = geneWidth;
+		this.border = border;
+		this.adjustGenePosition();
+		drawGenes(g2);
+	}
+
+	public void drawGenes(Graphics2D g2){
+		for (int i = 0; i < this.genes.length; i++) {
+			this.genes[i].drawOn(g2);
+			if (this.genes[i].getBit()=='1') {
+				g2.setColor(GENE_1_TEXT_COLOR);
+			} else if (this.genes[i].getBit()=='0') {
+				g2.setColor(GENE_0_TEXT_COLOR);
+			}
 		}
 	}
 	

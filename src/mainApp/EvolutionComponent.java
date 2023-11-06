@@ -48,7 +48,7 @@ public class EvolutionComponent extends JComponent {
   private double mutationRate;
   private String selection;
   private boolean crossover;
-  private int x,y,xLimit,yLimit,xWidth,yHeight;
+  protected int x,y,xLimit,yLimit,xWidth,yHeight;
   public int generationCount;
   public ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
   
@@ -59,6 +59,16 @@ public class EvolutionComponent extends JComponent {
     this.population = new Population();
   }
   
+
+  public boolean checkForFitness100() {
+    for (Chromosome chromosome : population.getChromosomes()) {
+        if (chromosome.getFitnessScore() == 100) {
+            return true;
+        }
+    }
+    return false;
+}
+
   /**
   * Gets the size of the population.
   * @return The size of the population.
@@ -157,6 +167,7 @@ public class EvolutionComponent extends JComponent {
   */
   public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism){
     this.setPopulationSize(Integer.parseInt(populationSize));
+    this.population.setSizeOfPopulation(this.populationSize);
     this.setSelection(selection);
     this.setMutationRate(Integer.parseInt(mutationRate));
     this.setCrossover(crossover);
@@ -172,7 +183,7 @@ public class EvolutionComponent extends JComponent {
   * selection method.
   */
   public void handleSelection(){
-    String s = selection;
+    String s = this.selection;
     if (s.equals("Truncation")){
       this.handleTruncationSelection();
     }
@@ -188,21 +199,21 @@ public class EvolutionComponent extends JComponent {
   * handles truncation selection of the population
   */
   public void handleTruncationSelection(){
-    this.population.performSelection(this.mutationRate, 0, elitism);
+    this.population.performSelection(this.mutationRate, 0, this.elitism, this.crossover);
   }
   
   /**
   * handles roulette selection of the population
   */
   public void handleRouletteSelection(){
-    this.population.performSelection(this.mutationRate, 1, elitism);
+    this.population.performSelection(this.mutationRate, 1, this.elitism, this.crossover);
   }
   
   /**
   * handles ranked selection of the population
   */
   public void handleRankedSelection(){
-    this.population.performSelection(this.mutationRate, 2, elitism);
+    this.population.performSelection(this.mutationRate, 2, this.elitism, this.crossover);
   }
   
   /**
