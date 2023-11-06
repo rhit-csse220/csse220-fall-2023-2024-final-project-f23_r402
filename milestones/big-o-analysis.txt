@@ -1,0 +1,24 @@
+a.
+
+
+b. Fitness calculation function
+    At the moment, Chromosome.calcFitnessFunction() calculates the fitness score
+    with N operations, meaning that its Big-O is O(N).
+    
+    Theoretically, it can be improved to O(1) if Chromosome.fitnessScore is calculated
+    automatically in every method that changes the fitness score. Currently, these
+    methods rely on calling Chromosome.calcFitnessFunction() at the end, but we can change
+    it and improve efficiency.
+
+
+c. Roulette wheel selection function
+    Fist, Population.sortPopulation() performs at O(NlogN)
+    Second, Population.createLine() - O(numberOfChromosomes + numberOfChromosomes + sizeOfPopulation)
+                                    = O(M + N)
+    Third, Population.findRouletteList() - O((M + M + M + M) * numberOfRecursions)
+    Then, O(elitismPercentage)
+    Then, O(M / 2)
+    Then, O(elitismPercentage)
+    Then, O(NlogN)
+
+    0 fitness calculations?
