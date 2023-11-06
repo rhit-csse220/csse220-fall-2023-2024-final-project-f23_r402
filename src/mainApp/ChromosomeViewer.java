@@ -40,7 +40,7 @@ public class ChromosomeViewer {
 		this.frame = new JFrame();
 		frame.setTitle(frameTitle);
 		frame.setSize(frameWidth, frameHeight);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
 		// frame.setResizable(false);
 
