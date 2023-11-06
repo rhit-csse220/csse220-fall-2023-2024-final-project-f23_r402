@@ -32,7 +32,7 @@ public class ChromosomeManualTest {
     public static void testTruncation() {
         Population p = new Population(10, 10);
         System.out.println("Before truncation: " + p.getChromosomes());
-        p.performSelection(1, 0, 0);  // Truncation with mutation rate 1 and elitism 0
+        p.performSelection(1, 0, 0, true);  // Truncation with mutation rate 1, elitism 0, and crossover
         System.out.println("After truncation:  " + p.getChromosomes());
     }
 

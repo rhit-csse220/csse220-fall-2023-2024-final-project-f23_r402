@@ -19,6 +19,15 @@ import javax.swing.text.View;
 public class IndividualViewer extends Viewer {
     
     private IndividualComponent indComponent = new IndividualComponent();
+    private int timerDelay;
+    
+    public int getTimerDelay() {
+        return timerDelay;
+    }
+
+    public void setTimerDelay(int timerDelay) {
+        this.timerDelay = timerDelay;
+    }
 
     public IndividualComponent getIndComponent() {
         return indComponent;
@@ -31,7 +40,7 @@ public class IndividualViewer extends Viewer {
     public void driverMain(){
         final String frameTitle = "Best Chromosome";
         final int frameWidth = 400;
-        final int frameHeight = 390;
+        final int frameHeight = 400;
 
         frame = new JFrame();
         frame.setTitle(frameTitle);

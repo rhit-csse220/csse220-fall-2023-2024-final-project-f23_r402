@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -162,7 +164,7 @@ public class EvolutionViewer implements Runnable {
                     startEvolutionButton.setText("Start Evolution");
                     timer.restart();
                     makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
-                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                     generationCount = -1;
                     timer.stop();
                     indViewer.stopTimer();
@@ -188,18 +190,23 @@ public class EvolutionViewer implements Runnable {
                 }
 
                 
+                int count = 0;
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (!fastEvolutionCheckBox.isSelected()){
                         if (passedErrorCheck){
-
-                             if (evComponent.checkForFitness100()) {
-                                resetEvolution();
+                            if (evComponent.checkForFitness100()) {
+                                count++;
+                                if (count == 5){
+                                    resetEvolution();
+                                    timer.stop();
+                                    count = 0;
+                                    return;
+                                }
                             }
-
-                            else if (generationCount == -1){
+                            if (generationCount == -1){
                                 //TODO ADD SAME FUNCTIONALITY INTO FAST EVOLUTION
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                                 if (indViewer!=null){
                                     indViewer.shutDownFrame();
                                     popViewer.shutDownFrame();
@@ -240,7 +247,7 @@ public class EvolutionViewer implements Runnable {
                             this.passedErrorCheck = true;
                             makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
                             if (startEvolutionButton.getText().equals("Start Evolution")){
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                                 startEvolutionButton.setText("Pause");
                                 timer.start();
                             } else if (startEvolutionButton.getText().equals("Pause")){
@@ -258,7 +265,6 @@ public class EvolutionViewer implements Runnable {
             }
         });
         
-        buttonPanel.add(startEvolutionButton);
         /**
         * This block of code defines an array of `EvolutionWorker` objects, a button for starting Fast Evolution,
         * and an action listener to handle the button's behavior.
@@ -269,6 +275,8 @@ public class EvolutionViewer implements Runnable {
         * An ActionListener implementation to control the behavior of Fast Evolution when the fastEvolutionCheckBox is selected.
         */
         class EvolutionActionListener implements ActionListener {
+            private volatile boolean paused = false; // Initially, not paused
+        
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (fastEvolutionCheckBox.isSelected()) {
@@ -281,7 +289,7 @@ public class EvolutionViewer implements Runnable {
                                 histViewer.shutDownFrame();
                             }
                         }
-                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                         indViewer = new IndividualViewer();
                         indViewer.getIndComponent().setPopulation(evComponent.population);
                         indViewer.driverMain();
@@ -292,37 +300,32 @@ public class EvolutionViewer implements Runnable {
         
                         // Create and execute an EvolutionWorker to run the evolution in the background
                         evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0].setPaused(false); // Initially, not paused
                         evolutionWorker[0].execute();
                     } else if (startEvolutionButton.getText().equals("Pause")) {
                         // Pause the FAST Evolution process
-                        startEvolutionButton.setText("Start Evolution");
+                        startEvolutionButton.setText("Resume");
+                        evolutionWorker[0].setPaused(true); // Set the paused flag
         
                         // Cancel the running EvolutionWorker if it exists and is not yet done
                         if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
                             evolutionWorker[0].cancel(true);
                         }
-                    }
-                }
-                
-                // Check if any chromosome's fitness score is 100
-                if (evComponent.population != null && evComponent.population.getChromosomes() != null) {
-                    for (Chromosome chromosome : evComponent.population.getChromosomes()) {
-                        if (chromosome.getFitnessScore() == 100) {
-                            // Pause the FAST Evolution process when fitness score is 100
-                            startEvolutionButton.setText("Start Evolution");
-                            
-                            // Cancel the running EvolutionWorker if it exists and is not yet done
-                            if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
-                                evolutionWorker[0].cancel(true);
-                            }
-                            break;  // No need to check further, as we found one with a fitness score of 100
-                        }
+                    } else if (startEvolutionButton.getText().equals("Resume")) {
+                        // Resume the FAST Evolution process
+                        startEvolutionButton.setText("Pause");
+                        evolutionWorker[0].setPaused(false); // Not paused
+        
+                        // Create a new EvolutionWorker to continue the evolution
+                        evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0].execute();
                     }
                 }
             }
         }
         
-
+        
+    
         
         startEvolutionButton.addActionListener(new EvolutionActionListener());
 
