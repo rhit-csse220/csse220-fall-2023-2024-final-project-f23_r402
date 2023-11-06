@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-public class Component extends JComponent {
+abstract class Component extends JComponent {
     protected Population population;
 
     public Population getPopulation() {

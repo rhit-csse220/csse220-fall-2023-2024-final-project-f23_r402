@@ -10,9 +10,6 @@ public class HistogramComponent extends EvolutionComponent{
 
     private Histogram histogram;
 
-    //Code duplication
-    private int x,y,xLimit,yLimit,xWidth,yHeight;
-
     final double X1_TO_FRAME_RATIO = 0.04;
 
     public HistogramComponent(){
@@ -30,11 +27,6 @@ public class HistogramComponent extends EvolutionComponent{
         this.yHeight = this.yLimit+this.y; 
         this.histogram.updateFitnessFrequency();
         this.drawOn(g2);
-    }
-
-    public void drawHistogram(Graphics2D g2, double x1, double y1){
-        int x = calculateX(x1);
-        int y = calculateX(y1);
     }
 
     @Override

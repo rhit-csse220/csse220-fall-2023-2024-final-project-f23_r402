@@ -283,6 +283,7 @@ public class Population {
         for (int i = 0; i < genomeLength; i++){
             hammingDistance+= (position1n0Array[i][0][0]*position1n0Array[i][0][1]);
         }
+
         //System.out.println(((hammingDistance/(numPairs))/genomeLength));
         return ((hammingDistance/(numPairs))/genomeLength)*100;
     }

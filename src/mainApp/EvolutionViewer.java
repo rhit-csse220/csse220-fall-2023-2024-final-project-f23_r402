@@ -284,6 +284,23 @@ public class EvolutionViewer implements Runnable {
                 }
             }
         });
+
+        // Adding an Enter-button shortcut for "submitting the form" and starting the evolution and a Space-Bar shortcut
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) { }
+
+            @Override
+            public void keyPressed(KeyEvent e) { }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == SUBMIT_FORM_KEY) {
+                    startEvolutionButton.doClick();
+                }
+            }
+            
+        });
         
         buttonPanel.add(startEvolutionButton);
 
@@ -303,7 +320,7 @@ public class EvolutionViewer implements Runnable {
             }
             
         });
-        
+
         for (JTextField textField : textFields) {
             textField.addKeyListener(new KeyListener() {
                 @Override
@@ -353,13 +370,19 @@ public class EvolutionViewer implements Runnable {
                         indViewer = new IndividualViewer();
                         indViewer.getIndComponent().setPopulation(evComponent.population);
                         indViewer.driverMain();
+                        
                         popViewer = new PopulationViewer();
                         popViewer.handleSetPopulation(evComponent.population);
                         popViewer.driverMain();
+                        
+                        histViewer = new HistogramViewer();
+                        histViewer.handleSetPopulation(evComponent.population);
+                        histViewer.driverMain();
+
                         startEvolutionButton.setText("Pause");
         
                         // Create and execute an EvolutionWorker to run the evolution in the background
-                        evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
                         evolutionWorker[0].setPaused(false); // Initially, not paused
                         evolutionWorker[0].execute();
                     } else if (startEvolutionButton.getText().equals("Pause")) {
@@ -377,7 +400,7 @@ public class EvolutionViewer implements Runnable {
                         evolutionWorker[0].setPaused(false); // Not paused
         
                         // Create a new EvolutionWorker to continue the evolution
-                        evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
                         evolutionWorker[0].execute();
                     }
                 }
