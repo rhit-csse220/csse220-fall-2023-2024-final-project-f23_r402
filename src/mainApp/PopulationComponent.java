@@ -8,7 +8,6 @@ import javax.swing.JComponent;
 
 public class PopulationComponent extends Component{
     private ArrayList<Chromosome> chromosomes; 
-    private boolean foundPerfectChromosome = false; // Flag to track if a perfect chromosome is found
 
     public PopulationComponent(){}
 

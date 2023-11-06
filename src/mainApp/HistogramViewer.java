@@ -41,14 +41,6 @@ public class HistogramViewer extends Viewer {
         frame.pack();
     }
 
-    public void shutDownFrame(){
-        frame.dispose();
-    }
-
-    public void setTimerDelay(int timerDelay) {
-        this.timerDelay = timerDelay;
-    }
-
     public void handleSetPopulation(Population population){
         this.histogramComponent.handleSetPopulation(population);
     }

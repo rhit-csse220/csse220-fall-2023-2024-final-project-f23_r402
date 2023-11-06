@@ -306,7 +306,7 @@ public class EvolutionViewer implements Runnable {
                         startEvolutionButton.setText("Pause");
         
                         // Create and execute an EvolutionWorker to run the evolution in the background
-                        evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
                         evolutionWorker[0].setPaused(false); // Initially, not paused
                         evolutionWorker[0].execute();
                     } else if (startEvolutionButton.getText().equals("Pause")) {
@@ -324,7 +324,7 @@ public class EvolutionViewer implements Runnable {
                         evolutionWorker[0].setPaused(false); // Not paused
         
                         // Create a new EvolutionWorker to continue the evolution
-                        evolutionWorker[0] = new EvolutionWorker(evComponent, indViewer.getIndComponent(), popViewer.getPopComponent(), Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
                         evolutionWorker[0].execute();
                     }
                 }

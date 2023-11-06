@@ -8,8 +8,6 @@ import java.util.concurrent.CountDownLatch;
 
 public class EvolutionWorker extends SwingWorker<Void, Void> {
     private EvolutionComponent evComponent;
-    private IndividualComponent individualComponent;
-    private PopulationComponent populationComponent;
     private int generations;
     private JButton startEvolutionButton;
     private boolean shutAllFrames;
@@ -31,10 +29,8 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
         this.shutAllFrames = shutAllFrames;
     }
 
-    public EvolutionWorker(EvolutionComponent evComponent, IndividualComponent individualComponent, PopulationComponent populationComponent, int generations, JButton startEvolutionButton) {
+    public EvolutionWorker(EvolutionComponent evComponent, int generations, JButton startEvolutionButton) {
         this.evComponent = evComponent;
-        this.individualComponent = individualComponent;
-        this.populationComponent = populationComponent;
         this.generations = generations;
         this.startEvolutionButton = startEvolutionButton;
         this.shutAllFrames = false;
