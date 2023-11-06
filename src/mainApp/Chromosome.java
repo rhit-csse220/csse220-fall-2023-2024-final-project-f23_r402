@@ -134,7 +134,8 @@ public class Chromosome implements Comparable {
 		}
 		
 		// Set the fitness score based on the number of matching bits
-		this.fitnessScore = matchingBits / MAX_FITNESS_SCORE;
+		// this.fitnessScore = matchingBits / MAX_FITNESS_SCORE;
+		this.fitnessScore = (int) ((matchingBits / (double) numOfGenes) * MAX_FITNESS_SCORE);
 	}
 	
 	/**
