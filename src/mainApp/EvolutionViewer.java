@@ -163,7 +163,7 @@ public class EvolutionViewer implements Runnable {
                     startEvolutionButton.setText("Start Evolution");
                     timer.restart();
                     makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
-                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                     generationCount = -1;
                     timer.stop();
                     indViewer.stopTimer();
@@ -171,18 +171,23 @@ public class EvolutionViewer implements Runnable {
                 }
 
                 
+                int count = 0;
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (!fastEvolutionCheckBox.isSelected()){
                         if (passedErrorCheck){
-
-                            //  if (evComponent.checkForFitness100()) {
-                            //     resetEvolution();
-                            // }
-
+                            if (evComponent.checkForFitness100()) {
+                                count++;
+                                if (count == 5){
+                                    resetEvolution();
+                                    timer.stop();
+                                    count = 0;
+                                    return;
+                                }
+                            }
                             if (generationCount == -1){
                                 //TODO ADD SAME FUNCTIONALITY INTO FAST EVOLUTION
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                                 if (indViewer!=null){
                                     indViewer.shutDownFrame();
                                     popViewer.shutDownFrame();
@@ -228,7 +233,7 @@ public class EvolutionViewer implements Runnable {
                             this.passedErrorCheck = true;
                             makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
                             if (startEvolutionButton.getText().equals("Start Evolution")){
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                                 startEvolutionButton.setText("Pause");
                                 timer.start();
                             } else if (startEvolutionButton.getText().equals("Pause")){
@@ -269,7 +274,7 @@ public class EvolutionViewer implements Runnable {
                                 popViewer.shutDownFrame();
                             }
                         }
-                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
                         indViewer = new IndividualViewer();
                         indViewer.getIndComponent().setPopulation(evComponent.population);
                         indViewer.driverMain();

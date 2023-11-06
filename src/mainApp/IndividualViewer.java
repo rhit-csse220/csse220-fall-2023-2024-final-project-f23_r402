@@ -19,6 +19,9 @@ public class IndividualViewer implements Runnable {
     
     private IndividualComponent indComponent = new IndividualComponent();
     private int timerDelay;
+    private JFrame frame;
+    private Timer timer;
+    
     public int getTimerDelay() {
         return timerDelay;
     }
@@ -35,9 +38,6 @@ public class IndividualViewer implements Runnable {
         this.indComponent = indComponent;
     }
 
-    private JFrame frame;
-    private Timer timer;
-
     public Timer getTimer() {
         return timer;
     }
@@ -53,7 +53,7 @@ public class IndividualViewer implements Runnable {
     public void driverMain(){
         final String frameTitle = "Best Chromosome";
         final int frameWidth = 400;
-        final int frameHeight = 390;
+        final int frameHeight = 400;
 
         frame = new JFrame();
         frame.setTitle(frameTitle);
