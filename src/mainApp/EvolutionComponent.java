@@ -183,7 +183,7 @@ public class EvolutionComponent extends JComponent {
   * selection method.
   */
   public void handleSelection(){
-    String s = selection;
+    String s = this.selection;
     if (s.equals("Truncation")){
       this.handleTruncationSelection();
     }
@@ -199,21 +199,21 @@ public class EvolutionComponent extends JComponent {
   * handles truncation selection of the population
   */
   public void handleTruncationSelection(){
-    this.population.performSelection(this.mutationRate, 0, elitism);
+    this.population.performSelection(this.mutationRate, 0, this.elitism, this.crossover);
   }
   
   /**
   * handles roulette selection of the population
   */
   public void handleRouletteSelection(){
-    this.population.performSelection(this.mutationRate, 1, elitism);
+    this.population.performSelection(this.mutationRate, 1, this.elitism, this.crossover);
   }
   
   /**
   * handles ranked selection of the population
   */
   public void handleRankedSelection(){
-    this.population.performSelection(this.mutationRate, 2, elitism);
+    this.population.performSelection(this.mutationRate, 2, this.elitism, this.crossover);
   }
   
   /**
