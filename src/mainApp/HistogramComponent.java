@@ -31,7 +31,8 @@ public class HistogramComponent extends EvolutionComponent{
 
     @Override
     public void drawOn(Graphics2D g2){
-        drawAxes(g2);
+        drawYDivisions(g2);
+        drawXDivisions(g2);
         drawRectangles(g2);
     }
 
@@ -95,12 +96,6 @@ public class HistogramComponent extends EvolutionComponent{
         }
         g2.drawLine(x, 0, xLimit, 0);
         g2.translate(-this.x, -this.yHeight);
-    }
-
-    @Override 
-    public void drawAxes(Graphics2D g2){
-        drawYDivisions(g2);
-        drawXDivisions(g2);
     }
 
     public void handleSetPopulation(Population population){

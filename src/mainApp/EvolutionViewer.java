@@ -198,17 +198,17 @@ public class EvolutionViewer implements Runnable {
 
                 private void initializeWindows(){
                     indViewer = new IndividualViewer();
-                    indViewer.getIndComponent().setPopulation(evComponent.population);
+                    indViewer.getIndComponent().setPopulation(evComponent.handleGetPopulation());
                     indViewer.setTimerDelay(timer.getDelay());
                     indViewer.driverMain();
 
                     popViewer = new PopulationViewer();
-                    popViewer.handleSetPopulation(evComponent.population);
+                    popViewer.handleSetPopulation(evComponent.handleGetPopulation());
                     popViewer.setTimerDelay(timer.getDelay());
                     popViewer.driverMain();
                     
                     histViewer = new HistogramViewer();
-                    histViewer.handleSetPopulation(evComponent.population);
+                    histViewer.handleSetPopulation(evComponent.handleGetPopulation());
                     histViewer.setTimerDelay(timer.getDelay());
                     histViewer.driverMain();
                 }
@@ -357,13 +357,13 @@ public class EvolutionViewer implements Runnable {
                         } catch (InvalidGenomeLengthException e1) {}
 
                         indViewer = new IndividualViewer();
-                        indViewer.getIndComponent().setPopulation(evComponent.population);
+                        indViewer.getIndComponent().setPopulation(evComponent.handleGetPopulation());
                         indViewer.driverMain();
                         popViewer = new PopulationViewer();
-                        popViewer.handleSetPopulation(evComponent.population);
+                        popViewer.handleSetPopulation(evComponent.handleGetPopulation());
                         popViewer.driverMain();
                         histViewer = new HistogramViewer();
-                        histViewer.handleSetPopulation(evComponent.population);
+                        histViewer.handleSetPopulation(evComponent.handleGetPopulation());
                         histViewer.driverMain();
         
                         startEvolutionButton.setText("Pause");
