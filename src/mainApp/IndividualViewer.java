@@ -14,11 +14,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.text.View;
 
-public class IndividualViewer implements Runnable {
+public class IndividualViewer extends Viewer {
     
     private IndividualComponent indComponent = new IndividualComponent();
     private int timerDelay;
+    
     public int getTimerDelay() {
         return timerDelay;
     }
@@ -35,25 +37,10 @@ public class IndividualViewer implements Runnable {
         this.indComponent = indComponent;
     }
 
-    private JFrame frame;
-    private Timer timer;
-
-    public Timer getTimer() {
-        return timer;
-    }
-
-    public void setTimer(Timer timer) {
-        this.timer = timer;
-    }
-
-    public void stopTimer() {
-        this.timer.stop();
-    }
-
     public void driverMain(){
         final String frameTitle = "Best Chromosome";
         final int frameWidth = 400;
-        final int frameHeight = 390;
+        final int frameHeight = 400;
 
         frame = new JFrame();
         frame.setTitle(frameTitle);
@@ -71,7 +58,7 @@ public class IndividualViewer implements Runnable {
         JLabel hammingDistance = new JLabel(hammingText);
         frame.add(hammingDistance, BorderLayout.NORTH);
 
-        timer = new Timer(1000/33, new ActionListener() {
+        timer = new Timer(timerDelay, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,15 +71,6 @@ public class IndividualViewer implements Runnable {
         timer.start();
 
         frame.pack();
-    }
-
-    public void shutDownFrame(){
-        frame.dispose();
-    }
-
-    @Override
-    public void run() {
-        this.driverMain();
     }
 
     public void setSize(int width, int height){

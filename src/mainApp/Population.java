@@ -16,6 +16,8 @@ public class Population {
     public double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
 
+    public static final int CROSSOVER_OFFSET = 1;
+
     private int fitnessFunctionType = 0;
 
     public int getSizeOfPopulation() {
@@ -26,7 +28,7 @@ public class Population {
         this.sizeOfPopulation = sizeOfPopulation;
     }
     
-    // Seeding the Random object
+    // Create a Random object
     Random r = new Random();
 
     public Population(){}
@@ -84,13 +86,14 @@ public class Population {
      * @param mutationRate
      * @param selectionType 0 for truncation, 1 for roulette, 2 for ranked
      */
-    public void performSelection(double mutationRate, int selectionType, double elitism){
+    public void performSelection(double mutationRate, int selectionType, double elitism, boolean crossover){
         // sort population
         this.sortPopulation();
 
         // create line
         this.createLine();
 
+        // finding the parent chromosomes by selection algorithm
         ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(chromosomes);
         ArrayList<Chromosome> chosenChromosomes = new ArrayList<Chromosome>();
         if (selectionType == 0){
@@ -108,17 +111,22 @@ public class Population {
         // The amount of the most fit population to be retained from the initial collection of chromosomes. 
         int elitistSize = (int) ((elitism / 100) * initialSize);
 
-        // The collection is initially initialized to the initial collection of chromosomes
+        // store all the elite chromosomes
         ArrayList<Chromosome> eliteChromosomes = new ArrayList<Chromosome>();
-        
         this.sortPopulation();
         for (int i = 0; i < elitistSize; i++){
             eliteChromosomes.add(this.chromosomes.get(i));
         }
 
-        // initiating 
+        // initializing new chromosomes
         this.chromosomes = new ArrayList<Chromosome>();
 
+        // // performing crossover
+        if (crossover){
+            chosenChromosomes = this.performCrossover(chosenChromosomes);
+        }
+
+        // initiating new chromosomes
         for (int i = 0; i < initialSize/2; i++){
             String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
             try {
@@ -129,8 +137,8 @@ public class Population {
             }
         }
 
+        // add elitist chromosomes
         this.sortPopulation();
-
         int index = 0;
         for (int i = initialSize - 1; i >= initialSize - elitistSize; i--){
             this.chromosomes.set(i, eliteChromosomes.get(index));
@@ -227,10 +235,31 @@ public class Population {
         return findRankedList(currentChromosomes, chosenChromosomes);
     }
 
-    public void performCrossover(ArrayList<Chromosome> selectedParents){
-        // genomeLength
-        
+    public ArrayList<Chromosome> performCrossover(ArrayList<Chromosome> selectedParents){
+        ArrayList<Chromosome> childChromosomes = new ArrayList<Chromosome>();
+        for (int i = 0; i < selectedParents.size(); i++){
+            // ensuring two children generated for each pair of parent
+            int index = i;
+            if (index % 2 == 1){
+                index--;
+            }
 
+            // generate a random index for crossover, excluding first and last index
+            int crossoverPoint = r.nextInt(CROSSOVER_OFFSET, this.genomeLength);
+
+            // finds childData
+            String parent1Data = selectedParents.get(index).getChromosomeDataAsString().substring(0, crossoverPoint);
+            String parent2Data = selectedParents.get(index+1).getChromosomeDataAsString().substring(crossoverPoint, this.genomeLength);
+            String childData = parent1Data + parent2Data;
+
+            // adds each child chromosome to the list
+            try{
+                Chromosome childChromosome = new Chromosome(childData);
+                childChromosomes.add(childChromosome);
+            } catch (Exception e){}
+        }
+        
+        return childChromosomes; // only returns half of population - rest has to be mutated
     }
 
     /**

@@ -13,23 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class PopulationViewer implements Runnable {
+public class PopulationViewer extends Viewer {
     
-    private JFrame frame;
     private PopulationComponent populationComponent = new PopulationComponent();
-    private Timer timer;
-
-    public Timer getTimer() {
-        return timer;
-    }
-
-    public void setTimer(Timer timer) {
-        this.timer = timer;
-    }
-
-    public void stopTimer(){
-        timer.stop();
-    }
     
     public void driverMain(){
         final String frameTitle = "Population Viewer";
@@ -68,14 +54,5 @@ public class PopulationViewer implements Runnable {
 
     public PopulationComponent getPopComponent(){
         return this.populationComponent;
-    }
-
-    public void shutDownFrame(){
-        frame.dispose();
-    }
-
-    @Override
-    public void run() {
-        this.driverMain();
     }
 }
