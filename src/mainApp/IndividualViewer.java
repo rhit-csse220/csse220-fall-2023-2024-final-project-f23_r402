@@ -19,6 +19,9 @@ public class IndividualViewer implements Runnable {
     
     private IndividualComponent indComponent = new IndividualComponent();
     private int timerDelay;
+    private JFrame frame;
+    private Timer timer;
+    
     public int getTimerDelay() {
         return timerDelay;
     }
@@ -34,9 +37,6 @@ public class IndividualViewer implements Runnable {
     public void setIndComponent(IndividualComponent indComponent) {
         this.indComponent = indComponent;
     }
-
-    private JFrame frame;
-    private Timer timer;
 
     public Timer getTimer() {
         return timer;
