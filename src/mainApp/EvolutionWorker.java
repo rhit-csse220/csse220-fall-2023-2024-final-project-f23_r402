@@ -1,6 +1,7 @@
 package mainApp;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import java.util.concurrent.CountDownLatch;
@@ -56,13 +57,16 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
                 }
             }
 
-            if (autoStopEnabled && evComponent.checkForFitness100()) {
+               if (autoStopEnabled && evComponent.checkForFitness100()) {
                 // Automatically reset the button to "Start Evolution" when fitness is 100
+                final int generationCounts = evComponent.generationCount;
                 SwingUtilities.invokeLater(() -> {
                     startEvolutionButton.setText("Start Evolution");
+                    JOptionPane.showMessageDialog(null, "The first generation with perfect genes is " + generationCounts, "Perfect Genes Found", JOptionPane.INFORMATION_MESSAGE);
                 });
                 return null; // Exit the loop and stop the worker
             }
+            
 
             // Repaint the graph (update the UI)
             SwingUtilities.invokeLater(() -> {
