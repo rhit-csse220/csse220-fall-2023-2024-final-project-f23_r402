@@ -185,7 +185,7 @@ public class EvolutionViewer implements Runnable {
                 private void resetEvolution() {
                     startEvolutionButton.setText("Start Evolution");
                     timer.restart();
-                    makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
+                    makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox, autoStopCheckBox);
                     try {
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                     } catch (InvalidGenomeLengthException e) { }
@@ -271,7 +271,7 @@ public class EvolutionViewer implements Runnable {
                         checkFields(textFields, checkForError);
                         if (checkForError[0]){
                             this.passedErrorCheck = true;
-                            makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
+                            makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox, autoStopCheckBox);
                             if (startEvolutionButton.getText().equals("Start Evolution")){
                                 evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                                 startEvolutionButton.setText("Pause");
@@ -416,22 +416,25 @@ public class EvolutionViewer implements Runnable {
         }
     }
     
-    public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox){
+    public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(false);
         }
         addSelectionChooser.setEnabled(false);
         checkCrossover.setEnabled(false);
         fastEvolutionCheckbox.setEnabled(false);
+        autoStopCheckBox.setEnabled(false);
+
     }
     
-    public void makeAllFieldsEditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox){
+    public void makeAllFieldsEditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(true);
         }
         addSelectionChooser.setEnabled(true);
         checkCrossover.setEnabled(true);
         fastEvolutionCheckbox.setEnabled(true);
+        autoStopCheckBox.setEnabled(true);
     }
     
     public void checkFields(JTextField[] textFields, boolean[] hasError) throws Exception{
