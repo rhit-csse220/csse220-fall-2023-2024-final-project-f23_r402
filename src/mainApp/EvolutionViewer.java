@@ -290,12 +290,19 @@ public class EvolutionViewer implements Runnable {
                             }
                         }
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isSelected(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                        
                         indViewer = new IndividualViewer();
                         indViewer.getIndComponent().setPopulation(evComponent.population);
                         indViewer.driverMain();
+                        
                         popViewer = new PopulationViewer();
                         popViewer.handleSetPopulation(evComponent.population);
                         popViewer.driverMain();
+                        
+                        histViewer = new HistogramViewer();
+                        histViewer.handleSetPopulation(evComponent.population);
+                        histViewer.driverMain();
+
                         startEvolutionButton.setText("Pause");
         
                         // Create and execute an EvolutionWorker to run the evolution in the background
