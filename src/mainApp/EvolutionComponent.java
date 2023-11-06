@@ -154,8 +154,9 @@ public class EvolutionComponent extends JComponent {
   * @param generations The new number of generations.
   * @param genomeLength The new genome length.
   * @param elitism The new elitism percentage.
+   * @throws InvalidGenomeLengthException
   */
-  public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism){
+  public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism, String fitnessFunction) throws InvalidGenomeLengthException{
     this.setPopulationSize(Integer.parseInt(populationSize));
     this.setSelection(selection);
     this.setMutationRate(Integer.parseInt(mutationRate));
@@ -165,8 +166,14 @@ public class EvolutionComponent extends JComponent {
     this.setElitism(Double.parseDouble(elitism));
     this.lineArray.removeAll(lineArray);
     this.population = new Population(this.populationSize, this.genomeLength);
+
+    this.setFitnessFunctionForChromosomes(fitnessFunction);
   }
   
+  private void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
+    this.population.setFitnessFunctionForChromosomes(fitnessFunction);
+  }
+
   /**
   * Handles the selection of individuals in the population based on the specified
   * selection method.

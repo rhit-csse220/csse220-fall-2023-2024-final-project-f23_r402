@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class Population {
+    // TODO: change to privates
     public ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
     private int sizeOfPopulation = 100; // default
     private int genomeLength = 100; // default
@@ -275,5 +276,14 @@ public class Population {
 
     public ArrayList<Chromosome> getChromosomes() {
         return this.chromosomes;
+    }
+
+    public void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
+        if (fitnessFunction.contains("only") && fitnessFunction.contains("100") && this.genomeLength != 100) {
+            throw new InvalidGenomeLengthException(100);
+        }
+        for (Chromosome chromosome : this.chromosomes) {
+            chromosome.setFitnessFunctionType(fitnessFunction);
+        }
     }
 }

@@ -18,8 +18,9 @@ public class Chromosome implements Comparable {
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
 	
-	private int numOfGenes = 100;   //default values
-	private int numPerColumn = 10;  //default values
+	private int numOfGenes = 100;           //default values
+	private int numPerColumn = 10;          //default values
+	private int fitnessFunctionType = 0;;   //default values
 	private Gene[] genes;
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
@@ -66,6 +67,15 @@ public class Chromosome implements Comparable {
 	* ensures: that the fitness score for the chromosome is calculated
 	*/
 	public void calcFitnessFuction() {
+		if (this.fitnessFunctionType == 0)
+			this.calculateDefaultFitnessFunction();
+		else if (this.fitnessFunctionType == 1)
+			this.fitnessSmiley();
+		else
+			System.out.println("Warning. Wrong fitness function selected.");
+	}
+
+	public void calculateDefaultFitnessFunction() {
 		int score = 0;
 		String fileData = getChromosomeDataAsString();
 		for (int i = 0; i < fileData.length(); i++){
@@ -299,5 +309,12 @@ public class Chromosome implements Comparable {
 	@Override
 	public String toString() {
 		return this.getChromosomeDataAsString();
+	}
+
+	public void setFitnessFunctionType(String fitnessFunction) {
+		if (fitnessFunction.equals("Default"))
+			this.fitnessFunctionType = 0;
+		else if (fitnessFunction.contains("Smiley"))
+			this.fitnessFunctionType = 1;
 	}
 }

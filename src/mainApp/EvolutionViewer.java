@@ -132,6 +132,20 @@ public class EvolutionViewer {
         
         buttonPanel.add(fastEvolutionLabel);
         buttonPanel.add(fastEvolutionCheckBox);
+
+        // Fitness function
+        JLabel fitnessFunctionLabel = new JLabel("Fitness Function");
+        JPanel fitnessFunctionDropdownPanel  = new JPanel();
+        fitnessFunctionDropdownPanel.add(fitnessFunctionLabel);
+        
+        String[] fitnessFunctionOptions = {"Default", "Smiley (only genome length 100)"};
+        JComboBox<String> fitnessFunctionChooser = new JComboBox<String>(fitnessFunctionOptions);
+        fitnessFunctionChooser.setMaximumSize( fitnessFunctionChooser.getPreferredSize() );
+        
+        fitnessFunctionDropdownPanel.add(fitnessFunctionChooser);
+        fitnessFunctionDropdownPanel.setMaximumSize( fitnessFunctionDropdownPanel.getPreferredSize() );
+        
+        buttonPanel.add(fitnessFunctionDropdownPanel);
         
         // Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
@@ -145,7 +159,9 @@ public class EvolutionViewer {
                     if (!fastEvolutionCheckBox.isSelected()){
                         if (passedErrorCheck){
                             if (generationCount == -1){
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                try {
+                                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                                } catch (InvalidGenomeLengthException e1) { }
                                 generationCount++;
                                 frame.repaint();
                             } else if (generationCount <= Integer.parseInt(generationsField.getText())){
@@ -157,7 +173,9 @@ public class EvolutionViewer {
                                 startEvolutionButton.setText("Start Evolution");
                                 timer.restart();
                                 makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                try {
+                                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                                } catch (InvalidGenomeLengthException e1) { }
                                 generationCount = -1;
                                 timer.stop();
                             }
@@ -180,7 +198,7 @@ public class EvolutionViewer {
                             this.passedErrorCheck = true;
                             makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox);
                             if (startEvolutionButton.getText().equals("Start Evolution")){
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                                 startEvolutionButton.setText("Pause");
                                 timer.start();
                             } else if (startEvolutionButton.getText().equals("Pause")){
@@ -250,7 +268,9 @@ public class EvolutionViewer {
                 if (fastEvolutionCheckBox.isSelected()){
                     if (startEvolutionButton.getText().equals("Start Evolution")) {
                         // Start the FAST Evolution process
-                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
+                        try {
+                            evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                        } catch (InvalidGenomeLengthException e1) { }
                         startEvolutionButton.setText("Pause");
                         
                         // Create and execute an EvolutionWorker to run the evolution in the background
