@@ -3,7 +3,6 @@ package mainApp;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class EvolutionWorker extends SwingWorker<Void, Void> {
@@ -12,7 +11,9 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
     private JButton startEvolutionButton;
     private boolean shutAllFrames;
     private volatile boolean paused = false;
-    private CountDownLatch pauseLatch = new CountDownLatch(1);
+    private boolean autoStopEnabled = false;
+    private CountDownLatch pauseLatch = new CountDownLatch(1); // Add this line
+
 
     public void setPaused(boolean paused) {
         this.paused = paused;
@@ -20,7 +21,10 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
             pauseLatch.countDown(); // Resume the worker
         }
     }
-
+    public void setAutoStopEnabled(boolean autoStopEnabled) {
+        this.autoStopEnabled = autoStopEnabled;
+    }
+    
     public boolean isShutAllFrames() {
         return shutAllFrames;
     }
@@ -42,27 +46,35 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
             evComponent.handleSelection();
             evComponent.generationCount = generationCount;
             publish();
-    
+
             // Check if paused and wait
-            while (paused || evComponent.checkForFitness100()) {
+            while (paused) {
                 try {
                     pauseLatch.await(); // Wait until signaled to resume
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             }
-    
+
+            if (autoStopEnabled && evComponent.checkForFitness100()) {
+                // Automatically reset the button to "Start Evolution" when fitness is 100
+                SwingUtilities.invokeLater(() -> {
+                    startEvolutionButton.setText("Start Evolution");
+                });
+                return null; // Exit the loop and stop the worker
+            }
+
             // Repaint the graph (update the UI)
             SwingUtilities.invokeLater(() -> {
                 evComponent.repaint();
             });
         }
-    
+
         SwingUtilities.invokeLater(() -> {
             startEvolutionButton.setText("Start Evolution");
             this.shutAllFrames = true;
         });
-    
+
         return null;
     }
     
