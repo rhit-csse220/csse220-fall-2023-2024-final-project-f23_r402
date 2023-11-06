@@ -6,20 +6,11 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
-public class PopulationComponent extends JComponent{
-    private Population population;
+public class PopulationComponent extends Component{
     private ArrayList<Chromosome> chromosomes; 
     private boolean foundPerfectChromosome = false; // Flag to track if a perfect chromosome is found
 
     public PopulationComponent(){}
-
-    public Population getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Population population) {
-        this.population = population;
-    }
 
     @Override
     public void paint(Graphics g) {
@@ -40,6 +31,5 @@ public class PopulationComponent extends JComponent{
 
             }
         }
-
     }
 }

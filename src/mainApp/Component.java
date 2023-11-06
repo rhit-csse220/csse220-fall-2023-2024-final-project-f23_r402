@@ -1,13 +1,11 @@
 package mainApp;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
-public class IndividualComponent extends Component{
-
-    public IndividualComponent(){}
+public class Component extends JComponent {
+    protected Population population;
 
     public Population getPopulation() {
         return this.population;
@@ -17,10 +15,6 @@ public class IndividualComponent extends Component{
         this.population = population;
     }
 
-    @Override
     public void paint(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        int geneWidth = this.getWidth()/11;
-        this.population.getChromosomes().get(0).drawOn(g2, geneWidth, 0);
     }
 }
