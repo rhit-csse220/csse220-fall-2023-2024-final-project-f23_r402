@@ -88,9 +88,9 @@ public class Chromosome implements Comparable {
 	}
 	
 	//methods
-	/*
-	* ensures: that the fitness score for the chromosome is calculated
-	*/
+	/**
+	 * ensures: the correct fitness function is used
+	 */
 	public void calcFitnessFuction() {
 		if (this.fitnessFunctionType == 0) {
 			this.calculateDefaultFitnessFunction();
@@ -101,6 +101,9 @@ public class Chromosome implements Comparable {
 		}
 	}
 
+	/*
+	* ensures: that the fitness score for the chromosome is calculated
+	*/
 	public void calculateDefaultFitnessFunction() {
 		int score = 0;
 		String fileData = getChromosomeDataAsString();
@@ -134,7 +137,7 @@ public class Chromosome implements Comparable {
 		}
 		
 		// Set the fitness score based on the number of matching bits
-		this.fitnessScore = matchingBits / MAX_FITNESS_SCORE;
+		this.fitnessScore = (int) ((matchingBits / (double) numOfGenes) * MAX_FITNESS_SCORE);
 	}
 	
 	/**
@@ -260,7 +263,10 @@ public class Chromosome implements Comparable {
 	 * ensures: that the fitness score of the chromosome is returned
 	 * @return the fitness score of the chromosome
 	 */
-	public double getFitnessScore(){return this.fitnessScore;} // getFitnessScore
+	public double getFitnessScore(){
+		this.calcFitnessFuction();
+		return this.fitnessScore;
+	} // getFitnessScore
 	
 	/**
 	 * ensures: that the genes in the chromosome is set to the param genes
@@ -306,7 +312,7 @@ public class Chromosome implements Comparable {
 		this.geneWidth = geneWidth;
 		this.border = border;
 		this.adjustGenePosition();
-		drawGenes(g2);
+		this.drawGenes(g2);
 		g2.translate(-x,-y);
 	}
 
@@ -317,7 +323,7 @@ public class Chromosome implements Comparable {
 		this.geneWidth = geneWidth;
 		this.border = border;
 		this.adjustGenePosition();
-		drawGenes(g2);
+		this.drawGenes(g2);
 	}
 
 	public void drawGenes(Graphics2D g2){
