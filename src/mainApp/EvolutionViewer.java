@@ -27,6 +27,7 @@ public class EvolutionViewer implements Runnable {
     public EvolutionComponent evComponent;
     private IndividualViewer indViewer;
     private PopulationViewer popViewer;
+    private HistogramViewer histViewer;
     
     /**
     * The driverMain method initializes and sets up the Evolution Viewer application.
@@ -166,6 +167,24 @@ public class EvolutionViewer implements Runnable {
                     timer.stop();
                     indViewer.stopTimer();
                     popViewer.stopTimer();
+                    histViewer.stopTimer();
+                }
+
+                private void initializeWindows(){
+                    indViewer = new IndividualViewer();
+                    indViewer.getIndComponent().setPopulation(evComponent.population);
+                    indViewer.setTimerDelay(timer.getDelay());
+                    indViewer.driverMain();
+
+                    popViewer = new PopulationViewer();
+                    popViewer.handleSetPopulation(evComponent.population);
+                    popViewer.setTimerDelay(timer.getDelay());
+                    popViewer.driverMain();
+                    
+                    histViewer = new HistogramViewer();
+                    histViewer.handleSetPopulation(evComponent.population);
+                    histViewer.setTimerDelay(timer.getDelay());
+                    histViewer.driverMain();
                 }
 
                 
@@ -184,16 +203,11 @@ public class EvolutionViewer implements Runnable {
                                 if (indViewer!=null){
                                     indViewer.shutDownFrame();
                                     popViewer.shutDownFrame();
+                                    histViewer.shutDownFrame();
                                 }
-                                indViewer = new IndividualViewer();
-                                indViewer.getIndComponent().setPopulation(evComponent.population);
-                                indViewer.setTimerDelay(timer.getDelay());
-                                //new Thread(indViewer).start();
-                                indViewer.driverMain();
-                                popViewer = new PopulationViewer();
-                                popViewer.handleSetPopulation(evComponent.population);
-                                popViewer.driverMain();
-                                //new Thread(popViewer).start();
+                                
+                                initializeWindows();
+
                                 generationCount++;
                                 frame.repaint();
                             } else if (generationCount <= Integer.parseInt(generationsField.getText())){
@@ -264,6 +278,7 @@ public class EvolutionViewer implements Runnable {
                             if (evolutionWorker[0].isShutAllFrames()) {
                                 indViewer.shutDownFrame();
                                 popViewer.shutDownFrame();
+                                histViewer.shutDownFrame();
                             }
                         }
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText());
