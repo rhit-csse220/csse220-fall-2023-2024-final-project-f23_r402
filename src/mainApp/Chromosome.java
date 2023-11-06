@@ -88,9 +88,9 @@ public class Chromosome implements Comparable {
 	}
 	
 	//methods
-	/*
-	* ensures: that the fitness score for the chromosome is calculated
-	*/
+	/**
+	 * ensures: the correct fitness function is used
+	 */
 	public void calcFitnessFuction() {
 		if (this.fitnessFunctionType == 0) {
 			this.calculateDefaultFitnessFunction();
@@ -101,6 +101,9 @@ public class Chromosome implements Comparable {
 		}
 	}
 
+	/*
+	* ensures: that the fitness score for the chromosome is calculated
+	*/
 	public void calculateDefaultFitnessFunction() {
 		int score = 0;
 		String fileData = getChromosomeDataAsString();
@@ -260,7 +263,10 @@ public class Chromosome implements Comparable {
 	 * ensures: that the fitness score of the chromosome is returned
 	 * @return the fitness score of the chromosome
 	 */
-	public double getFitnessScore(){return this.fitnessScore;} // getFitnessScore
+	public double getFitnessScore(){
+		this.calcFitnessFuction();
+		return this.fitnessScore;
+	} // getFitnessScore
 	
 	/**
 	 * ensures: that the genes in the chromosome is set to the param genes
