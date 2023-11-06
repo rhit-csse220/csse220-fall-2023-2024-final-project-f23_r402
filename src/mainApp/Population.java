@@ -42,15 +42,16 @@ public class Population {
     public Population(int sizeOfPopulation, int genomeLength, String fitnessFunction) {
         this.sizeOfPopulation = sizeOfPopulation;
         this.genomeLength = genomeLength;
-        if (fitnessFunction.equals("Default"))
+        if (fitnessFunction.equals("Default")){
 			this.fitnessFunctionType = 0;
-		else if (fitnessFunction.contains("Smiley"))
+        } else if (fitnessFunction.contains("Smiley")){
 			this.fitnessFunctionType = 1;
+        }
         this.initiatePopulation();
     }
 
     public void initiatePopulation(){
-        System.out.println("Population.initiatePopulation() " + this.fitnessFunctionType);
+        // System.out.println("Population.initiatePopulation() " + this.fitnessFunctionType);
         this.chromosomes = new ArrayList<Chromosome>();
         this.lineArray = new ArrayList<BestFitLine2D>();
         for (int i = 0; i < this.sizeOfPopulation; i++){
@@ -78,7 +79,6 @@ public class Population {
         this.prevHammingDistance = calculateHammingDistance();
         //this.prevHammingDistance = calculateUniqueStrings();
         this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance));
-        // System.out.println(this.prevBestFitness);
     }
 
     /**
