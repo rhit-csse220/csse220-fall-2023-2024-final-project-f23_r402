@@ -15,6 +15,7 @@ public class Population {
     private int genomeLength = 100; // default
     public double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
+    private String smileyGeneticData = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
 
     public static final int CROSSOVER_OFFSET = 1;
 
@@ -277,25 +278,54 @@ public class Population {
 
     public double calculateHammingDistance(){
         double hammingDistance = 0;
-        int[][][] position1n0Array = new int[genomeLength][sizeOfPopulation][sizeOfPopulation];
-        int numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2;
+        int[][] position1n0Array = new int[genomeLength][2];
+        
+        for (int i = 0; i < smileyGeneticData.length(); i++){
+            if (smileyGeneticData.charAt(i)=='0'){
+                position1n0Array[i][0]++;
+            }
+            else{
+                position1n0Array[i][1]++;
+            }
+        }
+        
+        int numPairs;
+        if (fitnessFunctionType==0){
+            numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2;
+        }
+        else{
+            numPairs = this.sizeOfPopulation;
+        }
         this.chromosomes.parallelStream().forEach(chromosome -> readData1n0(chromosome, position1n0Array));
         for (int i = 0; i < genomeLength; i++){
-            hammingDistance+= (position1n0Array[i][0][0]*position1n0Array[i][0][1]);
+            hammingDistance += (position1n0Array[i][0]*position1n0Array[i][1]);
+            //System.out.println(position1n0Array[i][0]+", "+position1n0Array[i][1]);
         }
-
-        //System.out.println(((hammingDistance/(numPairs))/genomeLength));
         return ((hammingDistance/(numPairs))/genomeLength)*100;
     }
 
-    public void readData1n0(Chromosome chromosome, int[][][] position1n0Array){
-        String geneticData = chromosome.getChromosomeDataAsString();
-        for (int i = 0; i < geneticData.length(); i++){
-            if (geneticData.charAt(i)=='0'){
-                position1n0Array[i][0][0]++;
+    public void readData1n0(Chromosome chromosome, int[][] position1n0Array){
+        if (fitnessFunctionType==0){ //DEFAULT FITNESS
+            String geneticData = chromosome.getChromosomeDataAsString();
+            for (int i = 0; i < geneticData.length(); i++){
+                if (geneticData.charAt(i)=='0'){
+                    position1n0Array[i][0]++;
+                }
+                else{
+                    position1n0Array[i][1]++;
+                }
             }
-            else{
-                position1n0Array[i][0][1]++;
+        }
+        else{ //SMILEY FITNESS (fitnessFunctionType==1)
+            String geneticData = chromosome.getChromosomeDataAsString();
+
+            for (int i = 0; i < geneticData.length(); i++){
+                if (geneticData.charAt(i)=='0' && geneticData.charAt(i)!=(smileyGeneticData.charAt(i))){
+                    position1n0Array[i][0]++;
+                }
+                else if (geneticData.charAt(i)=='1' && geneticData.charAt(i)!=(smileyGeneticData.charAt(i))){
+                    position1n0Array[i][1]++;
+                }
             }
         }
     }
