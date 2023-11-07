@@ -137,7 +137,7 @@ public class Chromosome implements Comparable {
 		}
 		
 		// Set the fitness score based on the number of matching bits
-		this.fitnessScore = matchingBits / MAX_FITNESS_SCORE * 100;
+		this.fitnessScore = (int) ((matchingBits / (double) numOfGenes) * MAX_FITNESS_SCORE);
 	}
 	
 	/**
@@ -312,7 +312,7 @@ public class Chromosome implements Comparable {
 		this.geneWidth = geneWidth;
 		this.border = border;
 		this.adjustGenePosition();
-		drawGenes(g2);
+		this.drawGenes(g2);
 		g2.translate(-x,-y);
 	}
 
@@ -323,7 +323,7 @@ public class Chromosome implements Comparable {
 		this.geneWidth = geneWidth;
 		this.border = border;
 		this.adjustGenePosition();
-		drawGenes(g2);
+		this.drawGenes(g2);
 	}
 
 	public void drawGenes(Graphics2D g2){
