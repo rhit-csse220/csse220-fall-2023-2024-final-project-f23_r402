@@ -51,7 +51,7 @@ public class HistogramComponent extends EvolutionComponent{
             String sNum = Integer.toString(sum);
             if (sum!=0){
                 g2.drawString(sNum, xCoord+calculateX(2), yCoord);
-                //g2.drawLine(calculateX(0),yCoord,xCoord,yCoord);
+                System.out.println(sNum+", "+i+", "+histogram.getAllElements());
             }
         }
         g2.translate(-x, -yHeight);

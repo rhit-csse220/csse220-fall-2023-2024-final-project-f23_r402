@@ -45,7 +45,7 @@ public class IndividualViewer extends Viewer {
         frame = new JFrame();
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
-        frame.setLocation(1000, 400);
+        frame.setLocation(590, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
