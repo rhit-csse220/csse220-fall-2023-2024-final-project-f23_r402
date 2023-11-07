@@ -19,13 +19,13 @@ public class PopulationViewer extends Viewer {
     
     public void driverMain(){
         final String frameTitle = "Population Viewer";
-        final int frameWidth = 400;
+        final int frameWidth = 300;
         final int frameHeight = 400;
 
         frame = new JFrame();
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
-        frame.setLocation(1000, 0);
+        frame.setLocation(1265, 0);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
@@ -33,12 +33,13 @@ public class PopulationViewer extends Viewer {
 
         // Adds the component to the frame
         frame.add(populationComponent);
-
+        
         timer = new Timer(1000/33, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Constantly redraws the frame according to the given component
+                frame.setSize(frameWidth, populationComponent.getPreferredSize().height); 
                 frame.repaint();
             }
         });

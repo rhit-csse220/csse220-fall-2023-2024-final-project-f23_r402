@@ -27,4 +27,12 @@ public class Histogram {
             fitnessFrequency[fitnessCurrChromosome]++;
         }
     }
+
+    public int getAllElements(){
+        int sum = 0;
+        for (int i = 0; i < fitnessFrequency.length; i++){
+            sum+=fitnessFrequency[i];
+        }
+        return sum;
+    }
 }

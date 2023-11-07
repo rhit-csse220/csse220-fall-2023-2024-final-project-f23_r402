@@ -17,14 +17,14 @@ public class HistogramViewer extends Viewer {
 
     public void driverMain(){
         frame = new JFrame();
-        final int frameWidth = 800;
+        final int frameWidth = 600;
         final int frameHeight = 400;
         final String frameTitle = "GA Histogram";
 
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
-        frame.setLocation(200, 400);
+        frame.setLocation(0, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);   
 
