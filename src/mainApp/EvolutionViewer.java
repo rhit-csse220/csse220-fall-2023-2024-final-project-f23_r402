@@ -149,7 +149,7 @@ public class EvolutionViewer implements Runnable {
         JPanel fitnessFunctionDropdownPanel  = new JPanel();
         fitnessFunctionDropdownPanel.add(fitnessFunctionLabel);
         
-        String[] fitnessFunctionOptions = {"Default", "Smiley"};
+        String[] fitnessFunctionOptions = {"Default", "Smiley", "Sus"};
         JComboBox<String> fitnessFunctionChooser = new JComboBox<String>(fitnessFunctionOptions);
         fitnessFunctionChooser.setMaximumSize( fitnessFunctionChooser.getPreferredSize() );
         
@@ -350,6 +350,11 @@ public class EvolutionViewer implements Runnable {
                                 popViewer.shutDownFrame();
                                 histViewer.shutDownFrame();
                             }
+                        }
+                        else if (indViewer!=null){
+                            indViewer.shutDownFrame();
+                            popViewer.shutDownFrame();
+                            histViewer.shutDownFrame();
                         }
                       
                         try {

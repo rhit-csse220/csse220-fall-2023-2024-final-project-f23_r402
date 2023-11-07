@@ -18,6 +18,9 @@ public class Chromosome implements Comparable {
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
 	
+	public static final String smileyGeneticData = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
+	public static final String susGeneticData = "1111111111111000001111011111010001110001010111110101011111010001111101110110110111011011011110010011";
+	
 	private int numOfGenes = 100;           //default values
 	private int numPerColumn = 10;          //default values
 	private int fitnessFunctionType = 0;;   //default values
@@ -94,9 +97,10 @@ public class Chromosome implements Comparable {
 	public void calcFitnessFuction() {
 		if (this.fitnessFunctionType == 0) {
 			this.calculateDefaultFitnessFunction();
-		} else if (this.fitnessFunctionType == 1) {
-			this.fitnessSmiley();
-		} else {
+		} else if (this.fitnessFunctionType == 1 || this.fitnessFunctionType == 2) {
+			this.fitnessTarget();
+		}
+		else {
 			System.out.println("Warning. Wrong fitness function selected.");
 		}
 	}
@@ -118,8 +122,14 @@ public class Chromosome implements Comparable {
 	/**
 	* ensures: calculates fitness score based on similarity with the targetString
 	*/
-	public void fitnessSmiley() {
-		String targetString = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
+	public void fitnessTarget() {
+		String targetString;
+		if (this.fitnessFunctionType==1){
+			targetString = smileyGeneticData;
+		}
+		else {
+			targetString = susGeneticData;
+		}
 		int matchingBits = 0;
 		
 		// Ensure that the targetString and chromosome data have the same length

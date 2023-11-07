@@ -15,8 +15,7 @@ public class Population {
     private int genomeLength = 100; // default
     public double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
     public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
-    private String smileyGeneticData = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
-
+    private String targetString;
     public static final int CROSSOVER_OFFSET = 1;
 
     private int fitnessFunctionType = 0;
@@ -47,6 +46,11 @@ public class Population {
 			this.fitnessFunctionType = 0;
         } else if (fitnessFunction.contains("Smiley")){
 			this.fitnessFunctionType = 1;
+            this.targetString = Chromosome.smileyGeneticData;
+        }
+        else if (fitnessFunction.contains("Sus")){
+            this.fitnessFunctionType = 2;
+            this.targetString = Chromosome.susGeneticData;
         }
         this.initiatePopulation();
     }
@@ -280,12 +284,14 @@ public class Population {
         double hammingDistance = 0;
         int[][] position1n0Array = new int[genomeLength][2];
         
-        for (int i = 0; i < smileyGeneticData.length(); i++){
-            if (smileyGeneticData.charAt(i)=='0'){
-                position1n0Array[i][0]++;
-            }
-            else{
-                position1n0Array[i][1]++;
+        if (this.fitnessFunctionType > 0){
+            for (int i = 0; i < targetString.length(); i++){
+                if (targetString.charAt(i)=='0'){
+                    position1n0Array[i][0]++;
+                }
+                else{
+                    position1n0Array[i][1]++;
+                }
             }
         }
         
@@ -320,10 +326,10 @@ public class Population {
             String geneticData = chromosome.getChromosomeDataAsString();
 
             for (int i = 0; i < geneticData.length(); i++){
-                if (geneticData.charAt(i)=='0' && geneticData.charAt(i)!=(smileyGeneticData.charAt(i))){
+                if (geneticData.charAt(i)=='0' && geneticData.charAt(i)!=(targetString.charAt(i))){
                     position1n0Array[i][0]++;
                 }
-                else if (geneticData.charAt(i)=='1' && geneticData.charAt(i)!=(smileyGeneticData.charAt(i))){
+                else if (geneticData.charAt(i)=='1' && geneticData.charAt(i)!=(targetString.charAt(i))){
                     position1n0Array[i][1]++;
                 }
             }
