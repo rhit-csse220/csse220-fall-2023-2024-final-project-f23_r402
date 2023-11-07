@@ -19,13 +19,13 @@ public class PopulationViewer extends Viewer {
     
     public void driverMain(){
         final String frameTitle = "Population Viewer";
-        final int frameWidth = 300;
+        final int frameWidth = 400;
         final int frameHeight = 400;
 
         frame = new JFrame();
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
-        frame.setLocation(1265, 0);
+        frame.setLocation(1150, 0);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());

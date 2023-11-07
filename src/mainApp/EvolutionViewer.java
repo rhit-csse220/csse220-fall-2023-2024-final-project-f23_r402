@@ -42,7 +42,7 @@ public class EvolutionViewer implements Runnable {
     */
     public void driverMain(){
         final String frameTitle = "Evolution Viewer";
-        final int frameWidth = 200;
+        final int frameWidth = 800;
         final int frameHeight = 400;
         final int textFieldWidth = 3;
         
