@@ -81,7 +81,7 @@ public class EvolutionViewer implements Runnable {
         frame.add(buttonPanel, BorderLayout.SOUTH);
         
         // Mutation rate
-        JLabel mRate = new JLabel("Mutation Rate %: ");
+        JLabel mRate = new JLabel("Mutation %: ");
         JTextField mRateField = new JTextField("1", textFieldWidth);
         textFields[0] = mRateField;
         
@@ -90,7 +90,7 @@ public class EvolutionViewer implements Runnable {
         
         // Dropdown panel for choosing a selection method
         JPanel dropdownPanel  = new JPanel();
-        JLabel dropdownLabel = new JLabel("Selection: ");
+        JLabel dropdownLabel = new JLabel("Selection:");
         dropdownPanel.add(dropdownLabel);
         
         // Modify this if you wish to add different numbers of things into the simulation
@@ -106,7 +106,7 @@ public class EvolutionViewer implements Runnable {
         buttonPanel.add(dropdownPanel);
         
         // Crossover
-        JLabel crossover = new JLabel("Crossover? ");
+        JLabel crossover = new JLabel("Crossover?");
         JCheckBox checkCrossover = new JCheckBox();
         
         buttonPanel.add(crossover);
@@ -121,7 +121,7 @@ public class EvolutionViewer implements Runnable {
         buttonPanel.add(populationField);
         
         // Generations
-        JLabel generations = new JLabel("Generations: ");
+        JLabel generations = new JLabel("Generation: ");
         JTextField generationsField = new JTextField("100", textFieldWidth);
         textFields[2] = generationsField;
         
@@ -129,7 +129,7 @@ public class EvolutionViewer implements Runnable {
         buttonPanel.add(generationsField);
         
         // Genome length
-        JLabel genomeLength = new JLabel("Genome Length: ");
+        JLabel genomeLength = new JLabel("Genome: ");
         JTextField genomeLengthField = new JTextField("100", textFieldWidth);
         textFields[3] = genomeLengthField;
         
@@ -145,7 +145,7 @@ public class EvolutionViewer implements Runnable {
         buttonPanel.add(elitismField);
       
         // Fitness function
-        JLabel fitnessFunctionLabel = new JLabel("Fitness Function");
+        JLabel fitnessFunctionLabel = new JLabel("Fitness Func:");
         JPanel fitnessFunctionDropdownPanel  = new JPanel();
         fitnessFunctionDropdownPanel.add(fitnessFunctionLabel);
         
@@ -159,14 +159,14 @@ public class EvolutionViewer implements Runnable {
         buttonPanel.add(fitnessFunctionDropdownPanel);
 
         // Fast Evolution
-        JLabel fastEvolutionLabel = new JLabel("Fast? ");
+        JLabel fastEvolutionLabel = new JLabel("Fast?");
         JCheckBox fastEvolutionCheckBox = new JCheckBox();
         
         buttonPanel.add(fastEvolutionLabel);
         buttonPanel.add(fastEvolutionCheckBox);
 
         // Stop at terminating condition
-        JLabel autoStopLabel = new JLabel("Auto Stop? ");
+        JLabel autoStopLabel = new JLabel("Auto Stop?");
         JCheckBox autoStopCheckBox = new JCheckBox();
         buttonPanel.add(autoStopLabel);
         buttonPanel.add(autoStopCheckBox);
