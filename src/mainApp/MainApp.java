@@ -80,6 +80,13 @@ public class MainApp {
 		buttonsPanel.add(evolutionButton);
 
 		JButton helpButton = new JButton("Help Screen");
+		helpButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new HelpScreenViewer().handleDriverMain();
+			}
+			
+		});
 		buttonsPanel.add(helpButton);
 
 		JPanel poweredByPanel = new JPanel();
