@@ -16,18 +16,21 @@ public class HelpScreenViewer extends Viewer {
     static final int SCREEN_PADDING = 15;
     static final String descriptionText = "<html>"
                 + "This program deals with Genetic Algorithms and has two main features.<br>"
-                + "First, the program allows users to create, save to a file, and load from a file<br>"
-                + "a single chromosome. A black square stands for 1 in genome, a green one for 0.<br>"
-                + "Overall, genomes of different lengths are supported, but they should be divisible<br>"
-                + "by 10. Each gene in chromosome is toggleable, meaning its value can be changed form 0 to 1 and vice versa<br><br>"
-                + "The other feature is simulating the entire evolution. Our tool provides users with<br>"
-                + "nice plots of the fittest, average, and the worst populations and the hamming distance.<br>"
-                + "It also provides visualisations for the whole population, the best chromosome, and the<br>"
-                + "histogram. Users have a variety tools to customize their starting population and the evolution process<br>"
+                + "<ul><li>First, the program allows users to create, save to a file, and load from a file<br>"
+                + "a single chromosome. A black square stands for 1 in genome, a green one for 0.</li>"
+                + "<li>Overall, genomes of different lengths are supported, but they should be divisible<br>"
+                + "by 10. Each gene in chromosome is toggleable, meaning its value can be changed from<br>"
+                + "0 to 1 and vice versa</li><br><br>"
+                + "<li>The other feature is simulating the entire evolution. Our tool provides users with<br>"
+                + "nice plots of the fittest, average, and the worst populations and the hamming distance.</li>"
+                + "<li>It also provides visualisations for the whole population, the best chromosome, and the<br>"
+                + "histogram</li>."
+                + "<li>Users have a variety tools to customize their starting population and the evolution process<br>"
                 + "such as being able to set the mutation rate, selection algorithm, population size, number of<br>"
-                + "generations, and multiple other parameters. The Evolution Viewer also provides users with<br>"
+                + "generations, and multiple other parameters.</li>"
+                + "<li>The Evolution Viewer also provides users with<br>"
                 + "the ability to use shortcuts, such as pressing Enter to start and pause the evolution,<br>"
-                + "to improve the user experience."
+                + "to improve the user experience.</li></ul>"
                 + "</html>";
 
     /**
@@ -50,7 +53,7 @@ public class HelpScreenViewer extends Viewer {
 
         JPanel descriptionPanel = new JPanel();
         JLabel descriptionLabel = new JLabel(descriptionText);
-        descriptionLabel.setFont(new Font(null, Font.PLAIN, 12));
+        descriptionLabel.setFont(new Font(null, Font.PLAIN, 13));
         descriptionPanel.add(descriptionLabel);
         mainPanel.add(descriptionPanel);
 
