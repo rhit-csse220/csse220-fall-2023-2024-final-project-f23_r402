@@ -10,9 +10,10 @@ import javax.swing.JComponent;
 public class PopulationComponent extends Component{
     private ArrayList<Chromosome> chromosomes;
 
-    public PopulationComponent(){}
     private int maxHeight = 0;
 
+    public PopulationComponent(){}
+    
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;

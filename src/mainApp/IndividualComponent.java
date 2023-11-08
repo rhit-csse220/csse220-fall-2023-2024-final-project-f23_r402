@@ -11,8 +11,9 @@ public class IndividualComponent extends Component{
     final static int MULTIPLIER = 2;
     final static int BEST_CHROMOSOME_INDEX = 0;
     
-    public IndividualComponent(){}
     private int index;
+
+    public IndividualComponent(){}
 
     @Override
     public void paint(Graphics g) {
