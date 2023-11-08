@@ -2,6 +2,7 @@ package mainApp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -400,19 +401,26 @@ public class EvolutionViewer implements Runnable {
             }
         }
         
-        
-        
-        
 
-        
-    
-        
         startEvolutionButton.addActionListener(new EvolutionActionListener());
 
         buttonPanel.add(startEvolutionButton);
+
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        titlePanel.add(new JLabel("Population"));
+
+        JButton helpButton = new JButton("Help center");
+        helpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new HelpScreenViewer().handleDriverMain();
+            }
+            
+        });
+        titlePanel.add(helpButton);
         
         //Line plot chart
-        frame.add(new JLabel("Population"), BorderLayout.NORTH);
+        frame.add(titlePanel, BorderLayout.NORTH);
         frame.pack();
         
         for (JTextField textField : textFields) {

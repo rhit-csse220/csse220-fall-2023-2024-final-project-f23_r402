@@ -79,7 +79,7 @@ public class HelpScreenViewer extends Viewer {
         frame.add(mainPanel);
 
         frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setVisible(true);
 
     }
