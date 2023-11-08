@@ -19,7 +19,7 @@ public class HistogramViewer extends Viewer {
         frame = new JFrame();
         final int frameWidth = 600;
         final int frameHeight = 400;
-        final String frameTitle = "GA Histogram";
+        final String frameTitle = "Population Fitness Histogram";
 
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);

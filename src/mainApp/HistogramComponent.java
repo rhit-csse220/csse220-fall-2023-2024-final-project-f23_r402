@@ -13,7 +13,7 @@ public class HistogramComponent extends EvolutionComponent{
     final double X1_TO_FRAME_RATIO = 0.04;
 
     public HistogramComponent(){
-        histogram = new Histogram();
+        this.histogram = new Histogram();
     }
 
     @Override
@@ -31,9 +31,9 @@ public class HistogramComponent extends EvolutionComponent{
 
     @Override
     public void drawOn(Graphics2D g2){
-        drawYDivisions(g2);
-        drawXDivisions(g2);
-        drawRectangles(g2);
+        this.drawYDivisions(g2);
+        this.drawXDivisions(g2);
+        this.drawRectangles(g2);
     }
 
     public void drawRectangles(Graphics2D g2){
@@ -41,7 +41,7 @@ public class HistogramComponent extends EvolutionComponent{
         for (int i = 0; i <= 96; i+=5){
             int sum = 0;
             for (int j = i; j <i+5; j++){
-                sum+=histogram.getFitnessFrequency(j);
+                sum += this.histogram.getFitnessFrequency(j);
             }
             int xCoord = calculateX(i);
             int yCoord = -calculateY(sum);
@@ -49,7 +49,7 @@ public class HistogramComponent extends EvolutionComponent{
             int height = calculateY(sum);
             g2.drawRect(xCoord, yCoord, width, height);
             String sNum = Integer.toString(sum);
-            if (sum!=0){
+            if (sum != 0){
                 g2.drawString(sNum, xCoord+calculateX(2), yCoord);
             }
         }
@@ -69,15 +69,15 @@ public class HistogramComponent extends EvolutionComponent{
     @Override
     public void drawYDivisions(Graphics2D g2) {
         g2.translate(this.x, this.yHeight);
-        g2.drawLine(0,0,0,-yHeight);
-        int num = histogram.getPopulation().getSizeOfPopulation();
-        int populationYInterval = (int)((this.yHeight)/FITNESS_SCORE_INTERVAL);
-        int populationInterval = num/FITNESS_SCORE_INTERVAL;
+        g2.drawLine(0, 0, 0, -this.yHeight);
+        int num = this.histogram.getPopulation().getSizeOfPopulation();
+        int populationYInterval = (int) ((this.yHeight) / FITNESS_SCORE_INTERVAL);
+        int populationInterval = num / FITNESS_SCORE_INTERVAL;
         for (int i = 0; num >= 0; i -= populationYInterval){
-        String sNum = Integer.toString(Math.abs(num-histogram.getPopulation().getSizeOfPopulation()));
-        g2.drawLine(AXIS_LABEL_LINE_WIDTH, i, -AXIS_LABEL_LINE_WIDTH, i);
-        g2.drawString(sNum, Y_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, i+Y_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
-        num = num-populationInterval;
+            String sNum = Integer.toString(Math.abs(num - this.histogram.getPopulation().getSizeOfPopulation()));
+            g2.drawLine(AXIS_LABEL_LINE_WIDTH, i, -AXIS_LABEL_LINE_WIDTH, i);
+            g2.drawString(sNum, Y_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, i + Y_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
+            num -= populationInterval;
         }
         g2.translate(-this.x, -this.yHeight);
     }
@@ -87,11 +87,11 @@ public class HistogramComponent extends EvolutionComponent{
         g2.translate(this.x, this.yHeight);
         int num = 0;
         for (int i = 0; num <= 100; i += (int)(this.xWidth / (20))){
-        String sNum = Integer.toString(num);
-        g2.drawLine(i, -AXIS_LABEL_LINE_WIDTH, i, AXIS_LABEL_LINE_WIDTH);
-        g2.drawString(sNum, i + X_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, X_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
-        num += 5;
-        xLimit = i;
+            String sNum = Integer.toString(num);
+            g2.drawLine(i, -AXIS_LABEL_LINE_WIDTH, i, AXIS_LABEL_LINE_WIDTH);
+            g2.drawString(sNum, i + X_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, X_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
+            num += 5;
+            xLimit = i;
         }
         g2.drawLine(x, 0, xLimit, 0);
         g2.translate(-this.x, -this.yHeight);

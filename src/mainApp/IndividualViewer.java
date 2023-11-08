@@ -22,7 +22,7 @@ public class IndividualViewer extends Viewer {
     private int timerDelay;
     
     public int getTimerDelay() {
-        return timerDelay;
+        return this.timerDelay;
     }
 
     public void setTimerDelay(int timerDelay) {
@@ -30,7 +30,7 @@ public class IndividualViewer extends Viewer {
     }
 
     public IndividualComponent getIndComponent() {
-        return indComponent;
+        return this.indComponent;
     }
 
     public void setIndComponent(IndividualComponent indComponent) {
@@ -42,23 +42,23 @@ public class IndividualViewer extends Viewer {
         final int frameWidth = 400;
         final int frameHeight = 400;
 
-        frame = new JFrame();
-        frame.setTitle(frameTitle);
-        frame.setSize(frameWidth, frameHeight);
-        frame.setLocation(590, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
-        frame.setLayout(new BorderLayout());
-        frame.setVisible(true);
+        this.frame = new JFrame();
+        this.frame.setTitle(frameTitle);
+        this.frame.setSize(frameWidth, frameHeight);
+        this.frame.setLocation(590, 400);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
+        this.frame.setLayout(new BorderLayout());
+        this.frame.setVisible(true);
 
-        frame.add(indComponent);
+        this.frame.add(indComponent);
 
         //Adds the top label that constantly updates with the newest average hamming distance
         String hammingText = "Average hamming distance: ";
         JLabel hammingDistance = new JLabel(hammingText);
-        frame.add(hammingDistance, BorderLayout.NORTH);
+        this.frame.add(hammingDistance, BorderLayout.NORTH);
 
-        timer = new Timer(timerDelay, new ActionListener() {
+        this.timer = new Timer(this.timerDelay, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,14 +69,14 @@ public class IndividualViewer extends Viewer {
             }
         });
 
-        timer.start();
+        this.timer.start();
 
-        frame.pack();
+        this.frame.pack();
     }
 
     public void setSize(int width, int height){
-        frame.setSize(width, height);
-        frame.pack();
+        this.frame.setSize(width, height);
+        this.frame.pack();
     }
 
     // public static void main(String[] args) {
