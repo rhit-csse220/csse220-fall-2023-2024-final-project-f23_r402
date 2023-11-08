@@ -65,13 +65,13 @@ public class HelpScreenViewer extends Viewer {
 
         JPanel linksPanel = new JPanel();
         JButton geneticAlgorithmsButton = new JButton("Wikipedia: Genetic Algorithms");
-        geneticAlgorithmsButton.addActionListener(new HelpScreenOpenWebsiteButtonListener("https://en.wikipedia.org/wiki/Genetic_algorithm"));
+        geneticAlgorithmsButton.addActionListener(new OpenWebsiteButtonListener("https://en.wikipedia.org/wiki/Genetic_algorithm"));
         linksPanel.add(geneticAlgorithmsButton);
         JButton originalResearchButton = new JButton("Original Research Paper");
-        originalResearchButton.addActionListener(new HelpScreenOpenWebsiteButtonListener("https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=f9197ff9fdabd2b78bfe0602365011c6699b0d66"));
+        originalResearchButton.addActionListener(new OpenWebsiteButtonListener("https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=f9197ff9fdabd2b78bfe0602365011c6699b0d66"));
         linksPanel.add(originalResearchButton);
         JButton shareProgramButton = new JButton("Share This Program!");
-        shareProgramButton.addActionListener(new HelpScreenOpenWebsiteButtonListener("https://www.youtube.com/shorts/SXHMnicI6Pg"));
+        shareProgramButton.addActionListener(new OpenWebsiteButtonListener("https://www.youtube.com/shorts/SXHMnicI6Pg"));
         linksPanel.add(shareProgramButton);
 
         mainPanel.add(linksPanel);

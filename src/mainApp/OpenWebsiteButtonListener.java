@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class HelpScreenOpenWebsiteButtonListener implements ActionListener {
+public class OpenWebsiteButtonListener implements ActionListener {
 
     private URI uri;
 
-    public HelpScreenOpenWebsiteButtonListener(String url) {
+    public OpenWebsiteButtonListener(String url) {
         try {
             this.uri = new URI(url);
         } catch (URISyntaxException e) {
