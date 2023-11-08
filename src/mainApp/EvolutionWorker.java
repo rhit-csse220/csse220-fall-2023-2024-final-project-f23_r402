@@ -45,7 +45,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
     protected Void doInBackground() throws Exception {
         for (int generationCount = 0; generationCount <= generations; generationCount++) {
             evComponent.handleSelection();
-            evComponent.generationCount = generationCount;
+            evComponent.setGenerationCount(generationCount);
             publish();
 
             // Check if paused and wait
@@ -59,7 +59,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
 
                if (autoStopEnabled && evComponent.checkForFitness100()) {
                 // Automatically reset the button to "Start Evolution" when fitness is 100
-                final int generationCounts = evComponent.generationCount;
+                final int generationCounts = evComponent.getGenerationCount();
                 SwingUtilities.invokeLater(() -> {
                     startEvolutionButton.setText("Start Evolution");
                     JOptionPane.showMessageDialog(null, "The first generation with perfect genes is " + generationCounts, "Perfect Genes Found", JOptionPane.INFORMATION_MESSAGE);

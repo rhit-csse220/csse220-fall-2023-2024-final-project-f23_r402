@@ -41,8 +41,8 @@ public class EvolutionComponent extends JComponent {
   public static final int DEFAULT_GENERATION = 100;
   
   protected int x,y,xLimit,yLimit,xWidth,yHeight;
-  public int generationCount;
-  public ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
+  private int generationCount;
+  private ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
   private Evolution evolution;
   
   /**
@@ -253,5 +253,20 @@ public class EvolutionComponent extends JComponent {
     g2.drawString("Average fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_ORANGE_Y + KEY_LABEL_OFFSET));
     g2.drawString("Low fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_RED_Y + KEY_LABEL_OFFSET));
     g2.drawString("Hamming distance", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_YELLOW_Y + KEY_LABEL_OFFSET));
+  }
+
+  /**
+   * ensures: returns generationCount
+   * @return generationCount
+   */
+  public int getGenerationCount() {
+    return generationCount;
+  }
+
+  /**
+   * ensures: sets generationCount
+   */
+  public void setGenerationCount(int generationCount) {
+    this.generationCount = generationCount;
   }
 }

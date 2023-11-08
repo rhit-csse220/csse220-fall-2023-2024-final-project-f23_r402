@@ -29,8 +29,7 @@ public class EvolutionViewer implements Runnable {
 
     protected static final int SUBMIT_FORM_KEY = 0;
     
-    // public JFrame frame;
-    public EvolutionComponent evComponent;
+    private EvolutionComponent evComponent;
     private IndividualViewer indViewer;
     private PopulationViewer popViewer;
     private HistogramViewer histViewer;
@@ -247,7 +246,7 @@ public class EvolutionViewer implements Runnable {
                             } else if (generationCount <= Integer.parseInt(generationsField.getText())){
                                 evComponent.handleSelection();
                                 generationCount++;
-                                evComponent.generationCount = generationCount;
+                                evComponent.setGenerationCount(generationCount);
                                 frame.repaint();
                             } 
                             
