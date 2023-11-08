@@ -49,22 +49,8 @@ public class ChromosomeViewer {
 		// public int getFrameWidth() {return frame.getWidth()};
 
 		// fileName - BorderLayout.NORTH
-
-		JPanel titlePanel = new JPanel();
-
 		JLabel fileNameLabel = new JLabel(fileName);
-		titlePanel.add(fileNameLabel);
-
-		JButton shareButton = new JButton("Share this chromosome");
-		shareButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new ShareChromosomeViewer(chComponent.handleGetChromosomeDataAsString()).driverMain();
-			}			
-		});
-		titlePanel.add(shareButton);
-
-		frame.add(titlePanel, BorderLayout.NORTH);
+		frame.add(fileNameLabel, BorderLayout.NORTH);
 
 		// chromosome - BorderLayout.CENTER
 		this.chComponent = new ChromosomeComponent();
