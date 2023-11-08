@@ -11,7 +11,7 @@ public class Gene {
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	
 	
-	public char bit;
+	private char bit;
 	private boolean changeable;
 	// x and y are top left corners of square
 	private int x;

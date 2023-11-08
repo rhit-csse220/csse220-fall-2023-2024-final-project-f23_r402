@@ -63,7 +63,8 @@ public class IndividualViewer extends Viewer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // In order to fit it on the graph, the average hamming distance had to be multiplied by 100. Here, we divide it to obtain the actual value
-                hammingDistance.setText(hammingText+indComponent.getPopulation().prevHammingDistance/100);
+                hammingDistance.setText(hammingText + indComponent.getPopulationPrevHammingDistance() / 100);
+                // hammingDistance.setText(hammingText+indComponent.getPopulation().prevHammingDistance/100);
                 frame.repaint();
             }
         });

@@ -30,9 +30,16 @@ public class Chromosome implements Comparable {
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
 
 	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
-	public int x = 0;
-	public int y = 0;
+	private int x = 0;
+	private int y = 0;
 	
+	public void setX(int x) {
+		this.x = x;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+
 	// Create a Random object
 	Random r = new Random();
 	

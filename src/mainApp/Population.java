@@ -9,14 +9,15 @@ import java.util.stream.IntStream;
 import javax.swing.JOptionPane;
 
 public class Population {
-    // TODO: change to privates
-    public ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
+    public static final int CROSSOVER_OFFSET = 1;
+    
+    private ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
     private int sizeOfPopulation = 100; // default
     private int genomeLength = 100; // default
-    public double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
-    public ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
+    private double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
+
+    private ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
     private String targetString;
-    public static final int CROSSOVER_OFFSET = 1;
 
     private int fitnessFunctionType = 0;
 
@@ -26,6 +27,10 @@ public class Population {
 
     public void setSizeOfPopulation(int sizeOfPopulation) {
         this.sizeOfPopulation = sizeOfPopulation;
+    }
+
+    public double getPrevHammingDistance() {
+        return prevHammingDistance;
     }
     
     // Create a Random object
@@ -369,6 +374,26 @@ public class Population {
 
     public ArrayList<Chromosome> getChromosomes() {
         return this.chromosomes;
+    }
+
+    public int getLineArraySize() {
+        return this.lineArray.size();
+    }
+
+    public double getBestFitnessForLineArrayElement(int i) {
+        return this.lineArray.get(i).getBestFitness();
+    }
+
+    public double getAvgFitnessForLineArrayElement(int i) {
+        return this.lineArray.get(i).getAvgFitness();
+    }
+
+    public double getLowFitnessForLineArrayElement(int i) {
+        return this.lineArray.get(i).getLowFitness();
+    }
+
+    public double getHammingDistancForLineArrayElement(int i) {
+        return this.lineArray.get(i).getHammingDistance();
     }
 
     // public void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {

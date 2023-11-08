@@ -29,8 +29,8 @@ public class PopulationComponent extends Component{
                 Chromosome currChromosome = this.chromosomes.get(Chromosome.NUM_PER_ROW * i + j);
                 x = geneWidth * Chromosome.NUM_PER_ROW * j;
                 y = geneWidth * chromosomes.get(i).getNumPerColumn() * i;
-                currChromosome.x = (int) (1.1 * x + geneWidth);
-                currChromosome.y = (int) (1.1 * y + geneWidth);
+                currChromosome.setX((int) (1.1 * x + geneWidth));
+                currChromosome.setY((int) (1.1 * y + geneWidth));
                 currChromosome.drawPopulationView(g2, geneWidth, 0);
                 if (y > maxHeight) {
                     maxHeight = y;

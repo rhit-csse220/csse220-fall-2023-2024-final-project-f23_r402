@@ -74,21 +74,21 @@ public class Evolution {
     }
 
     public int getLineArraySize(){
-        return this.population.lineArray.size();
+        return this.population.getLineArraySize(); //lineArray.size();
     }
 
     public double getLineArrayIndex(int i, String s){
         if (s.equals("Best")){
-            return this.population.lineArray.get(i).getBestFitness();
+            return this.population.getBestFitnessForLineArrayElement(i);  //lineArray.get(i).getBestFitness();
         }
         else if (s.equals("Avg")){
-            return this.population.lineArray.get(i).getAvgFitness();
+            return this.population.getAvgFitnessForLineArrayElement(i);  //lineArray.get(i).getAvgFitness();
         }
         else if (s.equals("Low")){
-            return this.population.lineArray.get(i).getLowFitness();
+            return this.population.getLowFitnessForLineArrayElement(i);  //lineArray.get(i).getLowFitness();
         }
         else if (s.equals("Ham")){
-            return this.population.lineArray.get(i).getHammingDistance();
+            return this.population.getHammingDistancForLineArrayElement(i);   //lineArray.get(i).getHammingDistance();
         }
         else{
             return -1;

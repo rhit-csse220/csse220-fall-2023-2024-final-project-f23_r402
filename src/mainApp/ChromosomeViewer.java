@@ -22,11 +22,11 @@ public class ChromosomeViewer {
 	 * ensures: creates, initializes, and sets visible the Viewer's frame and
 	 * component
 	 */
-	public String fileName = "Chromosome X";
-	public String filePath = "";
-	public File file;
-	public JFrame frame;
-	public ChromosomeComponent chComponent;
+	private String fileName = "Chromosome X";
+	private String filePath = "";
+	private File file;
+	private JFrame frame;
+	private ChromosomeComponent chComponent;
 
 	// height of chComponent: this.chComponent.getHeight()
 	// width of frame: frame.getWidth()

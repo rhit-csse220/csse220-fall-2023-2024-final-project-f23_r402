@@ -40,4 +40,8 @@ public class IndividualComponent extends Component{
             return (compHeight) / numColumn;
         }
 	}
+
+    public double getPopulationPrevHammingDistance() {
+        return this.population.getPrevHammingDistance();
+    }
 }
