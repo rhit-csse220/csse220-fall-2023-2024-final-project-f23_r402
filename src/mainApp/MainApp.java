@@ -35,7 +35,7 @@ public class MainApp {
 	} // runApp
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("Genetic Algorithm App");
+		JFrame frame = new JFrame("Genetic Algorithm Program");
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -55,7 +55,7 @@ public class MainApp {
 		logoPanel.add(logoLabel);
 
 		JPanel titlePanel = new JPanel();
-		JLabel titleLabel = new JLabel("Genetic Algorithm App");
+		JLabel titleLabel = new JLabel("Genetic Algorithm Program");
 		titleLabel.setFont(new Font(null, Font.PLAIN, 25));
 		titlePanel.add(titleLabel);
 
