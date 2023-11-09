@@ -1,38 +1,42 @@
-package mainApp;
+package researchApp;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-public class ChromosomeViewer {
-	/**
-	 * ensures: creates, initializes, and sets visible the Viewer's frame and
-	 * component
-	 */
-	protected String fileName = "Chromosome X";
-	protected String filePath = "";
-	protected File file;
-	protected JFrame frame;
-	protected ChromosomeComponent chComponent;
+import mainApp.ChromosomeComponent;
+import mainApp.ChromosomeViewer;
+import mainApp.Gene;
+import mainApp.InvalidChromosomeCharacterException;
+import mainApp.InvalidChromosomeFormatException;
 
-	// height of chComponent: this.chComponent.getHeight()
-	// width of frame: frame.getWidth()
+public class ResearchChromosomeViewer extends ChromosomeViewer {
 
-	public void driverMain() {
-		final String frameTitle = "Chromosome Viewer";
+	protected ResearchChromosomeComponent chComponent;
+
+    public ResearchChromosomeViewer(){
+    }
+
+    @Override
+    public void driverMain() {
+        final String frameTitle = "Chromosome Viewer";
 		final int frameWidth = 310;
 		final int frameHeight = 420;
 		final int textFieldWidth = 3;
@@ -53,51 +57,8 @@ public class ChromosomeViewer {
 		frame.add(fileNameLabel, BorderLayout.NORTH);
 
 		// chromosome - BorderLayout.CENTER
-		this.chComponent = new ChromosomeComponent();
+		this.chComponent = new ResearchChromosomeComponent();
 		frame.add(chComponent, BorderLayout.CENTER);
-
-		// buttons/fields - BorderLayout.SOUTH
-		JLabel mRate = new JLabel("M Rate:");
-		JTextField mRateField = new JTextField("1", textFieldWidth);
-		JLabel mRateUnit = new JLabel("/N");
-
-		/**
-		 * Functional Mutate Button
-		 * ensures: takes the int in mRateField and performs mutation on Chromosome
-		 */
-		JButton mutateButton = new JButton("Mutate");
-		mutateButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Get the mutation rate as a percentage from the text field
-				try {
-					double mutationRate = Double.parseDouble(mRateField.getText());
-
-					if (mutationRate < 0 || mutationRate > chComponent.handleGetNumberOfGenesInChromosome()) {
-						// Handle invalid input, show an error message, etc.
-						JOptionPane.showMessageDialog(frame,
-								"Invalid mutation rate. Please enter a number between 0 and "
-										+ chComponent.handleGetNumberOfGenesInChromosome(),
-								"Invalid Input", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-
-					// Perform mutation for each gene based on the mutation rate
-					chComponent.handleMutateGenesInChromosome(mutationRate);
-					
-					fileNameLabel.setText(fileName + " (mutated)");
-					// Repaint the frame to reflect the changes
-					frame.repaint();
-
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(frame,
-							"Invalid mutation rate. Please enter a number between 0 and "
-									+ chComponent.handleGetNumberOfGenesInChromosome(),
-							"Invalid Input", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-			}
-		});
 
 		/**
 		 * Function Load Button
@@ -189,10 +150,6 @@ public class ChromosomeViewer {
 
 		JPanel buttonPanel = new JPanel();
 		frame.add(buttonPanel, BorderLayout.SOUTH);
-		buttonPanel.add(mRate);
-		buttonPanel.add(mRateField);
-		buttonPanel.add(mRateUnit);
-		buttonPanel.add(mutateButton);
 		buttonPanel.add(loadButton);
 		buttonPanel.add(saveButton);
 
@@ -215,7 +172,7 @@ public class ChromosomeViewer {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Gene gene = chComponent.containsGene(e.getX(), e.getY());
+				ResearchGene gene = chComponent.containsGene(e.getX(), e.getY());
 				if (gene != null) {
 					gene.changeBit();
 				}
@@ -225,23 +182,12 @@ public class ChromosomeViewer {
 		});
 
 		frame.pack();
-	} // driverMain
+    }
 
-	public boolean checkChromosomeData(String fileData) {
-		for (int i = 0; i < fileData.length(); i++) {
-            if (!(fileData.charAt(i)=='0' || fileData.charAt(i)=='1')) {
-                return false;
-            }
-        }
-		return true;
-	}
+	
 
-	public void handleDriverMain() {
-		this.driverMain();
-	}
-
-	public static void main(String[] args) {
-		ChromosomeViewer c = new ChromosomeViewer();
-		c.handleDriverMain();
+    public static void main(String[] args) {
+		ResearchChromosomeViewer rC = new ResearchChromosomeViewer();
+		rC.handleDriverMain();
 	} // main
 }

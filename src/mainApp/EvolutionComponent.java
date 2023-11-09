@@ -41,9 +41,9 @@ public class EvolutionComponent extends JComponent {
   public static final int DEFAULT_GENERATION = 100;
   
   protected int x,y,xLimit,yLimit,xWidth,yHeight;
-  private int generationCount;
-  private ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
-  private Evolution evolution;
+  protected int generationCount;
+  protected ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
+  protected Evolution evolution;
   
   /**
   * Constructs a new EvolutionComponent with an initial population.
@@ -82,12 +82,7 @@ public class EvolutionComponent extends JComponent {
     int genomeLENGTH = Integer.parseInt(genomeLength);
     double ELITISM = Double.parseDouble(elitism);
     this.evolution = new Evolution(new Population(populationSIZE, genomeLENGTH, fitnessFunction), populationSIZE, GENERATIONS, ELITISM, genomeLENGTH, mutationRATE, selection, crossover);
-    // this.setFitnessFunctionForChromosomes(fitnessFunction);
   }
-  
-  // private void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
-  //   this.population.setFitnessFunctionForChromosomes(fitnessFunction);
-  // }
 
   /**
   * Handles the selection of individuals in the population based on the specified
