@@ -10,8 +10,7 @@ public class Evolution {
     protected String selection;
     protected boolean crossover;
     
-    public Evolution(){
-    }
+    public Evolution(){}
 
     public Evolution(Population population, int populationSize, int generations, double elitism,
             int genomeLength, double mutationRate, String selection, boolean crossover) {
