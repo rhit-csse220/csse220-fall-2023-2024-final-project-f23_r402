@@ -29,12 +29,12 @@ import javax.swing.Timer;
 public class EvolutionViewer implements Runnable {
     public static final int TIMER_DELAY = 1500;
 
-    protected static final int SUBMIT_FORM_KEY = KeyEvent.VK_ENTER;
+    public static final int SUBMIT_FORM_KEY = KeyEvent.VK_ENTER;
     
-    protected EvolutionComponent evComponent;
-    protected IndividualViewer indViewer;
-    protected PopulationViewer popViewer;
-    protected HistogramViewer histViewer;
+    private EvolutionComponent evComponent;
+    private IndividualViewer indViewer;
+    private PopulationViewer popViewer;
+    private HistogramViewer histViewer;
     
     /**
     * The driverMain method initializes and sets up the Evolution Viewer application.

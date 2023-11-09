@@ -40,10 +40,10 @@ public class EvolutionComponent extends JComponent {
   public static final int DEFAULT_STROKE = 500;
   public static final int DEFAULT_GENERATION = 100;
   
-  protected int x,y,xLimit,yLimit,xWidth,yHeight;
-  protected int generationCount;
-  protected ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
-  protected Evolution evolution;
+  private int x,y,xLimit,yLimit,xWidth,yHeight;
+  private int generationCount;
+  private ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
+  private Evolution evolution;
   
   /**
   * Constructs a new EvolutionComponent with an initial population.

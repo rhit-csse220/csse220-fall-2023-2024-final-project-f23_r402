@@ -11,7 +11,7 @@ public class ChromosomeComponent extends JComponent{
 	public static final int Y_MOUSE_COORD_OFFSET = 45;
 	public static final int DEFAULT_BORDER = 3; // TODO change later
 	
-	protected Chromosome chromosome;
+	private Chromosome chromosome;
 	
 	/**
 	 * ensures: that a new ChromosomeComponent object is created, instantiating its own chromosome as well
