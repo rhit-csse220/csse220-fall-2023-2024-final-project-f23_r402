@@ -35,4 +35,8 @@ public class Histogram {
         }
         return sum;
     }
+
+    public int getSizeOfPopulation() {
+        return this.population.getSizeOfPopulation();
+    }
 }

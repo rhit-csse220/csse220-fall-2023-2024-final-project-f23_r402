@@ -63,18 +63,18 @@ public class HistogramComponent extends EvolutionComponent{
 
     @Override
     public int calculateY(double y) {
-        return (int) (((y) * ((this.yHeight) / (double) histogram.getPopulation().getSizeOfPopulation())));
+        return (int) (((y) * ((this.yHeight) / (double) histogram.getSizeOfPopulation())));  //getPopulation().getSizeOfPopulation())));
     }
 
     @Override
     public void drawYDivisions(Graphics2D g2) {
         g2.translate(this.x, this.yHeight);
         g2.drawLine(0, 0, 0, -this.yHeight);
-        int num = this.histogram.getPopulation().getSizeOfPopulation();
+        int num = this.histogram.getSizeOfPopulation();  // .getPopulation().getSizeOfPopulation();
         int populationYInterval = (int) ((this.yHeight) / FITNESS_SCORE_INTERVAL);
         int populationInterval = num / FITNESS_SCORE_INTERVAL;
         for (int i = 0; num >= 0; i -= populationYInterval){
-            String sNum = Integer.toString(Math.abs(num - this.histogram.getPopulation().getSizeOfPopulation()));
+            String sNum = Integer.toString(Math.abs(num - this.histogram.getSizeOfPopulation())); //getPopulation().getSizeOfPopulation()));
             g2.drawLine(AXIS_LABEL_LINE_WIDTH, i, -AXIS_LABEL_LINE_WIDTH, i);
             g2.drawString(sNum, Y_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, i + Y_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
             num -= populationInterval;

@@ -19,12 +19,12 @@ public class IndividualComponent extends Component{
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         int geneWidth = this.findGeneWidth();
-        if (this.population != null && !this.population.getChromosomes().isEmpty()) {
-            if (index >= 0 && index < this.population.getChromosomes().size()) {
-                this.population.getChromosomes().get(index).drawOn(g2, geneWidth, 0);
+        if (this.population != null && !this.population.isChromosomesEmpty()) {
+            if (index >= 0 && index < this.population.getChromosomesSize()) {
+                this.population.drawOnForChromosome(index, g2, geneWidth, 0);  // .getChromosomes().get(index).drawOn(g2, geneWidth, 0);
             } else {
                 // Handle the case when the index is out of bounds by displaying the first chromosome
-                this.population.getChromosomes().get(BEST_CHROMOSOME_INDEX).drawOn(g2, geneWidth, 0);
+                this.population.drawOnForChromosome(BEST_CHROMOSOME_INDEX, g2, geneWidth, 0);  // .getChromosomes().get(BEST_CHROMOSOME_INDEX).drawOn(g2, geneWidth, 0);
             }
         }
     }
@@ -33,7 +33,7 @@ public class IndividualComponent extends Component{
 		int compHeight = this.getHeight();
 		int compWidth = this.getWidth();
 
-        int numColumn = this.population.getChromosomes().get(0).getNumPerColumn();
+        int numColumn = this.population.getNumPerColumnForChromosome(0);   //.getChromosomes().get(0).getNumPerColumn();
         if (numColumn < 10){
             return (compWidth - DEFAULT_BORDER * MULTIPLIER) / (NUM_PER_ROW);
         } else{

@@ -28,7 +28,7 @@ import javax.swing.Timer;
 public class EvolutionViewer implements Runnable {
     public static final int TIMER_DELAY = 1500;
 
-    protected static final int SUBMIT_FORM_KEY = 0;
+    protected static final int SUBMIT_FORM_KEY = KeyEvent.VK_ENTER;
     
     private EvolutionComponent evComponent;
     private IndividualViewer indViewer;
@@ -260,6 +260,7 @@ public class EvolutionViewer implements Runnable {
                     } else {
                         timer.stop();
                     }
+                    frame.requestFocus();
                 }
             });
             
