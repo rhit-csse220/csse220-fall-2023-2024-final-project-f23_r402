@@ -17,7 +17,7 @@ public class ResearchChromosome extends Chromosome{
     private boolean isPerfect = false;
     private ResearchGene[] genes;
     private int dayRemaining = 0;
-    private HashMap<Character,Integer> numsOf1s0sQs = new HashMap<>(); 
+    private HashMap<Character,Integer> numsOf1s0sQs = new HashMap<Character,Integer>(); 
 
     public String getOriginalGenomeData() {
         return originalGenomeData;
@@ -46,9 +46,15 @@ public class ResearchChromosome extends Chromosome{
     //THERE IS NO MUTATION IN RESEARCH CHROMOSOME
     public ResearchChromosome(int numOfGenes, int fitnessFunctionType){
         super(numOfGenes, fitnessFunctionType);
+        numsOf1s0sQs.put('0', 0);
+        numsOf1s0sQs.put('1',0);
+        numsOf1s0sQs.put('?',0);
     }
 
     public ResearchChromosome() {
+        numsOf1s0sQs.put('0', 0);
+        numsOf1s0sQs.put('1',0);
+        numsOf1s0sQs.put('?',0);
     }
 
     @Override

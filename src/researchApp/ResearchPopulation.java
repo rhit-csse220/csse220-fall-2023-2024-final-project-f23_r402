@@ -17,6 +17,12 @@ public class ResearchPopulation extends Population{
         super(sizeOfPopulation, genomeLength, fitnessFunction);
     }
 
+    public ResearchPopulation(ResearchPopulation researchPopulation){
+        for (int i = 0; i < researchPopulation.sizeOfPopulation; i++){
+            
+        }
+    }
+
     @Override
     public void initiatePopulation() {
         this.chromosomes = new ArrayList<ResearchChromosome>();
