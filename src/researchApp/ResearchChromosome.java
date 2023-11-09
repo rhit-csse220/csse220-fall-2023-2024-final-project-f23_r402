@@ -17,13 +17,17 @@ public class ResearchChromosome extends Chromosome{
     private String cloneGenomeData;
     private boolean isPerfect = false;
     private ResearchGene[] genes;
-    private int dayRemaining = 0;
+    private int daysRemaining = 0;
     private int num1s;
     private int num0s;
     private int numQs;
 
+    public ResearchChromosome(String fileData){ 
+		this.initiateGeneWithString(fileData);
+	}
+
     public String getOriginalGenomeData() {
-        return originalGenomeData;
+        return this.originalGenomeData;
     }
 
     public void setOriginalGenomeData(String originalGenomeData) {
@@ -31,7 +35,7 @@ public class ResearchChromosome extends Chromosome{
     }
 
     public boolean isPerfect() {
-        return isPerfect;
+        return this.isPerfect;
     }
 
     public void setPerfect(boolean isPerfect) {
@@ -39,11 +43,15 @@ public class ResearchChromosome extends Chromosome{
     }
 
     public ResearchGene[] getGenes() {
-        return genes;
+        return this.genes;
     }
 
     public void setGenes(ResearchGene[] genes) {
         this.genes = genes;
+    }
+
+    public int getDaysRemaining(){
+        return this.daysRemaining;
     }
 
     //THERE IS NO MUTATION IN RESEARCH CHROMOSOME
@@ -56,13 +64,13 @@ public class ResearchChromosome extends Chromosome{
     }
 
     @Override
-    public void initiateGeneWithString(String s) throws InvalidChromosomeFormatException {
+    public void initiateGeneWithString(String s) {
         this.num0s = 0;
         this.num1s = 0;
         this.numQs = 0;
-        if (s.length() % 10 != 0) {
-			throw new InvalidChromosomeFormatException(s.length());
-		}
+        // if (s.length() % 10 != 0) {
+		// 	throw new InvalidChromosomeFormatException(s.length());
+		// }
 		
 		this.numOfGenes = s.length();
 		
@@ -142,7 +150,7 @@ public class ResearchChromosome extends Chromosome{
                     this.isPerfect = true;
                     break;
                 }
-            this.dayRemaining = 1000 - days;
+            this.daysRemaining = 1000 - days;
         }
     }
 
