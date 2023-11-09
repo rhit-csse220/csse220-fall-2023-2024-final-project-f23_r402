@@ -18,7 +18,9 @@ public class ResearchChromosome extends Chromosome{
     private boolean isPerfect = false;
     private ResearchGene[] genes;
     private int dayRemaining = 0;
-    private HashMap<Character,Integer> numsOf1s0sQs = new HashMap<Character,Integer>(); 
+    private int num1s;
+    private int num0s;
+    private int numQs;
 
     public String getOriginalGenomeData() {
         return originalGenomeData;
@@ -47,19 +49,17 @@ public class ResearchChromosome extends Chromosome{
     //THERE IS NO MUTATION IN RESEARCH CHROMOSOME
     public ResearchChromosome(int numOfGenes, int fitnessFunctionType){
         super(numOfGenes, fitnessFunctionType);
-        numsOf1s0sQs.put('0', 0);
-        numsOf1s0sQs.put('1',0);
-        numsOf1s0sQs.put('?',0);
+        
     }
 
     public ResearchChromosome() {
-        numsOf1s0sQs.put('0', 0);
-        numsOf1s0sQs.put('1',0);
-        numsOf1s0sQs.put('?',0);
     }
 
     @Override
     public void initiateGeneWithString(String s) throws InvalidChromosomeFormatException {
+        this.num0s = 0;
+        this.num1s = 0;
+        this.numQs = 0;
         if (s.length() % 10 != 0) {
 			throw new InvalidChromosomeFormatException(s.length());
 		}
@@ -114,6 +114,9 @@ public class ResearchChromosome extends Chromosome{
 
     @Override
     public void initiateGene() {
+        this.num0s = 0;
+        this.num1s = 0;
+        this.numQs = 0;
         Random r = new Random();
         this.genes = new ResearchGene[this.numOfGenes];
 		for (int i = 0; i < this.numPerColumn; i++) {
@@ -126,36 +129,51 @@ public class ResearchChromosome extends Chromosome{
         checkAlleles();
     }
 
-    public void liveLife(){
+    public void liveLife() throws InvalidChromosomeFormatException{
         for (int days = 0; days < 1000; days++){
+            this.initiateGeneWithString(this.originalGenomeData);
             for (int i = 0; i < genes.length; i++){
                 ResearchGene gene = this.genes[i];
                 if (!isPerfect){
                     gene.changeBit();
-                    this.cloneGenomeData = this.getChromosomeDataAsString();
-                    if (this.checkAlleles()==100){
-                        this.isPerfect = true;
-                        this.originalGenomeData = this.getChromosomeDataAsString();
-                    }
-                    dayRemaining = 1000 - i;
-                    this.fitnessScore = checkFitnessScore(dayRemaining);
                 }
             }
+            if (checkAll1s(this.getChromosomeDataAsString())){
+                    this.isPerfect = true;
+                    break;
+                }
+            this.dayRemaining = 1000 - days;
         }
     }
 
-    public int checkAlleles() {
-		int score = 0;
-		String fileData = getChromosomeDataAsString();
+    public void checkAlleles() {
+		String fileData = originalGenomeData;
 		for (int i = 0; i < fileData.length(); i++){
             char bit = fileData.charAt(i);
-			int sum = numsOf1s0sQs.get(bit);
-            numsOf1s0sQs.put(bit, sum+1);
+            int checkBit = Character.getNumericValue(bit);
+            if (checkBit==0){
+                num0s++;
+            }
+            else if (checkBit==1){
+                num1s++;
+            }
+            else{
+                numQs++;
+            }
 		}
-        //int fitnessScore = (int) ((score / (double) numOfGenes) * MAX_FITNESS_SCORE);
-        return score;
 	}
 
+    public boolean checkAll1s(String s){
+        int score = 0;
+        for (int i = 0; i < s.length(); i++){
+            if (Character.getNumericValue(s.charAt(i)) == 1) {
+                score++;
+            }
+        }
+        return (score == s.length());
+    }
+
+    //TODO REMOVE
     public double checkFitnessScore(int dayRemaining){
         return (1 + (19*dayRemaining / 1000));
     }
