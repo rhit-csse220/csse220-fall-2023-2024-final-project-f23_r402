@@ -1,14 +1,14 @@
 package mainApp;
 
 public class Evolution {
-    private Population population;
-    private int populationSize;
-    private int generations = 100;
-    private double elitism;
-    private int genomeLength;
-    private double mutationRate;
-    private String selection;
-    private boolean crossover;
+    protected Population population;
+    protected int populationSize;
+    protected int generations = 100;
+    protected double elitism;
+    protected int genomeLength;
+    protected double mutationRate;
+    protected String selection;
+    protected boolean crossover;
     
     public Evolution(){
     }

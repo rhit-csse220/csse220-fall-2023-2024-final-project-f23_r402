@@ -21,17 +21,19 @@ public class Chromosome implements Comparable {
 	public static final String smileyGeneticData = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
 	public static final String susGeneticData = "1111111111111000001111011111010001110001010111110101011111010001111101110110110111011011011110010011";
 	
-	private int numOfGenes = 100;           //default values
-	private int numPerColumn = 10;          //default values
-	private int fitnessFunctionType = 0;;   //default values
-	private Gene[] genes;
-	private double fitnessScore;
-	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
-	private int border = ChromosomeComponent.DEFAULT_BORDER;
+	protected int numOfGenes = 100;           //default values
+	protected int numPerColumn = 10;          //default values
+	protected int fitnessFunctionType = 0;;   //default values
+	protected Gene[] genes;
+	protected double fitnessScore;
+	protected int geneWidth = Gene.DEFAULT_GENE_SIDE;
+	protected int border = ChromosomeComponent.DEFAULT_BORDER;
+
+	// research
 
 	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
-	private int x = 0;
-	private int y = 0;
+	protected int x = 0;
+	protected int y = 0;
 	
 	public void setX(int x) {
 		this.x = x;

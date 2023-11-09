@@ -11,13 +11,13 @@ public class Gene {
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	
 	
-	private char bit;
-	private boolean changeable;
+	protected char bit;
+	protected boolean changeable;
 	// x and y are top left corners of square
-	private int x;
-	private int y;
-	private int geneWidth = DEFAULT_GENE_SIDE;
-	private int border = ChromosomeComponent.DEFAULT_BORDER;
+	protected int x;
+	protected int y;
+	protected int geneWidth = DEFAULT_GENE_SIDE;
+	protected int border = ChromosomeComponent.DEFAULT_BORDER;
 
 	/**
 	 * ensures: The instantiation of a new Gene object according to the given parameters

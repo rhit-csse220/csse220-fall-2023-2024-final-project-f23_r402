@@ -13,15 +13,15 @@ import javax.swing.JOptionPane;
 public class Population {
     public static final int CROSSOVER_OFFSET = 1;
     
-    private ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
-    private int sizeOfPopulation = 100; // default
-    private int genomeLength = 100; // default
-    private double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
+    protected ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
+    protected int sizeOfPopulation = 100; // default
+    protected int genomeLength = 100; // default
+    protected double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
 
-    private ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
-    private String targetString;
+    protected ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
+    protected String targetString;
 
-    private int fitnessFunctionType = 0;
+    protected int fitnessFunctionType = 0;
 
     public int getSizeOfPopulation() {
         return sizeOfPopulation;
