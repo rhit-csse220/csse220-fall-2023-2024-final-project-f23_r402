@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
@@ -222,6 +223,7 @@ public class EvolutionViewer implements Runnable {
                             if (autoStopCheckBox.isSelected() && evComponent.checkForFitness100()) {
                                 count++;
                                 if (count == 5) {
+                                    JOptionPane.showMessageDialog(null, "The first generation with perfect genes is " + (generationCount-5), "Perfect Genes Found", JOptionPane.INFORMATION_MESSAGE);
                                     resetEvolution();
                                     timer.stop();
                                     count = 0;
@@ -344,60 +346,67 @@ public class EvolutionViewer implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (fastEvolutionCheckBox.isSelected()) {
-                    if (startEvolutionButton.getText().equals("Start Evolution")) {
-                        if (evolutionWorker[0] != null) {
-                            if (evolutionWorker[0].isShutAllFrames()) {
-                                indViewer.shutDownFrame();
-                                popViewer.shutDownFrame();
-                                histViewer.shutDownFrame();
+                    try{
+                        boolean[] checkForError = new boolean[1];
+                        checkFields(textFields, fitnessFunctionChooser.getSelectedItem().toString(), checkForError);
+
+                        if (checkForError[0]){
+                            if (startEvolutionButton.getText().equals("Start Evolution")) {
+                                if (evolutionWorker[0] != null) {
+                                    if (evolutionWorker[0].isShutAllFrames()) {
+                                        indViewer.shutDownFrame();
+                                        popViewer.shutDownFrame();
+                                        histViewer.shutDownFrame();
+                                    }
+                                } else if (indViewer!=null){
+                                    indViewer.shutDownFrame();
+                                    popViewer.shutDownFrame();
+                                    histViewer.shutDownFrame();
+                                }
+                            
+                                try {
+                                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                                } catch (InvalidGenomeLengthException e1) {}
+
+                                indViewer = new IndividualViewer();
+                                indViewer.getIndComponent().setPopulation(evComponent.handleGetPopulation());
+                                indViewer.driverMain();
+                                popViewer = new PopulationViewer();
+                                popViewer.handleSetPopulation(evComponent.handleGetPopulation());
+                                popViewer.driverMain();
+                                histViewer = new HistogramViewer();
+                                histViewer.handleSetPopulation(evComponent.handleGetPopulation());
+                                histViewer.driverMain();
+                
+                                startEvolutionButton.setText("Pause");
+                
+                                // Create and execute an EvolutionWorker to run the evolution in the background
+                                evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                                evolutionWorker[0].setPaused(false);
+                                evolutionWorker[0].setAutoStopEnabled(autoStopCheckBox.isSelected());
+                                evolutionWorker[0].execute();
+                            } else if (startEvolutionButton.getText().equals("Pause")) {
+                                // Pause the FAST Evolution process
+                                startEvolutionButton.setText("Resume");
+                                evolutionWorker[0].setPaused(true);
+                
+                                // Cancel the running EvolutionWorker if it exists and is not yet done
+                                if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
+                                    evolutionWorker[0].cancel(true);
+                                }
+                            } else if (startEvolutionButton.getText().equals("Resume")) {
+                                // Resume the FAST Evolution process
+                                startEvolutionButton.setText("Pause");
+                                evolutionWorker[0].setPaused(false);
+                
+                                // Create a new EvolutionWorker to continue the evolution
+                                evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
+                                evolutionWorker[0].setAutoStopEnabled(autoStopCheckBox.isSelected());
+                                evolutionWorker[0].execute();
                             }
                         }
-                        else if (indViewer!=null){
-                            indViewer.shutDownFrame();
-                            popViewer.shutDownFrame();
-                            histViewer.shutDownFrame();
-                        }
-                      
-                        try {
-                            evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
-                        } catch (InvalidGenomeLengthException e1) {}
-
-                        indViewer = new IndividualViewer();
-                        indViewer.getIndComponent().setPopulation(evComponent.handleGetPopulation());
-                        indViewer.driverMain();
-                        popViewer = new PopulationViewer();
-                        popViewer.handleSetPopulation(evComponent.handleGetPopulation());
-                        popViewer.driverMain();
-                        histViewer = new HistogramViewer();
-                        histViewer.handleSetPopulation(evComponent.handleGetPopulation());
-                        histViewer.driverMain();
-        
-                        startEvolutionButton.setText("Pause");
-        
-                        // Create and execute an EvolutionWorker to run the evolution in the background
-                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
-                        evolutionWorker[0].setPaused(false);
-                        evolutionWorker[0].setAutoStopEnabled(autoStopCheckBox.isSelected());
-                        evolutionWorker[0].execute();
-                    } else if (startEvolutionButton.getText().equals("Pause")) {
-                        // Pause the FAST Evolution process
-                        startEvolutionButton.setText("Resume");
-                        evolutionWorker[0].setPaused(true);
-        
-                        // Cancel the running EvolutionWorker if it exists and is not yet done
-                        if (evolutionWorker[0] != null && !evolutionWorker[0].isDone()) {
-                            evolutionWorker[0].cancel(true);
-                        }
-                    } else if (startEvolutionButton.getText().equals("Resume")) {
-                        // Resume the FAST Evolution process
-                        startEvolutionButton.setText("Pause");
-                        evolutionWorker[0].setPaused(false);
-        
-                        // Create a new EvolutionWorker to continue the evolution
-                        evolutionWorker[0] = new EvolutionWorker(evComponent, Integer.parseInt(generationsField.getText()), startEvolutionButton);
-                        evolutionWorker[0].setAutoStopEnabled(autoStopCheckBox.isSelected());
-                        evolutionWorker[0].execute();
-                    }
+                    } catch (Exception ex){ }
+                    
                 }
             }
         }
