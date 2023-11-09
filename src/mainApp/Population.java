@@ -1,5 +1,7 @@
 package mainApp;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -394,6 +396,22 @@ public class Population {
 
     public double getHammingDistancForLineArrayElement(int i) {
         return this.lineArray.get(i).getHammingDistance();
+    }
+
+    public int getNumPerColumnForChromosome(int i) {
+        return this.chromosomes.get(i).getNumPerColumn();
+    }
+
+    public void drawOnForChromosome(int index, Graphics g, int geneWidth, int border) {
+        this.chromosomes.get(index).drawOn(g, geneWidth, border);
+    }
+
+    public boolean isChromosomesEmpty() {
+        return this.chromosomes.isEmpty();
+    }
+
+    public int getChromosomesSize() {
+        return this.chromosomes.size();
     }
 
     // public void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
