@@ -14,6 +14,7 @@ public class ResearchChromosome extends Chromosome{
     public static final Color Gene_2_TEXT_COLOR = new Color(201,5,3);
 
     private String originalGenomeData;
+    private String cloneGenomeData;
     private boolean isPerfect = false;
     private ResearchGene[] genes;
     private int dayRemaining = 0;
@@ -129,15 +130,13 @@ public class ResearchChromosome extends Chromosome{
         for (int days = 0; days < 1000; days++){
             for (int i = 0; i < genes.length; i++){
                 ResearchGene gene = this.genes[i];
-                if (this.checkAlleles()==100){
-                    this.isPerfect = true;
-                    this.originalGenomeData = this.getChromosomeDataAsString();
-                    dayRemaining = 1000 - i;
-                    this.fitnessScore = checkFitnessScore(dayRemaining);
-                }
                 if (!isPerfect){
                     gene.changeBit();
-                    this.originalGenomeData = this.getChromosomeDataAsString();
+                    this.cloneGenomeData = this.getChromosomeDataAsString();
+                    if (this.checkAlleles()==100){
+                        this.isPerfect = true;
+                        this.originalGenomeData = this.getChromosomeDataAsString();
+                    }
                     dayRemaining = 1000 - i;
                     this.fitnessScore = checkFitnessScore(dayRemaining);
                 }
