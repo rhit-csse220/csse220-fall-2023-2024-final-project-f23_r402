@@ -268,7 +268,7 @@ public class EvolutionViewer implements Runnable {
                 if (!fastEvolutionCheckBox.isSelected()){
                     try{
                         boolean[] checkForError = new boolean[1];
-                        checkFields(textFields, checkForError);
+                        checkFields(textFields, fitnessFunctionChooser.getSelectedItem().toString(), checkForError);
                         if (checkForError[0]){
                             this.passedErrorCheck = true;
                             makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox, autoStopCheckBox);
@@ -449,7 +449,7 @@ public class EvolutionViewer implements Runnable {
         autoStopCheckBox.setEnabled(true);
     }
     
-    public void checkFields(JTextField[] textFields, boolean[] hasError) throws Exception{
+    public void checkFields(JTextField[] textFields, String fitnessFunction, boolean[] hasError) throws Exception{
         // textFields[0] - mRateField
         try{
             if (Double.parseDouble(textFields[0].getText()) < 0 || Double.parseDouble(textFields[0].getText()) > 100){
@@ -491,12 +491,18 @@ public class EvolutionViewer implements Runnable {
         
         // textFields[3] - genomeLength
         try{
-            if (Integer.parseInt(textFields[3].getText()) <= 0 || Integer.parseInt(textFields[3].getText()) % 10 != 0){
-                throw new InvalidEvolutionMultipleException("Invalid Genome Length");
+            if (fitnessFunction.equals("Default")){
+                if (Integer.parseInt(textFields[3].getText()) <= 0 || Integer.parseInt(textFields[3].getText()) % 10 != 0){
+                    throw new InvalidEvolutionMultipleException("Invalid Genome Length");
+                }
+            } else{
+                if (Integer.parseInt(textFields[3].getText()) != 100){
+                    throw new InvalidGenomeLengthException(100);
+                }
             }
         } catch (Exception e){
             hasError[0] = false;
-            if (!(e instanceof InvalidEvolutionMultipleException)){
+            if (!(e instanceof InvalidEvolutionMultipleException || e instanceof InvalidGenomeLengthException)){
                 throw new InvalidEvolutionMultipleException("Invalid Genome Length");
             }
             return;
