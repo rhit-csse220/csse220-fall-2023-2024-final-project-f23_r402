@@ -89,6 +89,7 @@ public class EvolutionComponent extends JComponent {
   * selection method.
   */
   public void handleSelection(){
+    System.out.println("BRUH: "+this.evolution.getPopulation().isResearch());
     //TODO FIX MESSAGE CHAINS
     if (this.evolution.getPopulation().isResearch()){
       this.evolution.getPopulation().performSelectionResearch();
@@ -278,7 +279,8 @@ public class EvolutionComponent extends JComponent {
   /**
 //    * ensures: returns generationCount
 //    * @return generationCount
-//    */
+//    
+   * @throws InvalidGenomeLengthException*/
 //   public int getGenerationCount() {
 //     return generationCount;
 //   }

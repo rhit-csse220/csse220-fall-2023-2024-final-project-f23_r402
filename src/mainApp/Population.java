@@ -127,15 +127,14 @@ public class Population {
 
     public void performSelectionResearch(){
         if (this.isResearch){
-            for (int i = 0; i < this.sizeOfPopulation; i++){
-                this.chromosomes.get(i).liveLife();
-                if (this.chromosomes.get(i).isPerfect()){
-                    System.out.println("YAY");
-                }
-            }
+            this.chromosomes.parallelStream().forEach(chromosome -> chromosome.liveLife());
         }
         // sort population
         this.sortPopulation();
+
+        // for (Chromosome chromosome : this.chromosomes){
+        //     System.out.println(chromosome.getFitnessScore());
+        // }
 
         ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(chromosomes);
         ArrayList<Chromosome> chosenChromosomes = findCurrentResearch(currentChromosomes, new ArrayList<Chromosome>());
@@ -143,7 +142,10 @@ public class Population {
         int initialSize = this.chromosomes.size();
         this.chromosomes = new ArrayList<Chromosome>();
         // perform crossover
+
         chosenChromosomes = this.performResearchCrossover(chosenChromosomes);
+
+        // System.out.println(chosenChromosomes);
 
         // initiating new chromosomes
         for (int i = 0; i < initialSize/2; i++){
@@ -591,4 +593,13 @@ public class Population {
 	// 	else if (fitnessFunction.contains("Smiley"))
 	// 		this.fitnessFunctionType = 1;
     // }
+    public static void main(String[] args) {
+        Population p = new Population(1000, 20, "Default", true);
+        for (int i = 0; i < 100; i++){
+            p.performSelectionResearch();
+            System.out.println("BRUH");
+        }
+        p.sortPopulation();
+        System.out.println(p.getChromosomes());
+    }
 }

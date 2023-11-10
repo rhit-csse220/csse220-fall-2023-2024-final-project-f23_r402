@@ -326,8 +326,13 @@ public class Chromosome implements Comparable {
 	 * @return the fitness score of the chromosome
 	 */
 	public double getFitnessScore(){
-		this.calcFitnessFuction();
-		return this.fitnessScore;
+		if (!this.isResearch){
+			this.calcFitnessFuction();
+			return this.fitnessScore;
+		}
+		else{
+			return this.fitnessScore;
+		}
 	} // getFitnessScore
 	
 	/**
@@ -457,6 +462,7 @@ public class Chromosome implements Comparable {
             this.daysRemaining = 1000 - days -1 ;
         }
 		this.loadGeneFromOriginalData();
+		//System.out.println(this.daysRemaining);
 		this.fitnessScore = calculateFitnessScoreResearch();
 		//System.out.println(this.fitnessScore);
     }
