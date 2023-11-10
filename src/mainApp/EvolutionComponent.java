@@ -40,9 +40,9 @@ public class EvolutionComponent extends JComponent {
   public static final int DEFAULT_STROKE = 500;
   public static final int DEFAULT_GENERATION = 100;
   
-  private int x,y,xLimit,yLimit,xWidth,yHeight;
-  private int generationCount;
-  private ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
+  protected int x,y,xLimit,yLimit,xWidth,yHeight;
+  // private int generationCount;
+  // private ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
   private Evolution evolution;
   
   /**
@@ -251,17 +251,17 @@ public class EvolutionComponent extends JComponent {
   }
 
   /**
-   * ensures: returns generationCount
-   * @return generationCount
-   */
-  public int getGenerationCount() {
-    return generationCount;
-  }
+//    * ensures: returns generationCount
+//    * @return generationCount
+//    */
+//   public int getGenerationCount() {
+//     return generationCount;
+//   }
 
-  /**
-   * ensures: sets generationCount
-   */
-  public void setGenerationCount(int generationCount) {
-    this.generationCount = generationCount;
-  }
+//   /**
+//    * ensures: sets generationCount
+//    */
+//   public void setGenerationCount(int generationCount) {
+//     this.generationCount = generationCount;
+//   }
 }

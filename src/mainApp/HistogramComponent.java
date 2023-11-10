@@ -17,7 +17,7 @@ public class HistogramComponent extends EvolutionComponent{
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         this.x = (int) (X1_TO_FRAME_RATIO * this.getWidth());
         this.y = (int) (EvolutionComponent.Y1_TO_FRAME_RATIO * this.getHeight());
