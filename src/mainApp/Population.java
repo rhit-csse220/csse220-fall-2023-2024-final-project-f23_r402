@@ -17,10 +17,8 @@ public class Population {
     private int sizeOfPopulation = 100; // default
     private int genomeLength = 100; // default
     private double prevBestFitness, prevLowFitness, prevAvgFitness, prevHammingDistance;
-
     private ArrayList<BestFitLine2D> lineArray = new ArrayList<>();
     private String targetString;
-
     private int fitnessFunctionType = 0;
 
     public int getSizeOfPopulation() {
@@ -245,6 +243,39 @@ public class Population {
         }
         currentChromosomes.removeAll(chosenChromosomes);
         return findRankedList(currentChromosomes, chosenChromosomes);
+    }
+
+    // TODO: RESEARCH
+    public ArrayList<Chromosome> findCurrent(ArrayList<Chromosome> currentChromosomes, ArrayList<Chromosome> chosenChromosomes){
+        if (currentChromosomes.size() == chosenChromosomes.size()){
+            return chosenChromosomes;
+        }
+
+        ArrayList<Double> chromosomeScores = new ArrayList<Double>();
+
+        // find total Score
+        double totalScore = 0;
+        for (Chromosome chromosome : currentChromosomes){
+            // totalScore += 1 + (chromosome.getDaysRemaining()*19.0)/1000;
+        }
+
+        // find pctg range for each chromosome based of their score
+        double currNum = 0;
+        for (Chromosome chromosome : currentChromosomes){
+            // currNum += (1 + (chromosome.getDaysRemaining()*19.0)/1000)/totalScore;
+            chromosomeScores.add(currNum);
+        }
+
+        // chose random chromosome
+        double randNum = r.nextDouble(0,1);
+        for (int i = 0; i < chromosomeScores.size(); i++){
+            if (chromosomeScores.get(i) >= randNum){
+                chosenChromosomes.add(currentChromosomes.get(i));
+                break;
+            }
+        }
+        currentChromosomes.removeAll(chosenChromosomes);
+        return findCurrent(currentChromosomes, chosenChromosomes);
     }
 
     public ArrayList<Chromosome> performCrossover(ArrayList<Chromosome> selectedParents){

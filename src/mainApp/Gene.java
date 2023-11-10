@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 public class Gene {
 	public static final int DEFAULT_GENE_SIDE = 30; // side length of gene square
 	public static final Color GENE_0_COLOR = Color.BLACK;
 	public static final Color GENE_1_COLOR = Color.GREEN;
+	public static final Color GENE_2_COLOR = new Color(255, 227, 43);
 	
 	
 	private char bit;
@@ -18,6 +20,8 @@ public class Gene {
 	private int y;
 	private int geneWidth = DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
+
+	Random r = new Random();
 
 	/**
 	 * ensures: The instantiation of a new Gene object according to the given parameters
@@ -47,7 +51,9 @@ public class Gene {
 	         g2.setColor(GENE_0_COLOR);
 	    } else if (this.bit == '1') {
             g2.setColor(GENE_1_COLOR);
-        }
+        } else if (this.bit == '?'){
+			g2.setColor(GENE_2_COLOR);
+		}
         // g2.fillRect(x, y, this.geneSide, this.geneSide);
 		g2.fillRect(this.x + this.border, this.y, this.geneWidth, this.geneWidth);
     }
@@ -63,6 +69,11 @@ public class Gene {
             this.bit = '0';
         }
     }
+
+	public void setRandomBit(){
+		int value = r.nextInt(0,2);
+		this.bit = (value == 0 ? '0' : '1');
+	}
 
 	/**
 	 * ensures: that the currently selected gene is returned if the inputted box overlaps with the gene's box

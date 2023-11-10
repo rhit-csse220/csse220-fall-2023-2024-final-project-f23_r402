@@ -17,7 +17,7 @@ public class ChromosomeComponent extends JComponent{
 	 * ensures: that a new ChromosomeComponent object is created, instantiating its own chromosome as well
 	 */
 	public ChromosomeComponent() {
-		this.chromosome = new Chromosome();
+		this.chromosome = new Chromosome(true);
 		this.chromosome.initiateGene();
 	} //ChromosomeComponent
 	

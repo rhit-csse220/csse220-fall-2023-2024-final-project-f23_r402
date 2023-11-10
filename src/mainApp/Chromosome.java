@@ -17,6 +17,7 @@ public class Chromosome implements Comparable {
 	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
+	public static final Color GENE_2_TEXT_COLOR = Color.RED;
 	
 	public static final String smileyGeneticData = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
 	public static final String susGeneticData = "1111111111111000001111011111010001110001010111110101011111010001111101110110110111011011011110010011";
@@ -28,8 +29,12 @@ public class Chromosome implements Comparable {
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
+	private String originalGenomeData;
 
 	// research
+	private boolean isResearch = false;
+	private boolean isPerfect = false;
+	private int daysRemaining = 0;
 
 	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
 	private int x = 0;
@@ -79,24 +84,93 @@ public class Chromosome implements Comparable {
 	}
 	
 	public Chromosome(String fileData, boolean mutate, double mutationRate) throws InvalidChromosomeFormatException{
-		//this.fileData = fileData;
 		this.numOfGenes = fileData.length();
 		this.initiateGeneWithString(fileData);
 		this.calcFitnessFuction();
-		//this.fitnessSmiley();
 		
 		if (mutate){this.mutateGenes(mutationRate);}
 	}
 
 	public Chromosome(String fileData, boolean mutate, double mutationRate, int fitnessFunctionType) throws InvalidChromosomeFormatException{
-		//this.fileData = fileData;
 		this.numOfGenes = fileData.length();
 		this.fitnessFunctionType = fitnessFunctionType;
 		this.initiateGeneWithString(fileData);
 		this.calcFitnessFuction();
-		//this.fitnessSmiley();
 		
 		if (mutate){this.mutateGenes(mutationRate);}
+	}
+
+	public Chromosome(boolean isResearch){
+		this.isResearch = isResearch;
+		this.fitnessScore = -1;
+	}
+
+	public Chromosome(String fileData, boolean isResearch){
+		this.isResearch = isResearch;
+		this.fitnessScore = -1;
+		initiateGeneWithString(fileData);
+	}
+
+	/**
+	* ensures: that a numOfGenes Gene objects is initialized into the chromosome
+	*/
+	public void initiateGene() {
+		this.initiateGeneLoad();
+		
+		// TO SET THE FITNESS SCORE
+		this.calcFitnessFuction();
+		//this.fitnessSmiley();
+	}
+
+	public void initiateGeneLoad(){
+		this.genes = new Gene[this.numOfGenes];
+		for (int i = 0; i < this.numPerColumn; i++) {
+			for (int j = 0; j < NUM_PER_ROW; j++) {
+				int limit = isResearch ? 4 : 2;
+				int bit = r.nextInt(0,limit);
+				char aBit = ' ';
+				if (bit == 0){
+					aBit = '0';
+				}
+				else if (bit == 1){
+					aBit = '1';
+				} else{
+					aBit = '?';
+				}
+				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
+				this.genes[i*NUM_PER_ROW+j] = new Gene(aBit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
+			}
+		}
+	}
+	
+	/**
+	 * ensures: initiates the genome with a given data
+	 * @param s given data in a form of "0100101"
+	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
+	 */
+	public void initiateGeneWithString(String s) {
+		this.initiateGeneWithStringLoad(s);
+		// TO SET THE FITNESS SCORE
+		this.calcFitnessFuction();
+	}
+
+	/**
+	 * ensures: initiates the genome with a given data
+	 * @param s given data in a form of "0100101"
+	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
+	 */
+	public void initiateGeneWithStringLoad(String s) {
+		this.originalGenomeData = s;
+		this.numOfGenes = s.length();
+
+		this.genes = new Gene[numOfGenes];
+		this.numPerColumn = numOfGenes / NUM_PER_ROW;
+		for (int i = 0; i < this.numPerColumn; i++) {
+			for (int j = 0; j < NUM_PER_ROW; j++) {
+				char bit = s.charAt(i*NUM_PER_ROW+j);
+				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
+			}
+		}
 	}
 	
 	//methods
@@ -180,49 +254,6 @@ public class Chromosome implements Comparable {
 		
 		// Set the fitness score based on the maximum consecutive ones
 		this.fitnessScore = maxConsecutiveOnes;
-	}
-	
-	/**
-	* ensures: that a numOfGenes Gene objects is initialized into the chromosome
-	*/
-	public void initiateGene() {
-		this.genes = new Gene[this.numOfGenes];
-		for (int i = 0; i < this.numPerColumn; i++) {
-			for (int j = 0; j < NUM_PER_ROW; j++) {
-				int bit = r.nextInt(0,2);
-				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
-				this.genes[i*NUM_PER_ROW+j] = new Gene((char)(bit+'0'), true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
-			}
-		}
-		
-		// TO SET THE FITNESS SCORE
-		this.calcFitnessFuction();
-		//this.fitnessSmiley();
-	}
-	
-	/**
-	 * ensures: initiates the genome with a given data
-	 * @param s given data in a form of "0100101"
-	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
-	 */
-	public void initiateGeneWithString(String s) throws InvalidChromosomeFormatException {
-		if (s.length() % 10 != 0) {
-			throw new InvalidChromosomeFormatException(s.length());
-		}
-		
-		this.numOfGenes = s.length();
-		
-		this.genes = new Gene[numOfGenes];
-		this.numPerColumn = numOfGenes / NUM_PER_ROW;
-		for (int i = 0; i < this.numPerColumn; i++) {
-			for (int j = 0; j < NUM_PER_ROW; j++) {
-				char bit = s.charAt(i*NUM_PER_ROW+j);
-				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
-			}
-		}
-
-		// TO SET THE FITNESS SCORE
-		this.calcFitnessFuction();
 	}
 	
 	public void adjustGenePosition(){
@@ -317,6 +348,8 @@ public class Chromosome implements Comparable {
 				g2.setColor(GENE_1_TEXT_COLOR);
 			} else if (this.genes[i].getBit()=='0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
+			} else {
+				g2.setColor(GENE_2_TEXT_COLOR);
 			}
 			g2.setFont(new Font(null, Font.PLAIN, geneWidth/3));
 			g2.drawString((String)(i+""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + this.genes[i].getY());
@@ -387,6 +420,49 @@ public class Chromosome implements Comparable {
 			}
 		}
 		return null;
+	}
+
+	public void liveLife() {
+        for (int days = 0; days < 1000; days++){
+            this.loadGeneFromOriginalData();
+            for (int i = 0; i < genes.length; i++){
+                Gene gene = this.genes[i];
+                if (!isPerfect && gene.getBit()=='?'){
+                    gene.setRandomBit();
+                }
+            }
+            if (checkAll1s(this.getChromosomeDataAsString())){
+                this.isPerfect = true;
+				this.daysRemaining = 1000 - days - 1;
+				this.fitnessScore = calculateFitnessScoreResearch();
+                return;
+            }
+            this.daysRemaining = 1000 - days -1 ;
+        }
+    }
+
+	public void loadGeneFromOriginalData(){
+		for (int i = 0; i < this.numPerColumn; i++) {
+			for (int j = 0; j < NUM_PER_ROW; j++) {
+				char bit = this.originalGenomeData.charAt(i*NUM_PER_ROW+j);
+				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
+			}
+		}
+	}
+
+	public boolean checkAll1s(String s){
+        int score = 0;
+        for (int i = 0; i < s.length(); i++){
+            if (Character.getNumericValue(s.charAt(i)) == 1) {
+                score++;
+            }
+        }
+        return (score == s.length());
+    }
+
+	public double calculateFitnessScoreResearch(){
+		double fitnessScore = (1 + (19*this.daysRemaining)/1000)*5;
+		return fitnessScore;
 	}
 	
 	/**
