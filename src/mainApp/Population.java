@@ -97,31 +97,54 @@ public class Population {
         this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
         this.prevAvgFitness = calculateAvgFitness();
         this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
+        //TODO FIGURE OUT HAMMING DISTANCE WITH THE THIRD BIT '?'
         this.prevHammingDistance = calculateHammingDistance();
-        this.prevCountOf0s = calculateTotalNumOf('0');
-        this.prevCountOf1s = calculateTotalNumOf('1');
-        this.prevCountOfQs = calculateTotalNumOf('?');
+        this.prevCountOf0s = calculateTotalNumOf0s();
+        this.prevCountOf1s = calculateTotalNumOf1s();
+        this.prevCountOfQs = calculateTotalNumOfQs();
         //this.prevHammingDistance = calculateUniqueStrings();
         this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance, this.prevCountOf0s, this.prevCountOf1s, this.prevCountOfQs));
     }
 
-    public double calculateTotalNumOf(char c){
+    public double calculateTotalNumOf0s(){
         double count = 0;
         for (int i = 0; i < this.chromosomes.size(); i++){
             Chromosome currChromosome = this.chromosomes.get(i);
-            if (!currChromosome.isResearch()){
-                return 0;
-            }
-            for (int j = 0; j < currChromosome.getGenes().length; i++){
-                Gene currGene = currChromosome.getGenes()[j];
-                if (currGene.getBit() == c){
-                    count++;
-                }
-            }
+            // if (!currChromosome.isResearch()){
+            //     return 0;
+            // }
+            count+= currChromosome.getNumberOf0s();
         }
 
         count = (count/(this.sizeOfPopulation*this.genomeLength)) * 100;
-        System.out.println("COUNT");
+        return count;
+    }
+    
+    public double calculateTotalNumOf1s(){
+        double count = 0;
+        for (int i = 0; i < this.chromosomes.size(); i++){
+            Chromosome currChromosome = this.chromosomes.get(i);
+            // if (!currChromosome.isResearch()){
+            //     return 0;
+            // }
+            count+= currChromosome.getNumberOf1s();
+        }
+
+        count = (count/(this.sizeOfPopulation*this.genomeLength)) * 100;
+        return count;
+    }
+
+    public double calculateTotalNumOfQs(){
+        double count = 0;
+        for (int i = 0; i < this.chromosomes.size(); i++){
+            Chromosome currChromosome = this.chromosomes.get(i);
+            // if (!currChromosome.isResearch()){
+            //     return 0;
+            // }
+            count+= currChromosome.getNumberOfQs();
+        }
+
+        count = (count/(this.sizeOfPopulation*this.genomeLength)) * 100;
         return count;
     }
 
@@ -131,6 +154,8 @@ public class Population {
         }
         // sort population
         this.sortPopulation();
+
+        this.createLine();
 
         // for (Chromosome chromosome : this.chromosomes){
         //     System.out.println(chromosome.getFitnessScore());
@@ -593,13 +618,13 @@ public class Population {
 	// 	else if (fitnessFunction.contains("Smiley"))
 	// 		this.fitnessFunctionType = 1;
     // }
-    public static void main(String[] args) {
-        Population p = new Population(1000, 20, "Default", true);
-        for (int i = 0; i < 100; i++){
-            p.performSelectionResearch();
-            System.out.println("BRUH");
-        }
-        p.sortPopulation();
-        System.out.println(p.getChromosomes());
-    }
+    // public static void main(String[] args) {
+    //     Population p = new Population(1000, 20, "Default", true);
+    //     for (int i = 0; i < 100; i++){
+    //         p.performSelectionResearch();
+    //         System.out.println("BRUH");
+    //     }
+    //     p.sortPopulation();
+    //     System.out.println(p.getChromosomes());
+    // }
 }

@@ -30,6 +30,19 @@ public class Chromosome implements Comparable {
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
 	private String originalGenomeData;
+	private int numberOf1s, numberOf0s, numberOfQs = 0;
+
+	public int getNumberOf1s() {
+		return numberOf1s;
+	}
+
+	public int getNumberOf0s() {
+		return numberOf0s;
+	}
+
+	public int getNumberOfQs() {
+		return numberOfQs;
+	}
 
 	// research
 	private boolean isResearch = false;
@@ -135,6 +148,9 @@ public class Chromosome implements Comparable {
 	}
 
 	public void initiateGeneLoad(){
+		this.numberOf0s=0;
+		this.numberOf1s=0;
+		this.numberOfQs=0;
 		this.genes = new Gene[this.numOfGenes];
 		for (int i = 0; i < this.numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
@@ -143,11 +159,14 @@ public class Chromosome implements Comparable {
 				char aBit = ' ';
 				if (bit == 0){
 					aBit = '0';
+					numberOf0s++;
 				}
 				else if (bit == 1){
 					aBit = '1';
+					numberOf1s++;
 				} else{
 					aBit = '?';
+					numberOfQs++;
 				}
 				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
 				this.genes[i*NUM_PER_ROW+j] = new Gene(aBit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
@@ -172,6 +191,9 @@ public class Chromosome implements Comparable {
 	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
 	 */
 	public void initiateGeneWithStringLoad(String s) {
+		this.numberOf0s=0;
+		this.numberOf1s=0;
+		this.numberOfQs=0;
 		this.originalGenomeData = s;
 		this.numOfGenes = s.length();
 
@@ -180,6 +202,9 @@ public class Chromosome implements Comparable {
 		for (int i = 0; i < this.numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				char bit = s.charAt(i*NUM_PER_ROW+j);
+				this.numberOf0s = (bit=='0') ? this.numberOf0s+1 : this.numberOf0s;
+				this.numberOf1s = (bit=='1') ? this.numberOf1s+1 : this.numberOf1s;
+				this.numberOfQs = (bit=='?') ? this.numberOfQs+1 : this.numberOfQs;
 				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
