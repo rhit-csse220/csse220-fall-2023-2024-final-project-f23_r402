@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Chromosome implements Comparable {
@@ -31,6 +32,7 @@ public class Chromosome implements Comparable {
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
 	private String originalGenomeData;
 	private int numberOf1s, numberOf0s, numberOfQs = 0;
+	private ArrayList<Integer> qIndex = new ArrayList<>();
 
 	public int getNumberOf1s() {
 		return numberOf1s;
@@ -148,6 +150,7 @@ public class Chromosome implements Comparable {
 	}
 
 	public void initiateGeneLoad(){
+		qIndex = new ArrayList<>();
 		this.numberOf0s=0;
 		this.numberOf1s=0;
 		this.numberOfQs=0;
@@ -167,6 +170,7 @@ public class Chromosome implements Comparable {
 				} else{
 					aBit = '?';
 					numberOfQs++;
+					qIndex.add(i*NUM_PER_ROW+j);
 				}
 				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
 				this.genes[i*NUM_PER_ROW+j] = new Gene(aBit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
@@ -191,6 +195,7 @@ public class Chromosome implements Comparable {
 	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
 	 */
 	public void initiateGeneWithStringLoad(String s) {
+		qIndex = new ArrayList<>();
 		this.numberOf0s=0;
 		this.numberOf1s=0;
 		this.numberOfQs=0;
@@ -204,7 +209,11 @@ public class Chromosome implements Comparable {
 				char bit = s.charAt(i*NUM_PER_ROW+j);
 				this.numberOf0s = (bit=='0') ? this.numberOf0s+1 : this.numberOf0s;
 				this.numberOf1s = (bit=='1') ? this.numberOf1s+1 : this.numberOf1s;
-				this.numberOfQs = (bit=='?') ? this.numberOfQs+1 : this.numberOfQs;
+				//this.numberOfQs = (bit=='?') ? this.numberOfQs+1 : this.numberOfQs;
+				if (bit == '?'){
+					this.numberOfQs++;
+					qIndex.add(i*NUM_PER_ROW+j);
+				}
 				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
@@ -471,8 +480,9 @@ public class Chromosome implements Comparable {
 		this.originalGenomeData = this.getChromosomeDataAsString();
         for (int days = 0; days < 1000; days++){
             this.loadGeneFromOriginalData();
-            for (int i = 0; i < genes.length; i++){
-                Gene gene = this.genes[i];
+            for (int i = 0; i < qIndex.size(); i++){
+                int indexOfQ = qIndex.get(i); //qIndex is the arraylist wherein the index of the question marks in the gene list are stored..
+				Gene gene = genes[indexOfQ];
                 if (!isPerfect && gene.getBit()=='?'){
                     gene.setRandomBit();
                 }
@@ -482,6 +492,7 @@ public class Chromosome implements Comparable {
 				this.daysRemaining = 1000 - days - 1;
 				//this.fitnessScore = calculateFitnessScoreResearch();
 				//System.out.println(this.fitnessScore);
+				System.out.println(this.originalGenomeData);
                 return;
             }
             this.daysRemaining = 1000 - days -1 ;

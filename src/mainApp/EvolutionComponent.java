@@ -89,12 +89,13 @@ public class EvolutionComponent extends JComponent {
   * selection method.
   */
   public void handleSelection(){
-    System.out.println("BRUH: "+this.evolution.getPopulation().isResearch());
     //TODO FIX MESSAGE CHAINS
     if (this.evolution.getPopulation().isResearch()){
       this.evolution.getPopulation().performSelectionResearch();
     }
-    this.evolution.handleSelection();
+    else{
+      this.evolution.handleSelection();
+    }
   }
   
   /**
@@ -226,7 +227,6 @@ public class EvolutionComponent extends JComponent {
         g2.drawLine(pX, pY, nX, nY);
 
         //TODO REMOVE THE MESSAGE CHAIN
-        if (this.evolution.getPopulation().getChromosomes().get(0).isResearch()){
           //Line of 0s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "0"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "0"));
@@ -239,11 +239,11 @@ public class EvolutionComponent extends JComponent {
           g2.setColor(Color.DARK_GRAY);
           g2.drawLine(pX, pY, nX, nY);
 
-          //Line of Qs
-          pY = calculateY(this.evolution.getLineArrayIndex(i-1, "?"));
-          nY = calculateY(this.evolution.getLineArrayIndex(i, "?"));
-          g2.setColor(Color.MAGENTA);
-          g2.drawLine(pX, pY, nX, nY);
+          if (this.evolution.getPopulation().getChromosomes().get(0).isResearch()){
+            pY = calculateY(this.evolution.getLineArrayIndex(i-1, "?"));
+            nY = calculateY(this.evolution.getLineArrayIndex(i, "?"));
+            g2.setColor(Color.MAGENTA);
+            g2.drawLine(pX, pY, nX, nY);
         }
       }
     }
