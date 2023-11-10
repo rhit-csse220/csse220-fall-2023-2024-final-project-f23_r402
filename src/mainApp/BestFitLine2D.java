@@ -2,7 +2,6 @@ package mainApp;
 
 public class BestFitLine2D {
     private double bestFitness, avgFitness, lowFitness, hammingDistance;
-
     private double numberOf0s, numberOf1s, numberOfQs;
 
     public double getNumberOf0s() {

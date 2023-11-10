@@ -148,101 +148,6 @@ public class Population {
         return count;
     }
 
-    public void performSelectionResearch(){
-        if (this.isResearch){
-            this.chromosomes.parallelStream().forEach(chromosome -> chromosome.liveLife());
-        }
-        // sort population
-        this.sortPopulation();
-
-        this.createLine();
-
-        // for (Chromosome chromosome : this.chromosomes){
-        //     System.out.println(chromosome.getFitnessScore());
-        // }
-
-        ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(chromosomes);
-        ArrayList<Chromosome> chosenChromosomes = findCurrentResearch(currentChromosomes, new ArrayList<Chromosome>());
-        
-        int initialSize = this.chromosomes.size();
-        this.chromosomes = new ArrayList<Chromosome>();
-        // perform crossover
-
-        chosenChromosomes = this.performResearchCrossover(chosenChromosomes);
-
-        // System.out.println(chosenChromosomes);
-
-        // initiating new chromosomes
-        for (int i = 0; i < initialSize/2; i++){
-            String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
-            this.chromosomes.add(new Chromosome(currChromosomeData, this.isResearch));
-            this.chromosomes.add(new Chromosome(currChromosomeData, this.isResearch));
-        }
-        // sort population
-        //this.sortPopulation();
-    }
-
-    public ArrayList<Chromosome> findCurrentResearch(ArrayList<Chromosome> currentChromosomes, ArrayList<Chromosome> chosenChromosomes){
-        if (currentChromosomes.size() == chosenChromosomes.size()){
-            //System.out.println(chosenChromosomes.size() + ", " + currentChromosomes.size());
-            return chosenChromosomes;
-        }
-
-        ArrayList<Double> chromosomeScores = new ArrayList<Double>();
-
-        // find total Score
-        double totalScore = 0;
-        for (Chromosome chromosome : currentChromosomes){
-            //totalScore += 1 + (chromosome.getFitnessScore());
-            totalScore += (chromosome.getFitnessScore());
-        }
-
-        // find pctg range for each chromosome based of their score
-        double currNum = 0;
-        for (Chromosome chromosome : currentChromosomes){
-            currNum += chromosome.getFitnessScore()/totalScore;
-            chromosomeScores.add(currNum);
-        }
-
-        // chose random chromosome
-        double randNum = r.nextDouble(0,1);
-        for (int i = 0; i < chromosomeScores.size(); i++){
-            if (chromosomeScores.get(i) >= randNum){
-                chosenChromosomes.add(currentChromosomes.get(i));
-                break;
-            }
-        }
-        currentChromosomes.removeAll(chosenChromosomes);
-        return findCurrentResearch(currentChromosomes, chosenChromosomes);
-    }
-
-    public ArrayList<Chromosome> performResearchCrossover(ArrayList<Chromosome> selectedParents){
-        ArrayList<Chromosome> childChromosomes = new ArrayList<Chromosome>();
-        for (int i = 0; i < selectedParents.size(); i++){
-            // ensuring two children generated for each pair of parent
-            int index = i;
-            if (index % 2 == 1){
-                index--;
-            }
-
-            // generate a random index for crossover, excluding first and last index
-            int crossoverPoint = r.nextInt(CROSSOVER_OFFSET, this.genomeLength);
-
-            // finds childData
-            String parent1Data = selectedParents.get(index).getChromosomeDataAsString().substring(0, crossoverPoint);
-            String parent2Data = selectedParents.get(index+1).getChromosomeDataAsString().substring(crossoverPoint, this.genomeLength);
-            String childData = parent1Data + parent2Data;
-
-            // adds each child chromosome to the list
-            try{
-                Chromosome childChromosome = new Chromosome(childData, this.isResearch);
-                childChromosomes.add(childChromosome);
-            } catch (Exception e){}
-        }
-        
-        return childChromosomes; // only returns half of population - rest has to be mutated
-    }
-
     /**
      * performs truncation/roulette/ranked selection on the current population and updates this.population to the new population
      * @param mutationRate
@@ -398,23 +303,49 @@ public class Population {
     }
 
     // TODO: RESEARCH
-    public ArrayList<Chromosome> findCurrent(ArrayList<Chromosome> currentChromosomes, ArrayList<Chromosome> chosenChromosomes){
-        if (currentChromosomes.size() == chosenChromosomes.size()){
-            return chosenChromosomes;
+    public void performSelectionResearch(){
+        if (this.isResearch){
+            this.chromosomes.parallelStream().forEach(chromosome -> chromosome.liveLife());
         }
+        // sort population
+        this.sortPopulation();
+
+        this.createLine();
+
+        // for (Chromosome chromosome : this.chromosomes){
+        //     System.out.println(chromosome.getFitnessScore());
+        // }
+
+        ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>();
+        
+        // int initialSize = this.chromosomes.size();
+        // this.chromosomes = new ArrayList<Chromosome>();
+        
+        // perform crossover
+        for (int i = 0; i < this.sizeOfPopulation; i++){
+            Chromosome kidChromosome = this.performResearchCrossover();
+            currentChromosomes.add(kidChromosome);
+        }
+
+        this.chromosomes = currentChromosomes;
+        // sort population
+        //this.sortPopulation();
+    }
+
+    public Chromosome selectRandomParent(){
 
         ArrayList<Double> chromosomeScores = new ArrayList<Double>();
 
         // find total Score
         double totalScore = 0;
-        for (Chromosome chromosome : currentChromosomes){
-            // totalScore += 1 + (chromosome.getDaysRemaining()*19.0)/1000;
+        for (Chromosome chromosome : this.chromosomes){
+            totalScore += chromosome.getFitnessScore();
         }
 
         // find pctg range for each chromosome based of their score
         double currNum = 0;
-        for (Chromosome chromosome : currentChromosomes){
-            // currNum += (1 + (chromosome.getDaysRemaining()*19.0)/1000)/totalScore;
+        for (Chromosome chromosome : this.chromosomes){
+            currNum += chromosome.getFitnessScore()/totalScore;
             chromosomeScores.add(currNum);
         }
 
@@ -422,13 +353,29 @@ public class Population {
         double randNum = r.nextDouble(0,1);
         for (int i = 0; i < chromosomeScores.size(); i++){
             if (chromosomeScores.get(i) >= randNum){
-                chosenChromosomes.add(currentChromosomes.get(i));
-                break;
+                return this.chromosomes.get(i);
             }
         }
-        currentChromosomes.removeAll(chosenChromosomes);
-        return findCurrent(currentChromosomes, chosenChromosomes);
+        return null;
     }
+
+    public Chromosome performResearchCrossover(){
+        Chromosome parent1 = this.selectRandomParent();
+        Chromosome parent2 = this.selectRandomParent();
+
+        int crossoverPoint = r.nextInt(CROSSOVER_OFFSET, this.genomeLength);
+
+        String parent1Data = parent1.getChromosomeDataAsString().substring(0, crossoverPoint);
+        String parent2Data = parent2.getChromosomeDataAsString().substring(crossoverPoint, this.genomeLength);
+        String childData = parent1Data + parent2Data;
+        try{
+            Chromosome childChromosome = new Chromosome(childData, this.isResearch);
+            return childChromosome;
+        } catch (Exception e){}
+        
+        return null;
+    }
+    // TODO: RESEARCH END
 
     public ArrayList<Chromosome> performCrossover(ArrayList<Chromosome> selectedParents){
         ArrayList<Chromosome> childChromosomes = new ArrayList<Chromosome>();

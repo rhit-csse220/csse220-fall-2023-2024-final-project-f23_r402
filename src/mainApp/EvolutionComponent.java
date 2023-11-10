@@ -56,11 +56,11 @@ public class EvolutionComponent extends JComponent {
   public Population handleGetPopulation(){
     return this.evolution.getPopulation();
   }
-
+  
   public boolean checkForFitness100() {
     return this.evolution.checkForFitness100();
-}
-
+  }
+  
   /**
   * Sets various parameters for the evolution process, including population size,
   * selection method, mutation rate, crossover, number of generations, genome length,
@@ -72,7 +72,7 @@ public class EvolutionComponent extends JComponent {
   * @param generations The new number of generations.
   * @param genomeLength The new genome length.
   * @param elitism The new elitism percentage.
-   * @throws InvalidGenomeLengthException
+  * @throws InvalidGenomeLengthException
   */
   public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism, String fitnessFunction, boolean isResearch) throws InvalidGenomeLengthException{
     System.out.println("=====setAll() is called=====");
@@ -83,7 +83,7 @@ public class EvolutionComponent extends JComponent {
     double ELITISM = Double.parseDouble(elitism);
     this.evolution = new Evolution(new Population(populationSIZE, genomeLENGTH, fitnessFunction, isResearch), populationSIZE, GENERATIONS, ELITISM, genomeLENGTH, mutationRATE, selection, crossover);
   }
-
+  
   /**
   * Handles the selection of individuals in the population based on the specified
   * selection method.
@@ -197,7 +197,7 @@ public class EvolutionComponent extends JComponent {
     } else {
       g2.setStroke(new BasicStroke(DEFAULT_STROKE / generations));
     }
-
+    
     for (int i = 1; i < generations; i++){
       if (i < this.evolution.getLineArraySize()){
         //Line of best fit
@@ -219,31 +219,33 @@ public class EvolutionComponent extends JComponent {
         nY = calculateY(this.evolution.getLineArrayIndex(i, "Low"));
         g2.setColor(Color.red);
         g2.drawLine(pX, pY, nX, nY);
-
+        
         //Line of hamming
         pY = calculateY(this.evolution.getLineArrayIndex(i-1, "Ham"));
         nY = calculateY(this.evolution.getLineArrayIndex(i, "Ham"));
         g2.setColor(Color.yellow);
         g2.drawLine(pX, pY, nX, nY);
-
+        
         //TODO REMOVE THE MESSAGE CHAIN
+        
+        if (this.evolution.getPopulation().getChromosomes().get(0).isResearch()){
           //Line of 0s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "0"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "0"));
           g2.setColor(Color.CYAN);
           g2.drawLine(pX, pY, nX, nY);
-
+          
           //Line of 1s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "1"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "1"));
           g2.setColor(Color.DARK_GRAY);
           g2.drawLine(pX, pY, nX, nY);
-
-          if (this.evolution.getPopulation().getChromosomes().get(0).isResearch()){
-            pY = calculateY(this.evolution.getLineArrayIndex(i-1, "?"));
-            nY = calculateY(this.evolution.getLineArrayIndex(i, "?"));
-            g2.setColor(Color.MAGENTA);
-            g2.drawLine(pX, pY, nX, nY);
+          
+          //Line of ?s
+          pY = calculateY(this.evolution.getLineArrayIndex(i-1, "?"));
+          nY = calculateY(this.evolution.getLineArrayIndex(i, "?"));
+          g2.setColor(Color.MAGENTA);
+          g2.drawLine(pX, pY, nX, nY);
         }
       }
     }
@@ -265,7 +267,7 @@ public class EvolutionComponent extends JComponent {
     
     g2.setColor(Color.red);
     g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_RED_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
-
+    
     g2.setColor(Color.yellow);
     g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_YELLOW_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
     
@@ -275,20 +277,20 @@ public class EvolutionComponent extends JComponent {
     g2.drawString("Low fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_RED_Y + KEY_LABEL_OFFSET));
     g2.drawString("Hamming distance", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_YELLOW_Y + KEY_LABEL_OFFSET));
   }
-
+  
   /**
-//    * ensures: returns generationCount
-//    * @return generationCount
-//    
-   * @throws InvalidGenomeLengthException*/
-//   public int getGenerationCount() {
-//     return generationCount;
-//   }
-
-//   /**
-//    * ensures: sets generationCount
-//    */
-//   public void setGenerationCount(int generationCount) {
-//     this.generationCount = generationCount;
-//   }
-}
+  //    * ensures: returns generationCount
+  //    * @return generationCount
+  //    
+  * @throws InvalidGenomeLengthException*/
+  //   public int getGenerationCount() {
+    //     return generationCount;
+    //   }
+    
+    //   /**
+    //    * ensures: sets generationCount
+    //    */
+    //   public void setGenerationCount(int generationCount) {
+      //     this.generationCount = generationCount;
+      //   }
+    }

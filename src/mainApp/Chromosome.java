@@ -476,7 +476,7 @@ public class Chromosome implements Comparable {
 	//TODO CHANGE LIMIT OF DAYS BACK TO 1000
 	public void liveLife() {
 		// TODO FIGURE OUT WHERE THE FITNESS SCORE IS BEING SET AGAIN :/ FOR NOW JUST SETTING IT TO -1 HERE CUZ YEAH
-		this.fitnessScore = -5;
+		// this.fitnessScore = -5;
 		this.originalGenomeData = this.getChromosomeDataAsString();
         for (int days = 0; days < 1000; days++){
             this.loadGeneFromOriginalData();
