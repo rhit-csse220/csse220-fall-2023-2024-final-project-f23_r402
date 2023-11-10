@@ -74,14 +74,14 @@ public class EvolutionComponent extends JComponent {
   * @param elitism The new elitism percentage.
    * @throws InvalidGenomeLengthException
   */
-  public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism, String fitnessFunction) throws InvalidGenomeLengthException{
+  public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism, String fitnessFunction, boolean isResearch) throws InvalidGenomeLengthException{
     System.out.println("=====setAll() is called=====");
     int populationSIZE = Integer.parseInt(populationSize);
     int mutationRATE = Integer.parseInt(mutationRate);
     int GENERATIONS = Integer.parseInt(generations);
     int genomeLENGTH = Integer.parseInt(genomeLength);
     double ELITISM = Double.parseDouble(elitism);
-    this.evolution = new Evolution(new Population(populationSIZE, genomeLENGTH, fitnessFunction), populationSIZE, GENERATIONS, ELITISM, genomeLENGTH, mutationRATE, selection, crossover);
+    this.evolution = new Evolution(new Population(populationSIZE, genomeLENGTH, fitnessFunction, isResearch), populationSIZE, GENERATIONS, ELITISM, genomeLENGTH, mutationRATE, selection, crossover);
   }
 
   /**
@@ -89,6 +89,10 @@ public class EvolutionComponent extends JComponent {
   * selection method.
   */
   public void handleSelection(){
+    //TODO FIX MESSAGE CHAINS
+    if (this.evolution.getPopulation().isResearch()){
+      this.evolution.getPopulation().performSelectionResearch();
+    }
     this.evolution.handleSelection();
   }
   
@@ -219,6 +223,27 @@ public class EvolutionComponent extends JComponent {
         nY = calculateY(this.evolution.getLineArrayIndex(i, "Ham"));
         g2.setColor(Color.yellow);
         g2.drawLine(pX, pY, nX, nY);
+
+        //TODO REMOVE THE MESSAGE CHAIN
+        if (this.evolution.getPopulation().getChromosomes().get(0).isResearch()){
+          //Line of 0s
+          pY = calculateY(this.evolution.getLineArrayIndex(i-1, "0"));
+          nY = calculateY(this.evolution.getLineArrayIndex(i, "0"));
+          g2.setColor(Color.yellow);
+          g2.drawLine(pX, pY, nX, nY);
+
+          //Line of 1s
+          pY = calculateY(this.evolution.getLineArrayIndex(i-1, "1"));
+          nY = calculateY(this.evolution.getLineArrayIndex(i, "1"));
+          g2.setColor(Color.yellow);
+          g2.drawLine(pX, pY, nX, nY);
+
+          //Line of Qs
+          pY = calculateY(this.evolution.getLineArrayIndex(i-1, "?"));
+          nY = calculateY(this.evolution.getLineArrayIndex(i, "?"));
+          g2.setColor(Color.yellow);
+          g2.drawLine(pX, pY, nX, nY);
+        }
       }
     }
     g2.translate(-this.x,-this.y);

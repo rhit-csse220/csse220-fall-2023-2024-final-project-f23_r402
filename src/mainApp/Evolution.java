@@ -89,6 +89,15 @@ public class Evolution {
         else if (s.equals("Ham")){
             return this.population.getHammingDistancForLineArrayElement(i);   //lineArray.get(i).getHammingDistance();
         }
+        else if (s.equals("0")){
+            return this.population.getNumberOf0sForLineArrayElement(i); //lineArray.get(i).getHammingDistance();
+        }
+        else if (s.equals("1")){
+            return this.population.getNumberOf1sForLineArrayElement(i);   //lineArray.get(i).getHammingDistance();
+        }
+        else if (s.equals("?")){
+            return this.population.getNumberOfQsForLineArrayElement(i);   //lineArray.get(i).getHammingDistance();
+        }
         else{
             return -1;
         }

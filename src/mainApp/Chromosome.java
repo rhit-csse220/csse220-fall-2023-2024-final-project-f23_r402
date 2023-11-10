@@ -33,12 +33,22 @@ public class Chromosome implements Comparable {
 
 	// research
 	private boolean isResearch = false;
+
 	private boolean isPerfect = false;
+
 	private int daysRemaining = 0;
 
 	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
 	private int x = 0;
 	private int y = 0;
+
+	public boolean isPerfect() {
+		return isPerfect;
+	}
+	
+	public boolean isResearch() {
+		return isResearch;
+	}
 	
 	public void setX(int x) {
 		this.x = x;
@@ -69,9 +79,10 @@ public class Chromosome implements Comparable {
 	 * @param numOfGenes
 	 * @param fitnessFunctionType
 	 */
-	public Chromosome(int numOfGenes, int fitnessFunctionType) {
+	public Chromosome(int numOfGenes, int fitnessFunctionType, boolean isResearch) {
 		this(numOfGenes);
 		this.fitnessFunctionType = fitnessFunctionType;
+		this.isResearch = isResearch;
 	}
 	
 	public Chromosome(String fileData) throws InvalidChromosomeFormatException{ 
@@ -91,12 +102,13 @@ public class Chromosome implements Comparable {
 		if (mutate){this.mutateGenes(mutationRate);}
 	}
 
-	public Chromosome(String fileData, boolean mutate, double mutationRate, int fitnessFunctionType) throws InvalidChromosomeFormatException{
+	public Chromosome(String fileData, boolean mutate, double mutationRate, int fitnessFunctionType, boolean isResearch) throws InvalidChromosomeFormatException{
 		this.numOfGenes = fileData.length();
 		this.fitnessFunctionType = fitnessFunctionType;
 		this.initiateGeneWithString(fileData);
 		this.calcFitnessFuction();
-		
+		this.isResearch = isResearch;
+
 		if (mutate){this.mutateGenes(mutationRate);}
 	}
 
@@ -422,7 +434,11 @@ public class Chromosome implements Comparable {
 		return null;
 	}
 
+	//TODO CHANGE LIMIT OF DAYS BACK TO 1000
 	public void liveLife() {
+		// TODO FIGURE OUT WHERE THE FITNESS SCORE IS BEING SET AGAIN :/ FOR NOW JUST SETTING IT TO -1 HERE CUZ YEAH
+		this.fitnessScore = -5;
+		this.originalGenomeData = this.getChromosomeDataAsString();
         for (int days = 0; days < 1000; days++){
             this.loadGeneFromOriginalData();
             for (int i = 0; i < genes.length; i++){
@@ -434,11 +450,15 @@ public class Chromosome implements Comparable {
             if (checkAll1s(this.getChromosomeDataAsString())){
                 this.isPerfect = true;
 				this.daysRemaining = 1000 - days - 1;
-				this.fitnessScore = calculateFitnessScoreResearch();
+				//this.fitnessScore = calculateFitnessScoreResearch();
+				//System.out.println(this.fitnessScore);
                 return;
             }
             this.daysRemaining = 1000 - days -1 ;
         }
+		this.loadGeneFromOriginalData();
+		this.fitnessScore = calculateFitnessScoreResearch();
+		//System.out.println(this.fitnessScore);
     }
 
 	public void loadGeneFromOriginalData(){

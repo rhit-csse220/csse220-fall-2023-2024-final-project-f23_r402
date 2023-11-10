@@ -83,7 +83,7 @@ public class EvolutionViewer implements Runnable {
         
         // Mutation rate
         JLabel mRate = new JLabel("Mutation %: ");
-        JTextField mRateField = new JTextField("1", textFieldWidth);
+        JTextField mRateField = new JTextField("0", textFieldWidth);
         textFields[0] = mRateField;
         
         buttonPanel.add(mRate);
@@ -131,7 +131,7 @@ public class EvolutionViewer implements Runnable {
         
         // Genome length
         JLabel genomeLength = new JLabel("Genome: ");
-        JTextField genomeLengthField = new JTextField("100", textFieldWidth);
+        JTextField genomeLengthField = new JTextField("20", textFieldWidth);
         textFields[3] = genomeLengthField;
         
         buttonPanel.add(genomeLength);
@@ -139,7 +139,7 @@ public class EvolutionViewer implements Runnable {
         
         // Elitism
         JLabel elitism = new JLabel("Elitism %: ");
-        JTextField elitismField = new JTextField("1", textFieldWidth);
+        JTextField elitismField = new JTextField("0", textFieldWidth);
         textFields[4] = elitismField;
         
         buttonPanel.add(elitism);
@@ -171,6 +171,12 @@ public class EvolutionViewer implements Runnable {
         JCheckBox autoStopCheckBox = new JCheckBox();
         buttonPanel.add(autoStopLabel);
         buttonPanel.add(autoStopCheckBox);
+
+        // Stop at terminating condition
+        JLabel isResearchLabel = new JLabel("Is Research?");
+        JCheckBox isResearchCheckBox = new JCheckBox();
+        buttonPanel.add(isResearchLabel);
+        buttonPanel.add(isResearchCheckBox);
         
         // Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
@@ -186,9 +192,9 @@ public class EvolutionViewer implements Runnable {
                 private void resetEvolution() {
                     startEvolutionButton.setText("Start Evolution");
                     timer.restart();
-                    makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox, autoStopCheckBox);
+                    makeAllFieldsEditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox, autoStopCheckBox, isResearchCheckBox);
                     try {
-                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                        evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString(), isResearchCheckBox.isSelected());
                     } catch (InvalidGenomeLengthException e) { }
                     generationCount = -1;
                     timer.stop();
@@ -234,7 +240,7 @@ public class EvolutionViewer implements Runnable {
                             if (generationCount == -1){
                                 //TODO ADD SAME FUNCTIONALITY INTO FAST EVOLUTION
                                 try {
-                                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString(), isResearchCheckBox.isSelected());
                                 } catch (InvalidGenomeLengthException e1) { }
                                 if (indViewer!=null){
                                     indViewer.shutDownFrame();
@@ -273,9 +279,9 @@ public class EvolutionViewer implements Runnable {
                         checkFields(textFields, fitnessFunctionChooser.getSelectedItem().toString(), checkForError);
                         if (checkForError[0]){
                             this.passedErrorCheck = true;
-                            makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox, autoStopCheckBox);
+                            makeAllFieldsUneditable(textFields, addSelectionChooser, checkCrossover, fastEvolutionCheckBox, autoStopCheckBox, isResearchCheckBox);
                             if (startEvolutionButton.getText().equals("Start Evolution")){
-                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                                evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString(), isResearchCheckBox.isSelected());
                                 startEvolutionButton.setText("Pause");
                                 timer.start();
                             } else if (startEvolutionButton.getText().equals("Pause")){
@@ -364,7 +370,7 @@ public class EvolutionViewer implements Runnable {
                                 }
                             
                                 try {
-                                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
+                                    evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString(), isResearchCheckBox.isSelected());
                                 } catch (InvalidGenomeLengthException e1) {}
 
                                 indViewer = new IndividualViewer();
@@ -437,7 +443,7 @@ public class EvolutionViewer implements Runnable {
         }
     }
     
-    public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
+    public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox, JCheckBox isResearchCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(false);
         }
@@ -445,10 +451,11 @@ public class EvolutionViewer implements Runnable {
         checkCrossover.setEnabled(false);
         fastEvolutionCheckbox.setEnabled(false);
         autoStopCheckBox.setEnabled(false);
+        isResearchCheckBox.setEnabled(true);
 
     }
     
-    public void makeAllFieldsEditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
+    public void makeAllFieldsEditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox, JCheckBox isResearchCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(true);
         }
@@ -456,6 +463,7 @@ public class EvolutionViewer implements Runnable {
         checkCrossover.setEnabled(true);
         fastEvolutionCheckbox.setEnabled(true);
         autoStopCheckBox.setEnabled(true);
+        isResearchCheckBox.setEnabled(true);
     }
     
     public void checkFields(JTextField[] textFields, String fitnessFunction, boolean[] hasError) throws Exception{
