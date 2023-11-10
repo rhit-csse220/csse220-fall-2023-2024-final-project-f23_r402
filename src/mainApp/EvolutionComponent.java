@@ -232,13 +232,13 @@ public class EvolutionComponent extends JComponent {
           //Line of 0s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "0"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "0"));
-          g2.setColor(Color.CYAN);
+          g2.setColor(Color.DARK_GRAY);
           g2.drawLine(pX, pY, nX, nY);
           
           //Line of 1s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "1"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "1"));
-          g2.setColor(Color.DARK_GRAY);
+          g2.setColor(Color.CYAN);
           g2.drawLine(pX, pY, nX, nY);
           
           //Line of ?s

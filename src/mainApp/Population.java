@@ -359,9 +359,37 @@ public class Population {
         return null;
     }
 
+    public Chromosome selectSecondRandomParent(Chromosome firstParent){
+        ArrayList<Double> chromosomeScores = new ArrayList<Double>();
+        ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(this.chromosomes);
+        currentChromosomes.remove(firstParent);
+
+        // find total Score
+        double totalScore = 0;
+        for (Chromosome chromosome : currentChromosomes){
+            totalScore += chromosome.getFitnessScore();
+        }
+
+        // find pctg range for each chromosome based of their score
+        double currNum = 0;
+        for (Chromosome chromosome : currentChromosomes){
+            currNum += chromosome.getFitnessScore()/totalScore;
+            chromosomeScores.add(currNum);
+        }
+
+        // chose random chromosome
+        double randNum = r.nextDouble(0,1);
+        for (int i = 0; i < chromosomeScores.size(); i++){
+            if (chromosomeScores.get(i) >= randNum){
+                return currentChromosomes.get(i);
+            }
+        }
+        return null;
+    }
+
     public Chromosome performResearchCrossover(){
         Chromosome parent1 = this.selectRandomParent();
-        Chromosome parent2 = this.selectRandomParent();
+        Chromosome parent2 = this.selectSecondRandomParent(parent1);
 
         int crossoverPoint = r.nextInt(CROSSOVER_OFFSET, this.genomeLength);
 
