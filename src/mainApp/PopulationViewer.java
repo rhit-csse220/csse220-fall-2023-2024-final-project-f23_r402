@@ -15,7 +15,7 @@ import javax.swing.Timer;
 
 public class PopulationViewer extends Viewer {
     
-    protected PopulationComponent populationComponent = new PopulationComponent();
+    private PopulationComponent populationComponent = new PopulationComponent();
     
     public void driverMain(){
         final String frameTitle = "Population Viewer";

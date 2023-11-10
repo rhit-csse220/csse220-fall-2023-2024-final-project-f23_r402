@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 public class PopulationComponent extends Component{
-    protected ArrayList<Chromosome> chromosomes;
+    private ArrayList<Chromosome> chromosomes;
 
-    protected int maxHeight = 0;
+    private int maxHeight = 0;
 
     public PopulationComponent(){}
     

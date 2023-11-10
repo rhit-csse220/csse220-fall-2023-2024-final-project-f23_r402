@@ -249,7 +249,6 @@ public class EvolutionViewer implements Runnable {
                             } else if (generationCount <= Integer.parseInt(generationsField.getText())){
                                 evComponent.handleSelection();
                                 generationCount++;
-                                evComponent.setGenerationCount(generationCount);
                                 frame.repaint();
                             } 
                             
