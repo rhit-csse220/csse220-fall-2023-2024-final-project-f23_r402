@@ -102,7 +102,10 @@ public class Evolution {
             return -1;
         }
     }
-    
+    /**
+     * ensures: check if any of the chromosomes within the population has a 100 fitness score
+     * @return
+     */
     public boolean checkForFitness100() {
         for (Chromosome chromosome : population.getChromosomes()) {
             if (chromosome.getFitnessScore() == 100) {

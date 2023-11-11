@@ -29,6 +29,10 @@ public class IndividualComponent extends Component{
         }
     }
 
+    /**
+     * ensures: returns the gene width
+     * @return gene width
+     */
     public int findGeneWidth() {
 		int compHeight = this.getHeight();
 		int compWidth = this.getWidth();
@@ -41,6 +45,9 @@ public class IndividualComponent extends Component{
         }
 	}
 
+    /**
+     * a wrapper method wrapper for Population.getPrevHammingDistance()
+     */
     public double getPopulationPrevHammingDistance() {
         return this.population.getPrevHammingDistance();
     }

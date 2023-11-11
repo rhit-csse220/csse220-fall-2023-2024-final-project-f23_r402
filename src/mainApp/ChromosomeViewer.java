@@ -1,12 +1,9 @@
 package mainApp;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -17,6 +14,12 @@ import java.util.List;
 
 import javax.swing.*;
 
+/**
+ * Class: ChromosomeViewer
+ * @author F23_R402
+ * 
+ * Purpose: the class is used to view and analyze chromosomes.
+ */
 public class ChromosomeViewer {
 	/**
 	 * ensures: creates, initializes, and sets visible the Viewer's frame and
@@ -30,6 +33,10 @@ public class ChromosomeViewer {
 	// height of chComponent: this.chComponent.getHeight()
 	// width of frame: frame.getWidth()
 
+	/**
+	 * The main method of the class.
+	 * ensures: creates and initializes the frame and components for the application
+	 */
 	public void driverMain() {
 		final String frameTitle = "Chromosome Viewer";
 		final int frameWidth = 310;
@@ -142,7 +149,10 @@ public class ChromosomeViewer {
 		    }
 		});
 
-
+		/**
+		 * Function Save Button
+		 * ensures: saves Chromosome to a text file
+		 */
 		JButton saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
 
@@ -178,6 +188,9 @@ public class ChromosomeViewer {
 		buttonPanel.add(loadButton);
 		buttonPanel.add(saveButton);
 
+		/**
+		 * ensures: toggles the state of a chromosome
+		 */
 		frame.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -209,6 +222,12 @@ public class ChromosomeViewer {
 		frame.pack();
 	} // driverMain
 
+
+	/**
+	 * ensures: validates the data from a file
+	 * @param fileData the string from a file
+	 * @return whether the data is correctly formatted
+	 */
 	public boolean checkChromosomeData(String fileData) {
 		for (int i = 0; i < fileData.length(); i++) {
             if (!(fileData.charAt(i)=='0' || fileData.charAt(i)=='1')) {
@@ -218,10 +237,17 @@ public class ChromosomeViewer {
 		return true;
 	}
 
+	/**
+	 * ensures: a wrapper method to invoke the  driverMain  method
+	 */
 	public void handleDriverMain() {
 		this.driverMain();
 	}
 
+	/**
+	 * ensures: starts the application
+	 * @param args unused
+	 */
 	public static void main(String[] args) {
 		ChromosomeViewer c = new ChromosomeViewer();
 		c.handleDriverMain();

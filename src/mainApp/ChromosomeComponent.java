@@ -61,22 +61,10 @@ public class ChromosomeComponent extends JComponent{
 	 * @return the chromosome object of the Chromosome component
 	 */
 	public Chromosome getChromosome() {return this.chromosome;} //getChromosome
-	
+
 	/**
-	 * ensures: to access the chromosome and store the data being read from the file into the chromosome's file data
-	 * @param s is the file data being passed back to be added to the chromosome's file data
+	 * ensures: draws the chromosome
 	 */
-    // public void handleStoreChromosomeData(String s) {
-    //     this.chromosome.storeChromosomeData(s);
-    // } //handleStoreChromosomeData
-    
-    /**
-     * ensures: that the chromosome is able to load in its genes according to the values given in the chromosome's file data
-     */
-    // public void handleInitiateGeneWithFile() {
-    //     this.chromosome.initiateGeneWithFile();
-    // } //handleInitiateGeneWithFile
-	
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
