@@ -30,11 +30,23 @@ public class EvolutionComponent extends JComponent {
   public static final double KEY_ORANGE_Y = KEY_GREEN_Y - KEY_DISTANCE;
   public static final double KEY_RED_Y = KEY_ORANGE_Y - KEY_DISTANCE;
   public static final double KEY_YELLOW_Y  = KEY_RED_Y - KEY_DISTANCE;
+  public static final double KEY_Q_Y  = KEY_GREEN_Y + KEY_DISTANCE;
+  public static final double KEY_1_Y  = KEY_Q_Y + KEY_DISTANCE;
+  public static final double KEY_0_Y  = KEY_1_Y + KEY_DISTANCE;
   public static final double KEY_LABEL_OFFSET = -6;
   public static final double KEY_X_RATIO = 0.95;
   public static final double KEY_LABEL_X_RATIO = 0.975;
+  public static final int TITLE_CENTERING_RATIO = 2;
   public static final int DEFAULT_STROKE = 500;
   public static final int DEFAULT_GENERATION = 100;
+  public static final Color BEST_KEY_COLOR = Color.GREEN;
+  public static final Color AVG_KEY_COLOR = Color.ORANGE;
+  public static final Color LOW_KEY_COLOR = Color.RED;
+  public static final Color HAM_KEY_COLOR = Color.YELLOW;
+  public static final Color Q_KEY_COLOR = Color.MAGENTA;
+  public static final Color ONE_KEY_COLOR = Color.CYAN;
+  public static final Color ZERO_KEY_COLOR = Color.DARK_GRAY;
+  public static final Color LABEL_COLOR = Color.BLACK;
   
   protected int x,y,xLimit,yLimit,xWidth,yHeight;
   private Evolution evolution;
@@ -47,10 +59,18 @@ public class EvolutionComponent extends JComponent {
     this.evolution.setPopulation(new Population());
   }
   
+  /**
+   * ensures: returns the population of the evolution
+   * @return population of the evolution field
+   */
   public Population handleGetPopulation(){
     return this.evolution.getPopulation();
   }
   
+  /**
+   * ensures: returns the boolean of checkForFitness100 in the evolution field
+   * @return whether or not there is a chromosome with max fitness in the population
+   */
   public boolean checkForFitness100() {
     return this.evolution.checkForFitness100();
   }
@@ -85,8 +105,7 @@ public class EvolutionComponent extends JComponent {
   public void handleSelection(){
     if (this.evolution.isResearchPopulation()) {
       this.evolution.performSelectionResearch();
-    }
-    else{
+    } else{
       this.evolution.handleSelection();
     }
   }
@@ -105,7 +124,7 @@ public class EvolutionComponent extends JComponent {
     this.drawOn(g2);
     this.drawLines(g2);
     this.drawLegend(g2);
-    g2.drawString("Fitness over Generations", -x + (this.getWidth()/2), TITLE_Y_VALUE);
+    g2.drawString("Fitness over Generations", -x + (this.getWidth()/TITLE_CENTERING_RATIO), TITLE_Y_VALUE);
   }
   
   /**
@@ -183,7 +202,7 @@ public class EvolutionComponent extends JComponent {
   public void drawLines(Graphics2D g2){
     int generations = this.evolution.getGenerations();
     g2.translate(this.x, this.y);
-    if (generations <= 100){
+    if (generations <= DEFAULT_GENERATION){
       g2.setStroke(new BasicStroke(DEFAULT_STROKE / DEFAULT_GENERATION));
     } else {
       g2.setStroke(new BasicStroke(DEFAULT_STROKE / generations));
@@ -196,44 +215,44 @@ public class EvolutionComponent extends JComponent {
         int nX = calculateX(i);
         int pY = calculateY(this.evolution.getLineArrayIndex(i-1, "Best"));
         int nY = calculateY(this.evolution.getLineArrayIndex(i, "Best"));
-        g2.setColor(Color.green);  
+        g2.setColor(BEST_KEY_COLOR);  
         g2.drawLine(pX, pY, nX, nY);
         
         //Line of avg
         pY = calculateY(this.evolution.getLineArrayIndex(i-1, "Avg"));
         nY = calculateY(this.evolution.getLineArrayIndex(i, "Avg"));
-        g2.setColor(Color.orange);
+        g2.setColor(AVG_KEY_COLOR);
         g2.drawLine(pX, pY, nX, nY);
         
         //Line of lowest
         pY = calculateY(this.evolution.getLineArrayIndex(i-1, "Low"));
         nY = calculateY(this.evolution.getLineArrayIndex(i, "Low"));
-        g2.setColor(Color.red);
+        g2.setColor(LOW_KEY_COLOR);
         g2.drawLine(pX, pY, nX, nY);
         
         //Line of hamming
         pY = calculateY(this.evolution.getLineArrayIndex(i-1, "Ham"));
         nY = calculateY(this.evolution.getLineArrayIndex(i, "Ham"));
-        g2.setColor(Color.yellow);
+        g2.setColor(HAM_KEY_COLOR);
         g2.drawLine(pX, pY, nX, nY);
                 
         if (this.evolution.isResearchChromosome(0)) { 
           //Line of 0s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "0"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "0"));
-          g2.setColor(Color.DARK_GRAY);
+          g2.setColor(ZERO_KEY_COLOR);
           g2.drawLine(pX, pY, nX, nY);
           
           //Line of 1s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "1"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "1"));
-          g2.setColor(Color.CYAN);
+          g2.setColor(ONE_KEY_COLOR);
           g2.drawLine(pX, pY, nX, nY);
           
           //Line of ?s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "?"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "?"));
-          g2.setColor(Color.MAGENTA);
+          g2.setColor(Q_KEY_COLOR);
           g2.drawLine(pX, pY, nX, nY);
         }
       }
@@ -245,25 +264,51 @@ public class EvolutionComponent extends JComponent {
   * Draws a legend on the specified Graphics2D object, including colored boxes and labels for fitness lines.
   * @param g2 The Graphics2D object for drawing the legend.
   */
-  
   public void drawLegend(Graphics2D g2){
     int generations = this.evolution.getGenerations();
-    g2.setColor(Color.green);
+    // BEST KEY
+    g2.setColor(BEST_KEY_COLOR);
     g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_GREEN_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
-    
-    g2.setColor(Color.orange);
+    // AVG KEY
+    g2.setColor(AVG_KEY_COLOR);
     g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_ORANGE_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
-    
-    g2.setColor(Color.red);
+    // LOW KEY
+    g2.setColor(LOW_KEY_COLOR);
     g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_RED_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
-    
-    g2.setColor(Color.yellow);
+    // HAM KEY
+    g2.setColor(HAM_KEY_COLOR);
     g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_YELLOW_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
-    
-    g2.setColor(Color.black);
+    // KEY LABELS
+    g2.setColor(LABEL_COLOR);
     g2.drawString("Best fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_GREEN_Y + KEY_LABEL_OFFSET));
     g2.drawString("Average fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_ORANGE_Y + KEY_LABEL_OFFSET));
     g2.drawString("Low fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_RED_Y + KEY_LABEL_OFFSET));
     g2.drawString("Hamming distance", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_YELLOW_Y + KEY_LABEL_OFFSET));
+    // RESEARCH LEGEND
+    if (this.evolution.isResearchPopulation()){
+      drawResearchLegend(g2);
+    }
+  }
+
+  /**
+   * Draws the legend of the extra research variables if research is selected
+   * @param g2 The Graphics2D object for drawing the legend.miminmimimimimi
+   */
+  public void drawResearchLegend(Graphics2D g2){
+    int generations = this.evolution.getGenerations();
+    // ? KEY
+    g2.setColor(Q_KEY_COLOR);
+    g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_Q_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
+    // 1 KEY
+    g2.setColor(ONE_KEY_COLOR);
+    g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_1_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
+    // 0 KEY
+    g2.setColor(ZERO_KEY_COLOR);
+    g2.fillRect(calculateX(KEY_X_RATIO * generations), calculateY(KEY_0_Y), KEY_BOX_SIDE_LENGTH, KEY_BOX_SIDE_LENGTH);
+    // KEY LABELS
+    g2.setColor(LABEL_COLOR);
+    g2.drawString("Number of ?s", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_Q_Y + KEY_LABEL_OFFSET));
+    g2.drawString("Number of 1s", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_1_Y + KEY_LABEL_OFFSET));
+    g2.drawString("Number of 0s", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_0_Y + KEY_LABEL_OFFSET));
   }
 }
