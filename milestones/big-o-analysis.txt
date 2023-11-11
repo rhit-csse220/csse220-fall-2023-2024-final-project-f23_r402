@@ -1,4 +1,5 @@
-a.
+a. Diversity calculation
+    O(N) + O(N^2) + O(N) - initial cycle, readData1n0() for each chromosome, and another O(N) cycle
 
 
 b. Fitness calculation function
@@ -10,15 +11,27 @@ b. Fitness calculation function
     methods rely on calling Chromosome.calcFitnessFunction() at the end, but we can change
     it and improve efficiency.
 
+    However, we decided not to do it because it would require a lot of hard coding since we
+    added new fitness functions, whereas the current way is less efficient in terms of Big-O,
+    but much more efficient for reusing the code.
+
 
 c. Roulette wheel selection function
     Fist, Population.sortPopulation() performs at O(NlogN)
-    Second, Population.createLine() - O(numberOfChromosomes + numberOfChromosomes + sizeOfPopulation)
-                                    = O(M + N)
-    Third, Population.findRouletteList() - O((M + M + M + M) * numberOfRecursions)
+    Second, Population.createLine() - O(N)-calculateAvgFitness + O(N)-calculateHammingDistance + 3*O(N)-calculateTotalNumsOf...
+        (This step can potentially be made more efficient by (at least) putting all calculations of totalNums in one function, but
+        since it will still be O(N), we decided not to procede with this for the sake of making our code more readable and understandable)
+
+    Third, Population.findRouletteList() - O((N + N + N + N-removeAll) * numberOfRecursions = N) => O(N^2)
+    Then sorting, O(NlogN)
     Then, O(elitismPercentage)
-    Then, O(M / 2)
-    Then, O(elitismPercentage)
+    Then, O(N) for performCrossover
+    Then, O(N/2)
+    Then, O(N) again
     Then, O(NlogN)
 
-    0 fitness calculations?
+    Overall, this function comes down to being an O(N^2) function
+
+    Because of the way we implemented the evolution, we never call calculations of tehe fitness score directly since we always
+    create a set of new chromosomes. We only call getFitnessScore().
+    However, we do call calculateAvgFitness() once
