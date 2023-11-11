@@ -7,9 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -26,10 +23,12 @@ import javax.swing.Timer;
 * for viewing the evolution of populations. It allows users to configure various
 * parameters for the evolution process and visualize the results.
 */
-public class EvolutionViewer implements Runnable {
+public class EvolutionViewer {
+    // constants
     public static final int TIMER_DELAY = 1500;
     public static final int SUBMIT_FORM_KEY = KeyEvent.VK_ENTER;
     
+    // fields
     private EvolutionComponent evComponent;
     private IndividualViewer indViewer;
     private PopulationViewer popViewer;
@@ -70,7 +69,7 @@ public class EvolutionViewer implements Runnable {
         JLabel mRate = new JLabel("Mutation %: ");
         JTextField mRateField = new JTextField("0", textFieldWidth);
         textFields[0] = mRateField;
-        
+
         buttonPanel.add(mRate);
         buttonPanel.add(mRateField);
         
@@ -88,13 +87,12 @@ public class EvolutionViewer implements Runnable {
         
         dropdownPanel.add(addSelectionChooser);
         dropdownPanel.setMaximumSize( dropdownPanel.getPreferredSize() );
-        
         buttonPanel.add(dropdownPanel);
         
         // Crossover
         JLabel crossover = new JLabel("Crossover?");
         JCheckBox checkCrossover = new JCheckBox();
-        
+
         buttonPanel.add(crossover);
         buttonPanel.add(checkCrossover);
         
@@ -102,7 +100,7 @@ public class EvolutionViewer implements Runnable {
         JLabel population = new JLabel("Population: ");
         JTextField populationField = new JTextField("100", textFieldWidth);
         textFields[1] = populationField;
-        
+
         buttonPanel.add(population);
         buttonPanel.add(populationField);
         
@@ -159,14 +157,12 @@ public class EvolutionViewer implements Runnable {
         
         // Start Evolution
         JButton startEvolutionButton = new JButton("Start Evolution");
-
         
         startEvolutionButton.addActionListener(new ActionListener() {
             
             private boolean passedErrorCheck = true;
             Timer timer = new Timer(TIMER_DELAY/Integer.parseInt(generationsField.getText()), new ActionListener() {
                 int generationCount = -1;
-
 
                 private void resetEvolution() {
                     startEvolutionButton.setText("Start Evolution");
@@ -175,6 +171,7 @@ public class EvolutionViewer implements Runnable {
                     try {
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                     } catch (InvalidGenomeLengthException e) { }
+
                     generationCount = -1;
                     timer.stop();
                     indViewer.stopTimer();
@@ -198,7 +195,6 @@ public class EvolutionViewer implements Runnable {
                     histViewer.setTimerDelay(timer.getDelay());
                     histViewer.driverMain();
                 }
-
                 
                 int count = 0;
                 @Override
@@ -220,6 +216,7 @@ public class EvolutionViewer implements Runnable {
                                 try {
                                     evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                                 } catch (InvalidGenomeLengthException e1) { }
+
                                 if (indViewer!=null){
                                     indViewer.shutDownFrame();
                                     popViewer.shutDownFrame();
@@ -230,14 +227,12 @@ public class EvolutionViewer implements Runnable {
 
                                 generationCount++;
                                 frame.repaint();
+
                             } else if (generationCount <= Integer.parseInt(generationsField.getText())){
                                 evComponent.handleSelection();
-                                //evComponent.handleGetPopulation().performSelectionResearch();
                                 generationCount++;
                                 frame.repaint();
-                            } 
-                            
-                            else {
+                            } else {
                               resetEvolution();
                             }
                         } else{
@@ -325,8 +320,7 @@ public class EvolutionViewer implements Runnable {
         * An ActionListener implementation to control the behavior of Fast Evolution when the fastEvolutionCheckBox is selected.
         */
         class EvolutionActionListener implements ActionListener {
-            private volatile boolean paused = false; // Initially, not paused
-        
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (fastEvolutionCheckBox.isSelected()) {
@@ -395,14 +389,15 @@ public class EvolutionViewer implements Runnable {
             }
         }
         
-
         startEvolutionButton.addActionListener(new EvolutionActionListener());
 
         buttonPanel.add(startEvolutionButton);
 
+        // Title on left corner
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.add(new JLabel("Population"));
 
+        // Help Button
         JButton helpButton = new JButton("Help center");
         helpButton.addActionListener(new ActionListener() {
             @Override
@@ -418,6 +413,14 @@ public class EvolutionViewer implements Runnable {
         frame.pack();
     }
     
+    /**
+     * ensures: makes all fields uneditable when evolution is running/not ended
+     * @param textFields
+     * @param addSelectionChooser
+     * @param checkCrossover
+     * @param fastEvolutionCheckbox
+     * @param autoStopCheckBox
+     */
     public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(false);
@@ -429,7 +432,7 @@ public class EvolutionViewer implements Runnable {
     }
     
     /**
-     * ensures: makes all fields editable
+     * ensures: makes all fields editable when evolution ends
      * @param textFields
      * @param addSelectionChooser
      * @param checkCrossover
@@ -537,13 +540,7 @@ public class EvolutionViewer implements Runnable {
     */
     public void handleDriverMain(){
         this.driverMain();
-    }   
-
-    @Override
-    public void run() {
-        this.driverMain();
     }
-    
     
     /**
     * The main method is the entry point of the Evolution Viewer application.

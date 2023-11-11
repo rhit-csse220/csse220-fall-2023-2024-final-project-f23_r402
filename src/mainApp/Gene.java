@@ -7,12 +7,13 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class Gene {
+	// constants
 	public static final int DEFAULT_GENE_SIDE = 30; // side length of gene square
 	public static final Color GENE_0_COLOR = Color.BLACK;
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	public static final Color GENE_2_COLOR = new Color(255, 227, 43);
 	
-	
+	// 
 	private char bit;
 	private boolean changeable;
 	// x and y are top left corners of square
@@ -21,6 +22,7 @@ public class Gene {
 	private int geneWidth = DEFAULT_GENE_SIDE;
 	private int border = ChromosomeComponent.DEFAULT_BORDER;
 
+	// Initiate a new Random variable
 	Random r = new Random();
 
 	/**
@@ -70,6 +72,9 @@ public class Gene {
         }
     }
 
+	/**
+	 * ensures: randomizes the bit value to 0 or 1
+	 */
 	public void setRandomBit(){
 		int value = r.nextInt(0,2);
 		this.bit = (value == 0 ? '0' : '1');
