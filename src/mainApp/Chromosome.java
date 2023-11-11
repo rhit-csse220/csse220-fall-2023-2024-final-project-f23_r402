@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Chromosome implements Comparable {
+	// constants
 	public static final int NUM_PER_ROW = 10;
 	public static final int X_COORD_LETTER_OFFSET = 5;
 	public static final double MAX_FITNESS_SCORE = 100.0;
@@ -21,7 +22,7 @@ public class Chromosome implements Comparable {
 	public static final String susGeneticData = "1111111111111000001111011111010001110001010111110101011111010001111101110110110111011011011110010011";
 	public static final int fitB = 135300;
 
-
+	// fields
 	private int numOfGenes = 100;           //default values
 	private int numPerColumn = 10;          //default values
 	private int fitnessFunctionType = 0;;   //default values
@@ -37,8 +38,6 @@ public class Chromosome implements Comparable {
 	private boolean isResearch = false;
 	private boolean isPerfect = false;
 	private int daysRemaining = 0;
-
-	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
 	private int x = 0;
 	private int y = 0;
 
@@ -70,10 +69,22 @@ public class Chromosome implements Comparable {
 		this.isResearch = isResearch;
 	}
 	
+	/**
+	 * Initiatizes with fileData
+	 * @param fileData
+	 * @throws InvalidChromosomeFormatException
+	 */
 	public Chromosome(String fileData) throws InvalidChromosomeFormatException{ 
 		this.initiateGeneWithString(fileData);
 	}
 	
+	/**
+	 * Initializes with fileData, mutate, and mutation rate
+	 * @param fileData
+	 * @param mutate
+	 * @param mutationRate
+	 * @throws InvalidChromosomeFormatException
+	 */
 	public Chromosome(String fileData, boolean mutate, double mutationRate) throws InvalidChromosomeFormatException{
 		this.numOfGenes = fileData.length();
 		this.initiateGeneWithString(fileData);
@@ -82,6 +93,15 @@ public class Chromosome implements Comparable {
 		if (mutate){this.mutateGenes(mutationRate);}
 	}
 
+	/**
+	 * Initializes Chromosome with fileData, mutate, mutation rate, fitness function type, and isResearch
+	 * @param fileData
+	 * @param mutate
+	 * @param mutationRate
+	 * @param fitnessFunctionType
+	 * @param isResearch
+	 * @throws InvalidChromosomeFormatException
+	 */
 	public Chromosome(String fileData, boolean mutate, double mutationRate, int fitnessFunctionType, boolean isResearch) throws InvalidChromosomeFormatException{
 		this.numOfGenes = fileData.length();
 		this.fitnessFunctionType = fitnessFunctionType;
@@ -92,11 +112,20 @@ public class Chromosome implements Comparable {
 		if (mutate){this.mutateGenes(mutationRate);}
 	}
 
+	/**
+	 * Initializes Chromosome with isResearch
+	 * @param isResearch
+	 */
 	public Chromosome(boolean isResearch){
 		this.isResearch = isResearch;
 		this.fitnessScore = -1;
 	}
 
+	/**
+	 * Initializes Chromosome with fileData and isResearch
+	 * @param fileData
+	 * @param isResearch
+	 */
 	public Chromosome(String fileData, boolean isResearch){
 		this.isResearch = isResearch;
 		this.fitnessScore = -1;
@@ -108,7 +137,6 @@ public class Chromosome implements Comparable {
 	*/
 	public void initiateGene() {
 		this.initiateGeneLoad();
-		
 		// SET THE FITNESS SCORE
 		this.calcFitnessFuction();
 	}
@@ -118,35 +146,34 @@ public class Chromosome implements Comparable {
 	 */
 	public void initiateGeneLoad(){
 		qIndex = new ArrayList<>();
-		this.numberOf0s=0;
-		this.numberOf1s=0;
-		this.numberOfQs=0;
+		this.numberOf0s = 0;
+		this.numberOf1s = 0;
+		this.numberOfQs = 0;
 		this.genes = new Gene[this.numOfGenes];
 		for (int i = 0; i < this.numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				int limit = isResearch ? 4 : 2;
-				int bit = r.nextInt(0,limit);
+				int bit = r.nextInt(0, limit);
 				char aBit = ' ';
 				if (bit == 0){
 					aBit = '0';
 					numberOf0s++;
-				}
-				else if (bit == 1){
+				} else if (bit == 1){
 					aBit = '1';
 					numberOf1s++;
 				} else{
 					aBit = '?';
 					numberOfQs++;
-					qIndex.add(i*NUM_PER_ROW+j);
+					qIndex.add(i * NUM_PER_ROW + j);
 				}
-				this.genes[i*NUM_PER_ROW+j] = new Gene(aBit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
+				this.genes[i * NUM_PER_ROW + j] = new Gene(aBit, true, this.geneWidth * j + this.border, this.geneWidth * i, this.geneWidth);
 			}
 		}
 	}
 	
 	/**
 	 * ensures: initiates the genome with a given data
-	 * @param s given data in a form of "0100101"
+	 * @param s given data in a form of a String
 	 */
 	public void initiateGeneWithString(String s) {
 		this.initiateGeneWithStringLoad(s);
@@ -156,14 +183,14 @@ public class Chromosome implements Comparable {
 
 	/**
 	 * ensures: initiates the genome with a given data
-	 * @param s given data in a form of "0100101"
+	 * @param s given data in a form of a String
 	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
 	 */
 	public void initiateGeneWithStringLoad(String s) {
 		qIndex = new ArrayList<>();
-		this.numberOf0s=0;
-		this.numberOf1s=0;
-		this.numberOfQs=0;
+		this.numberOf0s = 0;
+		this.numberOf1s = 0;
+		this.numberOfQs = 0;
 		this.originalGenomeData = s;
 		this.numOfGenes = s.length();
 
@@ -171,19 +198,18 @@ public class Chromosome implements Comparable {
 		this.numPerColumn = numOfGenes / NUM_PER_ROW;
 		for (int i = 0; i < this.numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
-				char bit = s.charAt(i*NUM_PER_ROW+j);
-				this.numberOf0s = (bit=='0') ? this.numberOf0s+1 : this.numberOf0s;
-				this.numberOf1s = (bit=='1') ? this.numberOf1s+1 : this.numberOf1s;
+				char bit = s.charAt(i * NUM_PER_ROW + j);
+				this.numberOf0s = (bit == '0') ? this.numberOf0s + 1 : this.numberOf0s;
+				this.numberOf1s = (bit == '1') ? this.numberOf1s + 1 : this.numberOf1s;
 				if (bit == '?'){
 					this.numberOfQs++;
-					qIndex.add(i*NUM_PER_ROW+j);
+					qIndex.add(i * NUM_PER_ROW + j);
 				}
-				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
+				this.genes[i * NUM_PER_ROW + j] = new Gene(bit, true, this.geneWidth * j + this.border, this.geneWidth * i, this.geneWidth);
 			}
 		}
 	}
 	
-	//methods
 	/**
 	 * ensures: the correct fitness function is used
 	 */
@@ -192,8 +218,7 @@ public class Chromosome implements Comparable {
 			this.calculateDefaultFitnessFunction();
 		} else if (this.fitnessFunctionType == 1 || this.fitnessFunctionType == 2 || this.fitnessFunctionType == 3) {
 			this.fitnessTarget();
-		}
-		else {
+		} else {
 			System.out.println("Warning. Wrong fitness function selected.");
 		}
 	}
@@ -357,7 +382,7 @@ public class Chromosome implements Comparable {
 	public void setGenes(Gene[] genes) {this.genes = genes;}
 	
 	/**
-	 * ensures: that the genes in the chromosome is returnde
+	 * ensures: that the genes in the chromosome is returned
 	 * @return the genes array of the chromosome
 	 */
 	public Gene[] getGenes() {return this.genes;}
@@ -376,15 +401,15 @@ public class Chromosome implements Comparable {
 		
 		for (int i = 0; i < this.genes.length; i++) {
 			this.genes[i].drawOn(g2);
-			if (this.genes[i].getBit()=='1') {
+			if (this.genes[i].getBit() == '1') {
 				g2.setColor(GENE_1_TEXT_COLOR);
-			} else if (this.genes[i].getBit()=='0') {
+			} else if (this.genes[i].getBit() == '0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
 			} else {
 				g2.setColor(GENE_2_TEXT_COLOR);
 			}
 			g2.setFont(new Font(null, Font.PLAIN, geneWidth/3));
-			g2.drawString((String)(i+""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + this.genes[i].getY());
+			g2.drawString((String)(i + ""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + this.genes[i].getY());
 		}
 	}
 
@@ -396,7 +421,6 @@ public class Chromosome implements Comparable {
 	 */
 	public void drawPopulationView(Graphics2D g, int geneWidth, int border) {
 		Graphics2D g2 = (Graphics2D) g;
-		//This could just be replaced with Chromosome.drawOn(?), the only part that matters is that the chromosome is drawn at the given coordinates
 		g2.translate(x,y);
 		this.geneWidth = geneWidth;
 		this.border = border;
@@ -429,9 +453,9 @@ public class Chromosome implements Comparable {
 	public void drawGenes(Graphics2D g2){
 		for (int i = 0; i < this.genes.length; i++) {
 			this.genes[i].drawOn(g2);
-			if (this.genes[i].getBit()=='1') {
+			if (this.genes[i].getBit() == '1') {
 				g2.setColor(GENE_1_TEXT_COLOR);
-			} else if (this.genes[i].getBit()=='0') {
+			} else if (this.genes[i].getBit() == '0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
 			}
 		}
@@ -480,7 +504,7 @@ public class Chromosome implements Comparable {
             for (int i = 0; i < qIndex.size(); i++){
                 int indexOfQ = qIndex.get(i); //qIndex is the arraylist wherein the index of the question marks in the gene list are stored..
 				Gene gene = genes[indexOfQ];
-                if (!isPerfect && gene.getBit()=='?'){
+                if (!isPerfect && gene.getBit() == '?'){
                     gene.setRandomBit();
                 }
             }
@@ -555,14 +579,23 @@ public class Chromosome implements Comparable {
 		return this.originalGenomeData;
 	}
 
+	/**
+	 * @return number of 1s in the chromosome
+	 */
 	public int getNumberOf1s() {
 		return numberOf1s;
 	}
 
+	/**
+	 * @return number of 0s in the chromosome
+	 */
 	public int getNumberOf0s() {
 		return numberOf0s;
 	}
 
+	/**
+	 * @return number of ?s in the chromosome
+	 */
 	public int getNumberOfQs() {
 		return numberOfQs;
 	}

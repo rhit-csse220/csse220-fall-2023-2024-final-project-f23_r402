@@ -1,7 +1,6 @@
 package mainApp;
 
 import java.awt.Graphics;
-
 import javax.swing.JComponent;
 
 /**
@@ -10,7 +9,8 @@ import javax.swing.JComponent;
  * 
  * Purpose: provide generic functionality for all component classes within the program
  */
-abstract class Component extends JComponent {
+abstract class DataComponent extends JComponent {
+    // fields
     protected Population population;
 
     /**
@@ -32,6 +32,6 @@ abstract class Component extends JComponent {
     /**
      * ensures: draws the component
      */
-    public void paint(Graphics g) {
-    }
+    @Override
+    public abstract void paint(Graphics g);
 }

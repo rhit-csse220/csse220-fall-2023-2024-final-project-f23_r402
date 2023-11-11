@@ -3,8 +3,9 @@ package mainApp;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public abstract class Viewer {
-    protected Component component;
+public abstract class DataViewer {
+    // fields
+    protected DataComponent component;
     protected JFrame frame;
     protected int timerDelay;
     protected Timer timer;

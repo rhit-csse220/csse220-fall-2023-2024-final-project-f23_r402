@@ -1,6 +1,7 @@
 package mainApp;
 
 public class Evolution {
+    // fields
     private Population population;
     private int populationSize;
     private int generations = 100;
@@ -157,36 +158,35 @@ public class Evolution {
      * @return
      */
     public int getLineArraySize(){
-        return this.population.getLineArraySize(); //lineArray.size();
+        return this.population.getLineArraySize();
     }
     
     /**
      * ensures: gets fitness for lineArray element at index i
-     * @param i
-     * @param s
+     * @param i index
+     * @param s LineArray type
      * @return
      */
     public double getLineArrayIndex(int i, String s){
         if (s.equals("Best")){
-            return this.population.getBestFitnessForLineArrayElement(i);  //lineArray.get(i).getBestFitness();
-        }
-        else if (s.equals("Avg")){
-            return this.population.getAvgFitnessForLineArrayElement(i);  //lineArray.get(i).getAvgFitness();
+            return this.population.getBestFitnessForLineArrayElement(i);
+        } else if (s.equals("Avg")){
+            return this.population.getAvgFitnessForLineArrayElement(i);
         }
         else if (s.equals("Low")){
-            return this.population.getLowFitnessForLineArrayElement(i);  //lineArray.get(i).getLowFitness();
+            return this.population.getLowFitnessForLineArrayElement(i);
         }
         else if (s.equals("Ham")){
-            return this.population.getHammingDistancForLineArrayElement(i);   //lineArray.get(i).getHammingDistance();
+            return this.population.getHammingDistancForLineArrayElement(i);
         }
         else if (s.equals("0")){
-            return this.population.getNumberOf0sForLineArrayElement(i); //lineArray.get(i).getHammingDistance();
+            return this.population.getNumberOf0sForLineArrayElement(i);
         }
         else if (s.equals("1")){
-            return this.population.getNumberOf1sForLineArrayElement(i);   //lineArray.get(i).getHammingDistance();
+            return this.population.getNumberOf1sForLineArrayElement(i);
         }
         else if (s.equals("?")){
-            return this.population.getNumberOfQsForLineArrayElement(i);   //lineArray.get(i).getHammingDistance();
+            return this.population.getNumberOfQsForLineArrayElement(i);
         }
         else{
             return -1;
@@ -258,6 +258,11 @@ public class Evolution {
         this.population.performSelectionResearch();
     }
     
+    /**
+     * checks if the chromosome in the population at index i is a research chromosome
+     * @param i index
+     * @return if the chromosome in the population at index i is a research chromosome
+     */
     public boolean isResearchChromosome(int i) {
         return this.population.isResearchChromosome(i);
     }

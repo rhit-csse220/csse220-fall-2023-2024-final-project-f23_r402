@@ -13,7 +13,7 @@ public class Gene {
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	public static final Color GENE_2_COLOR = new Color(255, 227, 43);
 	
-	// 
+	// fields
 	private char bit;
 	private boolean changeable;
 	// x and y are top left corners of square
@@ -41,13 +41,11 @@ public class Gene {
 		this.geneWidth = geneWidth;
 	} //Gene
 	
-	// methods
 	/**
 	 * ensures: the gene object is drawn
 	 * @param g
 	 */
 	public void drawOn(Graphics g) {
-	    // Treat Graphics as a Graphics2D
 	    Graphics2D g2 = (Graphics2D) g;
 	    if (this.bit == '0') {
 	         g2.setColor(GENE_0_COLOR);
@@ -56,7 +54,6 @@ public class Gene {
         } else if (this.bit == '?'){
 			g2.setColor(GENE_2_COLOR);
 		}
-        // g2.fillRect(x, y, this.geneSide, this.geneSide);
 		g2.fillRect(this.x + this.border, this.y, this.geneWidth, this.geneWidth);
     }
 	

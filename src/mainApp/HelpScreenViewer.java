@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class HelpScreenViewer extends Viewer {
+public class HelpScreenViewer {
 
     static final int SCREEN_PADDING = 15;
     static final String descriptionText = "<html>"
@@ -34,7 +34,6 @@ public class HelpScreenViewer extends Viewer {
     /**
      * ensures: opens the help screen
      */
-    @Override
     public void driverMain() {
         
         JFrame frame = new JFrame("Help");

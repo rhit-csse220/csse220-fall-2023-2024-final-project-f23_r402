@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,13 +21,17 @@ import javax.swing.border.EmptyBorder;
  * <br>Restrictions: None
  */
 public class MainApp {
-
+	// constants
 	static final int LOGO_SIZE = 175;
 	static final int SCREEN_PADDING = 15;
 
+	// fields
 	EvolutionViewer evViewer = new EvolutionViewer();
 	IndividualViewer indViewer = new IndividualViewer();
 
+	/**
+	 * ensures: the app is run
+	 */
 	public void runApp() {
 		evViewer.handleDriverMain();
 		evViewer.handleDriverMain();
@@ -110,7 +113,6 @@ public class MainApp {
 		frame.setIconImage(logoIcon.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-
 	}
 
 }

@@ -1,19 +1,13 @@
 package mainApp;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class PopulationViewer extends Viewer {
+public class PopulationViewer extends DataViewer {
     
     private PopulationComponent populationComponent = new PopulationComponent();
     

@@ -1,17 +1,52 @@
 package mainApp;
 
 /**
- * Class: BestFitLine2D
- * Authors: F23_R402
+ * class: BestFitLine2D
+ * @author F23_R402
  * 
  * Purpose:
  *   Helps draw lines in EvolutionComponent
- * 
  */
 public class BestFitLine2D {
+    // fields
     private double bestFitness, avgFitness, lowFitness, hammingDistance;
     private double numberOf0s, numberOf1s, numberOfQs;
 
+    /**
+     * Initializes the BestFitLine2D object
+     * @param bestFitness  the best fitness score
+     * @param avgFitness   the average fitness score
+     * @param lowFitness   the lowest fitness score
+     * @param hammingDistance  the hamming distance
+     */
+    public BestFitLine2D(double bestFitness, double avgFitness, double lowFitness, double hammingDistance) {
+        this.bestFitness = bestFitness;
+        this.avgFitness = avgFitness;
+        this.lowFitness = lowFitness;
+        this.hammingDistance = hammingDistance;
+    }
+    
+    /**
+     * Initializes the BestFitLine2D object for the research part
+     * @param bestFitness  the best fitness score
+     * @param avgFitness   the average fitness score
+     * @param lowFitness   the lowest fitness score
+     * @param hammingDistance  the hamming distance
+     * @param numberOf0s   the number of zeroes in genome 
+     * @param numberOf1s   the number of ones in genome
+     * @param numberOfQs   the number of question marks in genome
+     */
+    public BestFitLine2D(double bestFitness, double avgFitness, double lowFitness, double hammingDistance,
+            double numberOf0s, double numberOf1s, double numberOfQs) {
+        this.bestFitness = bestFitness;
+        this.avgFitness = avgFitness;
+        this.lowFitness = lowFitness;
+        this.hammingDistance = hammingDistance;
+        this.numberOf0s = numberOf0s;
+        this.numberOf1s = numberOf1s;
+        this.numberOfQs = numberOfQs;
+    }
+    
     /**
      * ensures: returns the number of zeroes in genome
      * @return the number of zeroes in genome
@@ -122,40 +157,5 @@ public class BestFitLine2D {
      */
     public void setLowFitness(double lowFitness) {
         this.lowFitness = lowFitness;
-    }
-
-    /**
-     * Initializes the BestFitLine2D object
-     * @param bestFitness  the best fitness score
-     * @param avgFitness   the average fitness score
-     * @param lowFitness   the lowest fitness score
-     * @param hammingDistance  the hamming distance
-     */
-    public BestFitLine2D(double bestFitness, double avgFitness, double lowFitness, double hammingDistance) {
-        this.bestFitness = bestFitness;
-        this.avgFitness = avgFitness;
-        this.lowFitness = lowFitness;
-        this.hammingDistance = hammingDistance;
-    }
-    
-    /**
-     * Initializes the BestFitLine2D object for the research part
-     * @param bestFitness  the best fitness score
-     * @param avgFitness   the average fitness score
-     * @param lowFitness   the lowest fitness score
-     * @param hammingDistance  the hamming distance
-     * @param numberOf0s   the number of zeroes in genome 
-     * @param numberOf1s   the number of ones in genome
-     * @param numberOfQs   the number of question marks in genome
-     */
-    public BestFitLine2D(double bestFitness, double avgFitness, double lowFitness, double hammingDistance,
-            double numberOf0s, double numberOf1s, double numberOfQs) {
-        this.bestFitness = bestFitness;
-        this.avgFitness = avgFitness;
-        this.lowFitness = lowFitness;
-        this.hammingDistance = hammingDistance;
-        this.numberOf0s = numberOf0s;
-        this.numberOf1s = numberOf1s;
-        this.numberOfQs = numberOfQs;
     }
 }

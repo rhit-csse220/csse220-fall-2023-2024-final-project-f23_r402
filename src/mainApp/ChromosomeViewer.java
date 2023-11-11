@@ -11,7 +11,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-
 import javax.swing.*;
 
 /**
@@ -25,13 +24,11 @@ public class ChromosomeViewer {
 	 * ensures: creates, initializes, and sets visible the Viewer's frame and
 	 * component
 	 */
+	// fields
 	private String fileName = "Chromosome X";
 	private File file;
 	private JFrame frame;
 	private ChromosomeComponent chComponent;
-
-	// height of chComponent: this.chComponent.getHeight()
-	// width of frame: frame.getWidth()
 
 	/**
 	 * The main method of the class.
@@ -134,7 +131,7 @@ public class ChromosomeViewer {
 							throw new InvalidChromosomeCharacterException();
 						} else {
 		                    // Proceed with loading and initializing the data
-							chComponent.handleLoadDataFromFile(fileData.toString());  // TODO: change fileData type to String to avoid using toString everywhere 
+							chComponent.handleLoadDataFromFile(fileData.toString());
 		                    frame.repaint();
 		                }
 		            } catch (IOException | InvalidChromosomeFormatException | InvalidChromosomeCharacterException ex) {
@@ -171,7 +168,7 @@ public class ChromosomeViewer {
 					String chromosomeData = chComponent.handleGetChromosomeDataAsString(); // .getChromosome().getChromosomeDataAsString();
 
 					try (FileWriter writer = new FileWriter(file)) {
-						writer.write(chromosomeData);  // TODO: do we ever close the writer?
+						writer.write(chromosomeData);
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}
@@ -230,7 +227,7 @@ public class ChromosomeViewer {
 	 */
 	public boolean checkChromosomeData(String fileData) {
 		for (int i = 0; i < fileData.length(); i++) {
-            if (!(fileData.charAt(i)=='0' || fileData.charAt(i)=='1')) {
+            if (!(fileData.charAt(i) == '0' || fileData.charAt(i) == '1')) {
                 return false;
             }
         }
@@ -246,7 +243,7 @@ public class ChromosomeViewer {
 
 	/**
 	 * ensures: starts the application
-	 * @param args unused
+	 * @param args
 	 */
 	public static void main(String[] args) {
 		ChromosomeViewer c = new ChromosomeViewer();

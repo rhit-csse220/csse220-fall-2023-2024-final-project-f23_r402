@@ -7,7 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class OpenWebsiteButtonListener implements ActionListener {
-
+    // fields
     private URI uri;
 
     public OpenWebsiteButtonListener(String url) {
@@ -23,7 +23,7 @@ public class OpenWebsiteButtonListener implements ActionListener {
      * @param uri URI of the page necessary
      * @return whether the process was successful
      */
-    public static boolean openWebpage(URI uri) {
+    public boolean openWebpage(URI uri) {
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
             try {
@@ -36,6 +36,9 @@ public class OpenWebsiteButtonListener implements ActionListener {
         return false;
     }
 
+    /**
+     * action listener
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         openWebpage(this.uri);

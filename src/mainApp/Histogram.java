@@ -1,7 +1,7 @@
 package mainApp;
 
-
 public class Histogram {
+    // fields
     private Population population;
     private int[] fitnessFrequency;
 
@@ -10,7 +10,7 @@ public class Histogram {
      * @return population
      */
     public Population getPopulation() {
-        return population;
+        return this.population;
     }
 
     /**
@@ -37,8 +37,7 @@ public class Histogram {
         fitnessFrequency = new int[101];
         for (int i = 0; i < population.getChromosomesSize(); i++){
             Chromosome currChromosome = population.getChromosomeByIndex(i);  //getChromosomes().get(i);
-            int fitnessCurrChromosome = (int)(currChromosome.getFitnessScore());
-            //fitnessFrequency.set(fitnessCurrChromosome, fitnessFrequency.get(fitnessCurrChromosome)+1); 
+            int fitnessCurrChromosome = (int) (currChromosome.getFitnessScore());
             fitnessFrequency[fitnessCurrChromosome]++;
         }
     }

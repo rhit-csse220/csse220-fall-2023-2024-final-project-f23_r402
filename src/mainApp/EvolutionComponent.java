@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import javax.swing.JComponent;
 
 /**
@@ -12,6 +11,7 @@ import javax.swing.JComponent;
 * of a population and drawing various data related to it.
 */
 public class EvolutionComponent extends JComponent {
+  // constants
   public static final int TITLE_Y_VALUE = 10;
   public static final double X1_TO_FRAME_RATIO = 0.04;
   public static final double Y1_TO_FRAME_RATIO = 0.08;
@@ -49,6 +49,7 @@ public class EvolutionComponent extends JComponent {
   public static final Color ZERO_KEY_COLOR = Color.DARK_GRAY;
   public static final Color LABEL_COLOR = Color.BLACK;
   
+  // fields
   protected int x,y,xLimit,yLimit,xWidth,yHeight;
   private Evolution evolution;
   

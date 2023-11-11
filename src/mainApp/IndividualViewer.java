@@ -4,13 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
-public class IndividualViewer extends Viewer {
-    
+public class IndividualViewer extends DataViewer {
+    // fields
     private IndividualComponent indComponent = new IndividualComponent();
     private int timerDelay;
     

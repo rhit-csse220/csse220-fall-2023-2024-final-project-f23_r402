@@ -3,14 +3,15 @@ package mainApp;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-
 import javax.swing.JComponent;
 
 public class ChromosomeComponent extends JComponent{
+	// constants
 	public static final int X_MOUSE_COORD_OFFSET = 7;
 	public static final int Y_MOUSE_COORD_OFFSET = 45;
-	public static final int DEFAULT_BORDER = 3; // TODO change later
+	public static final int DEFAULT_BORDER = 3;
 	
+	// fields
 	private Chromosome chromosome;
 	
 	/**
@@ -90,8 +91,6 @@ public class ChromosomeComponent extends JComponent{
 	public void handleLoadDataFromFile(String fileData) throws InvalidChromosomeFormatException {
 		this.setChromosome(new Chromosome());
 		this.chromosome.initiateGeneWithString(fileData);
-		// this.handleStoreChromosomeData(fileData);
-		// this.handleInitiateGeneWithFile();
 	}
 
 	/**
