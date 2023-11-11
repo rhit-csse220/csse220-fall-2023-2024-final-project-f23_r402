@@ -545,4 +545,12 @@ public class Population {
     public int getChromosomesSize() {
         return this.chromosomes.size();
     }
+
+    public boolean isResearchChromosome(int i) {
+        return this.getChromosomeByIndex(i).isResearch();
+    }
+
+    public Chromosome getChromosomeByIndex(int i) {
+        return this.chromosomes.get(i);
+    }
 }

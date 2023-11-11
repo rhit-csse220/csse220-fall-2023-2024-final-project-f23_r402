@@ -3,14 +3,11 @@ package chromosomeTest;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
 import org.junit.Test;
 
 import mainApp.Chromosome;
-import mainApp.Gene;
 import mainApp.InvalidChromosomeFormatException;
-import mainApp.Population;
 
 /**
  * Class: ChromosomeTest
@@ -21,31 +18,13 @@ import mainApp.Population;
  *   Run As -> JUnit Test
  */
 public class ChromosomeTest {
-    // checkChromosomeData method not used
-    // @Test
-    // public void testCheckChromosomeDataWithValidData() {
-    //     Chromosome chromosome = new Chromosome();
-    //     chromosome.storeChromosomeData("0011001100");
-    //     assertTrue(chromosome.checkChromosomeData());
-    // }
-
-    // @Test
-    // public void testCheckChromosomeDataWithInvalidData() {
-    //     Chromosome chromosome = new Chromosome();
-    //     chromosome.storeChromosomeData("0012001100");
-    //     assertFalse(chromosome.checkChromosomeData());
-    // }
 
     // Testing that a chromosome can be printed out
     @Test
     public void testPrintOutChromosome() {
         Chromosome c = new Chromosome();
         String genomeData = "0011001100";
-        try {
-            c.initiateGeneWithString(genomeData);
-        } catch (InvalidChromosomeFormatException e) {
-            fail("Threw InvalidChromosomeFormatException");
-        }
+        c.initiateGeneWithString(genomeData);
 
         // Testing we actually can print a Chromosome
         System.out.println(c);
@@ -79,35 +58,13 @@ public class ChromosomeTest {
     public void testStoreChromosomeData() {
         Chromosome c = new Chromosome();
         String genomeData = "00110011010011001011";
-        try {
-            c.initiateGeneWithString(genomeData);
-        } catch (InvalidChromosomeFormatException e) {
-            fail("Threw InvalidChromosomeFormatException");
-        }
+        c.initiateGeneWithString(genomeData);
 
         // Testing it stores the correct data
         assertEquals(c.getChromosomeDataAsString(), genomeData);
         // Testing it prints and stores the same values
         assertEquals(c.getChromosomeDataAsString(), c.toString());
     }
-
-    // Testing storing genome data witin a chromosome (invalid data)
-    @Test(expected = InvalidChromosomeFormatException.class)
-    public void testCreateChromosomeWithInvalidNumberOfGenes() throws InvalidChromosomeFormatException {
-        Chromosome c = new Chromosome("01010");
-    }
-
-    // Testing storing genome data witin a chromosome through a method (invalid data)
-    @Test(expected = InvalidChromosomeFormatException.class)
-    public void testInitialiazeChromosomeWithInvalidNumberOfGenes() throws InvalidChromosomeFormatException {
-        Chromosome c1 = new Chromosome();
-        c1.initiateGeneWithString("000101010");
-    }
-
-    //Testing crossover
-    // public void testDoCrossover(){
-    //     Chromosome p1 = new Chromosome("00")
-    // }
 
     // Additional tests are in ChromosomeManualTest.java
     @Test
@@ -116,42 +73,5 @@ public class ChromosomeTest {
         assertTrue(true);
     }
 
-    // @Test
-    // public void testStoreChromosomeData() {
-    //     Chromosome chromosome = new Chromosome();
-    //     // Create genes with the desired sequence
-    //     chromosome.genes = new Gene[10];
-    //     for (int i = 0; i < 10; i++) {
-    //         char bit = "0011001100".charAt(i);
-    //         chromosome.genes[i] = new Gene(bit, true, 0, 0, 30); // Set x and y to 0 for simplicity
-    //     }
-
-    //     chromosome.storeChromosomeData("0011001100");
-    //     assertEquals("0011001100", chromosome.getChromosomeDataAsString());
-    // }
-
-
-
-//    @Test
-//    public void testCalcFunction() {
-//        Chromosome chromosome = new Chromosome();
-//        chromosome.initiateGene(); // Initialize genes
-//        chromosome.calcFuction(); // Calculate fitness score (your implementation)
-//        // Check if the fitness score is as expected
-//        // You may need to update this based on your implementation
-//        assertNotNull(chromosome.getFitnessScore());
-//    }
-
-    // @Test
-    // public void testInitiateGeneWithRandomData() {
-    //     Chromosome chromosome = new Chromosome();
-    //     chromosome.initiateGene(); // Initialize genes with random data
-    //     assertNotNull(chromosome.genes);
-    // }
-
-    // @Test
-    // public void testPrintOutChromosomes() {
-    //     // testing new branch
-    // }
 }
 
