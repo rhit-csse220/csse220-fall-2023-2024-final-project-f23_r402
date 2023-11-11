@@ -418,7 +418,7 @@ public class EvolutionViewer implements Runnable {
         frame.pack();
     }
     
-    public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox, JCheckBox isResearchCheckBox){
+    public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(false);
         }
@@ -437,7 +437,7 @@ public class EvolutionViewer implements Runnable {
      * @param autoStopCheckBox
      * @param isResearchCheckBox
     */
-    public void makeAllFieldsEditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox, JCheckBox isResearchCheckBox){
+    public void makeAllFieldsEditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(true);
         }
@@ -445,7 +445,6 @@ public class EvolutionViewer implements Runnable {
         checkCrossover.setEnabled(true);
         fastEvolutionCheckbox.setEnabled(true);
         autoStopCheckBox.setEnabled(true);
-        isResearchCheckBox.setEnabled(true);
     }
     
     /**

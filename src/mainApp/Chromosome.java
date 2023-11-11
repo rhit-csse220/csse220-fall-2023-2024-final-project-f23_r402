@@ -40,38 +40,6 @@ public class Chromosome implements Comparable {
 	private int x = 0;
 	private int y = 0;
 
-	/**
-	 * ensures: returns whether this chromosome is perfect
-	 * @return whether this chromosome is perfect
-	 */
-	public boolean isPerfect() {
-		return isPerfect;
-	}
-	
-	/**
-	 * ensures: returns whether this chromosome is used for the research part of the project
-	 * @return isResearch
-	 */
-	public boolean isResearch() {
-		return isResearch;
-	}
-	
-	/**
-	 * ensures: sets the x value to a new number
-	 * @param x new x value
-	 */
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	/**
-	 * ensures: sets the y value to a new number
-	 * @param y new y value
-	 */
-	public void setY(int y) {
-		this.y = y;
-	}
-
 	// Create a Random object
 	Random r = new Random();
 	
@@ -575,17 +543,34 @@ public class Chromosome implements Comparable {
 		return numberOfQs;
 	}
 
+	/**
+	 * ensures: returns whether this chromosome is perfect
+	 * @return whether this chromosome is perfect
+	 */
 	public boolean isPerfect() {
 		return isPerfect;
 	}
 	
+	/**
+	 * ensures: returns whether this chromosome is used for the research part of the project
+	 * @return isResearch
+	 */
 	public boolean isResearch() {
 		return isResearch;
 	}
 	
+	/**
+	 * ensures: sets the x value to a new number
+	 * @param x new x value
+	 */
 	public void setX(int x) {
 		this.x = x;
 	}
+
+	/**
+	 * ensures: sets the y value to a new number
+	 * @param y new y value
+	 */
 	public void setY(int y) {
 		this.y = y;
 	}
