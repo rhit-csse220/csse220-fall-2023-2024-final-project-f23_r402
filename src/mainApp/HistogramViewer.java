@@ -15,6 +15,9 @@ public class HistogramViewer extends Viewer {
         histogramComponent = new HistogramComponent(); 
     }
 
+    /**
+     * the main class, the entry point
+     */
     public void driverMain(){
         frame = new JFrame();
         final int frameWidth = 600;
@@ -41,6 +44,9 @@ public class HistogramViewer extends Viewer {
         frame.pack();
     }
 
+    /**
+     * a wrapper method for HistogramComponent.handleSetPopulation(population)
+     */
     public void handleSetPopulation(Population population){
         this.histogramComponent.handleSetPopulation(population);
     }

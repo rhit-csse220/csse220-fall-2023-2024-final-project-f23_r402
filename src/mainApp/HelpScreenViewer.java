@@ -1,7 +1,5 @@
 package mainApp;
 
-import java.awt.BorderLayout;
-import java.awt.Desktop;
 import java.awt.Font;
 
 import javax.swing.BoxLayout;

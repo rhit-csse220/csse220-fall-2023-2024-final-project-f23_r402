@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * Class: MainApp
- * @author Put your team name here
+ * @author F23_R402
  * <br>Purpose: Top level class for CSSE220 Project containing main method 
  * <br>Restrictions: None
  */
@@ -34,6 +34,10 @@ public class MainApp {
 		evViewer.handleDriverMain();
 	} // runApp
 
+	/**
+	 * The entry point for the application
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Genetic Algorithm Program");
 
@@ -109,8 +113,4 @@ public class MainApp {
 
 	}
 
-	/**
-	 * ensures: runs the application
-	 * @param args unused
-	 */
 }

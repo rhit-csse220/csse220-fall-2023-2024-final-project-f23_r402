@@ -52,17 +52,34 @@ public class Chromosome implements Comparable {
 	private int x = 0;
 	private int y = 0;
 
+	/**
+	 * ensures: returns whether this chromosome is perfect
+	 * @return whether this chromosome is perfect
+	 */
 	public boolean isPerfect() {
 		return isPerfect;
 	}
 	
+	/**
+	 * ensures: returns whether this chromosome is used for the research part of the project
+	 * @return isResearch
+	 */
 	public boolean isResearch() {
 		return isResearch;
 	}
 	
+	/**
+	 * ensures: sets the x value to a new number
+	 * @param x new x value
+	 */
 	public void setX(int x) {
 		this.x = x;
 	}
+
+	/**
+	 * ensures: sets the y value to a new number
+	 * @param y new y value
+	 */
 	public void setY(int y) {
 		this.y = y;
 	}
@@ -138,6 +155,9 @@ public class Chromosome implements Comparable {
 		this.calcFitnessFuction();
 	}
 
+	/**
+	 * ensures: initializes the array of genes
+	 */
 	public void initiateGeneLoad(){
 		qIndex = new ArrayList<>();
 		this.numberOf0s=0;
@@ -289,6 +309,9 @@ public class Chromosome implements Comparable {
 		this.fitnessScore = maxConsecutiveOnes;
 	}
 	
+	/**
+	 * ensures: the information is displayed correctly on resizing the window
+	 */
 	public void adjustGenePosition(){
 		for (int i = 0; i < this.numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
@@ -299,6 +322,10 @@ public class Chromosome implements Comparable {
 		}
 	}
 	
+	/**
+	 * ensures: performs mutation of the genes
+	 * @param mutationRate mutaition rate for the mutation
+	 */
 	public void mutateGenes(double mutationRate){
 		for (Gene gene : this.genes){
 			gene.mutate(mutationRate, this.numOfGenes);
@@ -382,7 +409,12 @@ public class Chromosome implements Comparable {
 		}
 	}
 
-	//Is the drawing method called for drawing the chromosomes; In hindsight, can be removed/edited, as it is code duplication
+	/**
+	 * ensures: draws the chromosomes (population)
+	 * @param g Graphics2D object to draw on
+	 * @param geneWidth gene width
+	 * @param border border width
+	 */
 	public void drawPopulationView(Graphics2D g, int geneWidth, int border) {
 		Graphics2D g2 = (Graphics2D) g;
 		//This could just be replaced with Chromosome.drawOn(?), the only part that matters is that the chromosome is drawn at the given coordinates
@@ -394,7 +426,14 @@ public class Chromosome implements Comparable {
 		g2.translate(-x,-y);
 	}
 
-	//Is the drawing method called for drawing the best chromosome; In hindsight, can be removed/edited, as it is code duplcation.
+	/**
+	 * ensures: draws the best chromosome
+	 * @param g Graphics2D object to draw on
+	 * @param geneWidth gene width
+	 * @param border border width
+	 * @x the x-coordinate
+	 * @y the y-coordinate
+	 */	
 	public void drawBestView(Graphics2D g, int geneWidth, int border, int x, int y) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.translate(x,y);
@@ -404,6 +443,10 @@ public class Chromosome implements Comparable {
 		this.drawGenes(g2);
 	}
 
+	/**
+	 * ensures: draws genes
+	 * @param g2 Graphics2D element on which to draw
+	 */
 	public void drawGenes(Graphics2D g2){
 		for (int i = 0; i < this.genes.length; i++) {
 			this.genes[i].drawOn(g2);
@@ -448,10 +491,10 @@ public class Chromosome implements Comparable {
 		return null;
 	}
 
-	//TODO CHANGE LIMIT OF DAYS BACK TO 1000
+	/**
+	 * ensures: simulates 1,000 days of lifespan for a chromosome
+	 */
 	public void liveLife() {
-		// TODO FIGURE OUT WHERE THE FITNESS SCORE IS BEING SET AGAIN :/ FOR NOW JUST SETTING IT TO -1 HERE CUZ YEAH
-		// this.fitnessScore = -5;
 		this.originalGenomeData = this.getChromosomeDataAsString();
         for (int days = 0; days < 1000; days++){
             this.loadGeneFromOriginalData();
@@ -473,6 +516,9 @@ public class Chromosome implements Comparable {
 		this.fitnessScore = calculateFitnessScoreResearch();
     }
 
+	/**
+	 * ensures: loads genes from the original genome data
+	 */
 	public void loadGeneFromOriginalData(){
 		for (int i = 0; i < this.numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
@@ -482,6 +528,11 @@ public class Chromosome implements Comparable {
 		}
 	}
 
+	/**
+	 * ensures: checks if the given string has all ones in its genome
+	 * @param s chromosome data
+	 * @return whether the string has all ones
+	 */
 	public boolean checkAll1s(String s){
         int score = 0;
         for (int i = 0; i < s.length(); i++){
@@ -492,6 +543,10 @@ public class Chromosome implements Comparable {
         return (score == s.length());
     }
 
+	/**
+	 * ensures: calculates the fitness score for the research part of the program
+	 * @return the fitness score
+	 */
 	public double calculateFitnessScoreResearch(){
 		double fitnessScore = (1 + (19*this.daysRemaining)/1000)*5;
 		return fitnessScore;
@@ -505,10 +560,18 @@ public class Chromosome implements Comparable {
 		return this.getChromosomeDataAsString();
 	}
 
+	/**
+	 * sets the fitness function type to another value
+	 * @param fitnessFunction new value of the fitness function
+	 */
 	public void setFitnessFunctionType(int fitnessFunction) {
 		this.fitnessFunctionType = fitnessFunction;
 	}
 
+	/**
+	 * ensures: gets the original genome data
+	 * @return original genome data
+	 */
 	public String getOriginalGenomeData(){
 		return this.originalGenomeData;
 	}

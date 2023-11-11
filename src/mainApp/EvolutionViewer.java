@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -444,6 +442,15 @@ public class EvolutionViewer implements Runnable {
         }
     }
     
+    /**
+     * ensures: makes all fields uneditable
+     * @param textFields
+     * @param addSelectionChooser
+     * @param checkCrossover
+     * @param fastEvolutionCheckbox
+     * @param autoStopCheckBox
+     * @param isResearchCheckBox
+     */
     public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox, JCheckBox isResearchCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(false);
@@ -456,6 +463,15 @@ public class EvolutionViewer implements Runnable {
 
     }
     
+    /**
+     * ensures: makes all fields editable
+     * @param textFields
+     * @param addSelectionChooser
+     * @param checkCrossover
+     * @param fastEvolutionCheckbox
+     * @param autoStopCheckBox
+     * @param isResearchCheckBox
+    */
     public void makeAllFieldsEditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox, JCheckBox isResearchCheckBox){
         for (int i = 0; i < 5; i++){
             textFields[i].setEditable(true);
@@ -467,6 +483,13 @@ public class EvolutionViewer implements Runnable {
         isResearchCheckBox.setEnabled(true);
     }
     
+    /**
+     * ensures: checks whether the data in the text fields is valid
+     * @param textFields
+     * @param fitnessFunction
+     * @param hasError
+     * @throws Exception
+     */
     public void checkFields(JTextField[] textFields, String fitnessFunction, boolean[] hasError) throws Exception{
         // textFields[0] - mRateField
         try{

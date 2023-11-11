@@ -1,20 +1,13 @@
 package mainApp;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
-import javax.swing.border.Border;
-import javax.swing.text.View;
 
 public class IndividualViewer extends Viewer {
     
@@ -74,14 +67,14 @@ public class IndividualViewer extends Viewer {
         this.frame.pack();
     }
 
+    /**
+     * ensures: sets new size for the frame and packs it
+     * @param width
+     * @param height
+     */
     public void setSize(int width, int height){
         this.frame.setSize(width, height);
         this.frame.pack();
     }
 
-    // public static void main(String[] args) {
-    //     IndividualViewer indViewer = new IndividualViewer();
-    //     indViewer.getIndComponent().setPopulation(new Population(100, 100));
-    //     indViewer.driverMain();
-    // }
 }
