@@ -30,19 +30,20 @@ public class IndividualViewer extends DataViewer {
     }
 
     public void driverMain(){
+        // constants
         final String frameTitle = "Best Chromosome";
         final int frameWidth = 400;
         final int frameHeight = 400;
+        final int MAX_PERCENTAGE = 100;
 
         this.frame = new JFrame();
         this.frame.setTitle(frameTitle);
         this.frame.setSize(frameWidth, frameHeight);
-        this.frame.setLocation(590, 400);
+        this.frame.setLocation(767, 393);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         this.frame.setLayout(new BorderLayout());
         this.frame.setVisible(true);
-
         this.frame.add(indComponent);
 
         //Adds the top label that constantly updates with the newest average hamming distance
@@ -55,14 +56,12 @@ public class IndividualViewer extends DataViewer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // In order to fit it on the graph, the average hamming distance had to be multiplied by 100. Here, we divide it to obtain the actual value
-                hammingDistance.setText(hammingText + indComponent.getPopulationPrevHammingDistance() / 100);
-                // hammingDistance.setText(hammingText+indComponent.getPopulation().prevHammingDistance/100);
+                hammingDistance.setText(hammingText + indComponent.getPopulationPrevHammingDistance() / MAX_PERCENTAGE);
                 frame.repaint();
             }
         });
 
         this.timer.start();
-
         this.frame.pack();
     }
 

@@ -43,6 +43,7 @@ public class EvolutionViewer {
     * the evolution process.
     */
     public void driverMain(){
+        // constants
         final String frameTitle = "Evolution Viewer";
         final int frameWidth = 800;
         final int frameHeight = 400;
@@ -51,6 +52,7 @@ public class EvolutionViewer {
         JFrame frame = new JFrame();
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
+        frame.setLocation(0, 0);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
@@ -510,11 +512,8 @@ public class EvolutionViewer {
                   if (Integer.parseInt(textFields[3].getText()) <= 0 || Integer.parseInt(textFields[3].getText()) > 30){
                     throw new InvalidEvolutionMultipleException("Invalid Genome Length");
                 }
-            }
-            else{
-                if (Integer.parseInt(textFields[3].getText()) != 100){
-                    throw new InvalidGenomeLengthException(100);
-                }
+            } else if (Integer.parseInt(textFields[3].getText()) != 100){
+                throw new InvalidGenomeLengthException(100);
             }
         } catch (Exception e){
             hasError[0] = false;

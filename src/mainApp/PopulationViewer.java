@@ -8,9 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 public class PopulationViewer extends DataViewer {
-    
+    // fields
     private PopulationComponent populationComponent = new PopulationComponent();
     
+    /**
+     * ensures: the population viewer can be run
+     */
     public void driverMain(){
         final String frameTitle = "Population Viewer";
         final int frameWidth = 400;
@@ -39,14 +42,19 @@ public class PopulationViewer extends DataViewer {
         });
 
         timer.start();
-
         frame.pack();
     }
 
+    /**
+     * ensures: the population in populationComponent is updated
+     */
     public void handleSetPopulation(Population population){
         this.populationComponent.setPopulation(population);
     }
 
+    /**
+     * @return the population component
+     */
     public PopulationComponent getPopComponent(){
         return this.populationComponent;
     }

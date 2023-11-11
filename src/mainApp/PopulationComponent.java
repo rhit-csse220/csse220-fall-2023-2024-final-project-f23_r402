@@ -6,12 +6,18 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class PopulationComponent extends DataComponent{
+    // constants
+    public static final double FRAME_HEIGHT_RATIO = 1.33;
+    
     // fields
     private ArrayList<Chromosome> chromosomes;
     private int maxHeight = 0;
 
     public PopulationComponent(){}
     
+    /**
+     * ensures: the population is painted
+     */
     @Override
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -32,6 +38,6 @@ public class PopulationComponent extends DataComponent{
                 }
             }
         }
-        this.setPreferredSize(new Dimension(this.getWidth(), (int)(maxHeight * 1.3)));   
+        this.setPreferredSize(new Dimension(this.getWidth(), (int)(maxHeight * FRAME_HEIGHT_RATIO)));   
     }
 }
