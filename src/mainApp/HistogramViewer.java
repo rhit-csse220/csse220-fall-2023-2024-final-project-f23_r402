@@ -19,16 +19,17 @@ public class HistogramViewer extends DataViewer {
      */
     public void driverMain(){
         frame = new JFrame();
-        final int frameWidth = 600;
+        // constants
+        final int frameWidth = 780;
         final int frameHeight = 400;
         final String frameTitle = "Population Fitness Histogram";
 
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
-        frame.setLocation(0, 400);
+        frame.setLocation(0, 393);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);   
+        frame.setVisible(true);
 
         frame.add(this.histogramComponent);
 
@@ -39,7 +40,6 @@ public class HistogramViewer extends DataViewer {
             }
         });
         timer.start();
-
         frame.pack();
     }
 
