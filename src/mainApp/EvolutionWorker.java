@@ -13,6 +13,7 @@ import java.util.concurrent.CountDownLatch;
  * and handle user interactions such as pausing and auto-stopping.
  */
 public class EvolutionWorker extends SwingWorker<Void, Void> {
+    // fields
     private EvolutionComponent evComponent;
     private int generations;
     private JButton startEvolutionButton;
@@ -59,7 +60,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
      * @return True if all frames should be shut down, false otherwise.
      */
     public boolean isShutAllFrames() {
-        return shutAllFrames;
+        return this.shutAllFrames;
     }
 
     /**
