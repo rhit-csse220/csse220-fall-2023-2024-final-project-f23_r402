@@ -63,6 +63,11 @@ public class Population {
             this.fitnessFunctionType = 2;
             this.targetString = Chromosome.susGeneticData;
         }
+
+         else if (fitnessFunction.contains("Binary")){
+            this.fitnessFunctionType = 3;
+			this.targetString = Integer.toBinaryString(Chromosome.fitB);
+        }
         this.initiatePopulation();
     }
 
@@ -481,7 +486,7 @@ public class Population {
         else{ //SMILEY FITNESS (fitnessFunctionType==1)
             String geneticData = chromosome.getChromosomeDataAsString();
 
-            for (int i = 0; i < geneticData.length(); i++){
+            for (int i = 0; i < targetString.length(); i++){
                 if (geneticData.charAt(i)=='0' && geneticData.charAt(i)!=(targetString.charAt(i))){
                     position1n0Array[i][0]++;
                 }

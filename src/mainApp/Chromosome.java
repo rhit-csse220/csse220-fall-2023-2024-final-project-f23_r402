@@ -19,7 +19,9 @@ public class Chromosome implements Comparable {
 	public static final Color GENE_2_TEXT_COLOR = Color.RED;
 	public static final String smileyGeneticData = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
 	public static final String susGeneticData = "1111111111111000001111011111010001110001010111110101011111010001111101110110110111011011011110010011";
-	
+	public static final int fitB = 135300;
+
+
 	private int numOfGenes = 100;           //default values
 	private int numPerColumn = 10;          //default values
 	private int fitnessFunctionType = 0;;   //default values
@@ -213,7 +215,7 @@ public class Chromosome implements Comparable {
 	public void calcFitnessFuction() {
 		if (this.fitnessFunctionType == 0) {
 			this.calculateDefaultFitnessFunction();
-		} else if (this.fitnessFunctionType == 1 || this.fitnessFunctionType == 2) {
+		} else if (this.fitnessFunctionType == 1 || this.fitnessFunctionType == 2 || this.fitnessFunctionType == 3) {
 			this.fitnessTarget();
 		}
 		else {
@@ -243,28 +245,50 @@ public class Chromosome implements Comparable {
 		if (this.fitnessFunctionType==1){
 			targetString = smileyGeneticData;
 		}
+		if (this.fitnessFunctionType==3){
+			targetString = Integer.toBinaryString(fitB);
+		}
 		else {
 			targetString = susGeneticData;
 		}
 		int matchingBits = 0;
 		
 		// Ensure that the targetString and chromosome data have the same length
-		if (targetString.length() != this.numOfGenes) {
+		if (targetString.length() != this.numOfGenes && this.fitnessFunctionType != 3) {
 			throw new IllegalArgumentException("Chromosome length does not match target string length.");
 		}
 		
 		String chromosomeData = getChromosomeDataAsString();
 		
 		// Compare each bit of the chromosome with the target string
-		for (int i = 0; i < chromosomeData.length(); i++) {
+		for (int i = 0; i < targetString.length(); i++) {
 			if (chromosomeData.charAt(i) == targetString.charAt(i)) {
 				matchingBits++;
 			}
 		}
-		
+	
 		// Set the fitness score based on the number of matching bits
 		this.fitnessScore = (int) ((matchingBits / (double) numOfGenes) * MAX_FITNESS_SCORE);
+		if (this.fitnessFunctionType == 3){
+			this.fitnessScore = fitnessBinaryToDecimalTarget();
+		}
 	}
+
+	public double fitnessBinaryToDecimalTarget() {
+		String chromosomeData = getChromosomeDataAsString();
+		
+		// Convert binary to decimal
+		double decimalValue = Integer.parseInt(chromosomeData, 2);
+		
+		// Define a target decimal value
+		int targetDecimalValue = fitB; 
+		
+		// Calculate fitness based on the absolute difference from the target
+		double fitness = 1 / (1 + Math.abs(decimalValue - targetDecimalValue));
+		
+		return fitness * 100; // Scale the fitness to a percentage
+	}
+	
 	
 	/**
 	* ensures: calculates fitness score based on the largest number of consecutive 1s

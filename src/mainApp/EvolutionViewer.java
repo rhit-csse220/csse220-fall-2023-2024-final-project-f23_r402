@@ -150,7 +150,7 @@ public class EvolutionViewer implements Runnable {
         JPanel fitnessFunctionDropdownPanel  = new JPanel();
         fitnessFunctionDropdownPanel.add(fitnessFunctionLabel);
         
-        String[] fitnessFunctionOptions = {"Default", "Smiley", "Sus"};
+        String[] fitnessFunctionOptions = {"Default", "Smiley", "Sus", "Binary"};
         JComboBox<String> fitnessFunctionChooser = new JComboBox<String>(fitnessFunctionOptions);
         fitnessFunctionChooser.setMaximumSize( fitnessFunctionChooser.getPreferredSize() );
         
@@ -513,7 +513,12 @@ public class EvolutionViewer implements Runnable {
                 if (Integer.parseInt(textFields[3].getText()) <= 0 || Integer.parseInt(textFields[3].getText()) % 10 != 0){
                     throw new InvalidEvolutionMultipleException("Invalid Genome Length");
                 }
-            } else{
+            } else if(fitnessFunction.equals("Binary")){
+                  if (Integer.parseInt(textFields[3].getText()) <= 0 || Integer.parseInt(textFields[3].getText()) > 30){
+                    throw new InvalidEvolutionMultipleException("Invalid Genome Length");
+                }
+            }
+            else{
                 if (Integer.parseInt(textFields[3].getText()) != 100){
                     throw new InvalidGenomeLengthException(100);
                 }
