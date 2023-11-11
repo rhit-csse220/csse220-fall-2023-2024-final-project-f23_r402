@@ -13,14 +13,25 @@ import javax.swing.JComponent;
 abstract class Component extends JComponent {
     protected Population population;
 
+    /**
+     * ensures: returns the population
+     * @return
+     */
     public Population getPopulation() {
         return this.population;
     }
 
+    /**
+     * ensures: sets the population to a new value
+     * @param population
+     */
     public void setPopulation(Population population) {
         this.population = population;
     }
 
+    /**
+     * ensures: draws the component
+     */
     public void paint(Graphics g) {
     }
 }

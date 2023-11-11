@@ -23,59 +23,149 @@ public class Evolution {
         this.selection = selection;
         this.crossover = crossover;
     }
+
+    /**
+     * ensures: returns the population
+     * @return
+     */
     public Population getPopulation() {
         return population;
     }
+
+    /**
+     * ensures: sets popoulation to a new value
+     * @param population
+     */
     public void setPopulation(Population population) {
         this.population = population;
     }
+
+    /**
+     * returns the population size
+     * @return
+     */
     public int getPopulationSize() {
         return populationSize;
     }
+
+    /**
+     * ensures: sets the population size to a new values
+     * @param populationSize
+     */
     public void setPopulationSize(int populationSize) {
         this.populationSize = populationSize;
     }
+
+    /**
+     * ensures: returns the nunmber of generations
+     * @return
+     */
     public int getGenerations() {
         return generations;
     }
+
+    /**
+     * ensures: sets the number of generations to a new number
+     * @param generations
+     */
     public void setGenerations(int generations) {
         this.generations = generations;
     }
+
+    /**
+     * ensures: returns elitism
+     * @return
+     */
     public double getElitism() {
         return elitism;
     }
+
+    /**
+     * ensures: sets elitism to a new number
+     * @param elitism
+     */
     public void setElitism(double elitism) {
         this.elitism = elitism;
     }
+
+    /**
+     * ensures: returns the genome lenght
+     * @return
+     */
     public int getGenomeLength() {
         return genomeLength;
     }
+
+    /**
+     * ensures: sets the genome lenght to a new value
+     * @param genomeLength
+     */
     public void setGenomeLength(int genomeLength) {
         this.genomeLength = genomeLength;
     }
+
+    /**
+     * ensures: returns the mutation rate
+     * @return
+     */
     public double getMutationRate() {
         return mutationRate;
     }
+
+    /**
+     * ensures: sets the mutation rate to a new value
+     * @param mutationRate
+     */
     public void setMutationRate(double mutationRate) {
         this.mutationRate = mutationRate;
     }
+
+    /**
+     * ensures: returns the selection string
+     * @return
+     */
     public String getSelection() {
         return selection;
     }
+
+    /**
+     * ensures: sets the selection string to a new value
+     * @param selection
+     */
     public void setSelection(String selection) {
         this.selection = selection;
     }
+
+    /**
+     * ensures: returns crossover
+     * @return
+     */
     public boolean isCrossover() {
         return crossover;
     }
+
+    /**
+     * ensures: sets crossover to a new value
+     * @param crossover
+     */
     public void setCrossover(boolean crossover) {
         this.crossover = crossover;
     }
     
+    /**
+     * ensures: returns the size of the lineArray size
+     * @return
+     */
     public int getLineArraySize(){
         return this.population.getLineArraySize(); //lineArray.size();
     }
     
+    /**
+     * ensures: gets fitness for lineArray element at index i
+     * @param i
+     * @param s
+     * @return
+     */
     public double getLineArrayIndex(int i, String s){
         if (s.equals("Best")){
             return this.population.getBestFitnessForLineArrayElement(i);  //lineArray.get(i).getBestFitness();
