@@ -1,14 +1,10 @@
 package mainApp;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.stream.IntStream;
-
-import javax.swing.JOptionPane;
 
 public class Population {
     public static final int CROSSOVER_OFFSET = 1;
@@ -22,44 +18,47 @@ public class Population {
     private int fitnessFunctionType = 0;
     private boolean isResearch = false;
 
+    /**
+     * returns whether this chromosome is used for the research part of the program
+     * @return
+     */
     public boolean isResearch() {
         return isResearch;
     }
-
+    
     public int getSizeOfPopulation() {
         return sizeOfPopulation;
     }
-
+    
     public void setSizeOfPopulation(int sizeOfPopulation) {
         this.sizeOfPopulation = sizeOfPopulation;
     }
-
+    
     public double getPrevHammingDistance() {
         return prevHammingDistance;
     }
     
     // Create a Random object
     Random r = new Random();
-
+    
     public Population(){}
-
+    
     public Population(int sizeOfPopulation, int genomeLength){
         this.sizeOfPopulation = sizeOfPopulation;
         this.genomeLength = genomeLength;
         this.initiatePopulation();
     }
-
+    
     public Population(int sizeOfPopulation, int genomeLength, String fitnessFunction, boolean isResearch) {
         this.sizeOfPopulation = sizeOfPopulation;
         this.genomeLength = genomeLength;
         this.isResearch = isResearch;
         if (fitnessFunction.equals("Default")){
-			this.fitnessFunctionType = 0;
+            this.fitnessFunctionType = 0;
         } else if (fitnessFunction.contains("Smiley")){
-			this.fitnessFunctionType = 1;
+            this.fitnessFunctionType = 1;
             this.targetString = Chromosome.smileyGeneticData;
-        }
-        else if (fitnessFunction.contains("Sus")){
+        } else if (fitnessFunction.contains("Sus")){
             this.fitnessFunctionType = 2;
             this.targetString = Chromosome.susGeneticData;
         }
@@ -71,8 +70,10 @@ public class Population {
         this.initiatePopulation();
     }
 
+    /**
+     * ensures: initializes the population
+     */
     public void initiatePopulation(){
-        // System.out.println("Population.initiatePopulation() " + this.fitnessFunctionType);
         this.chromosomes = new ArrayList<Chromosome>();
         this.lineArray = new ArrayList<BestFitLine2D>();
         for (int i = 0; i < this.sizeOfPopulation; i++){
@@ -87,30 +88,34 @@ public class Population {
         }
     }
 
-    /**
-     * sorts the chromosomes ArrayList from highest to lowest fitness score
-     */
-    public void sortPopulation(){
-        Collections.sort(this.chromosomes);
-    }
+/**
+* sorts the chromosomes ArrayList from highest to lowest fitness score
+*/
+public void sortPopulation(){
+    Collections.sort(this.chromosomes);
+}
+
+/**
+* creates a BestFitLine2D object based on the previous best, average, and low fitness and add to lineArray
+*/
+public void createLine(){
+    // find previous best + avg + lowest fitness
+    this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
+    this.prevAvgFitness = calculateAvgFitness();
+    this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
+    //TODO FIGURE OUT HAMMING DISTANCE WITH THE THIRD BIT '?'
+    this.prevHammingDistance = calculateHammingDistance();
+    this.prevCountOf0s = calculateTotalNumOf0s();
+    this.prevCountOf1s = calculateTotalNumOf1s();
+    this.prevCountOfQs = calculateTotalNumOfQs();
+    //this.prevHammingDistance = calculateUniqueStrings();
+    this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance, this.prevCountOf0s, this.prevCountOf1s, this.prevCountOfQs));
+}
 
     /**
-     * creates a BestFitLine2D object based on the previous best, average, and low fitness and add to lineArray
+     * ensures: calculates the total number of zeroes in the chromosomes
+     * @return total number of zeroes in the chromosomes
      */
-    public void createLine(){
-        // find previous best + avg + lowest fitness
-        this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
-        this.prevAvgFitness = calculateAvgFitness();
-        this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
-        //TODO FIGURE OUT HAMMING DISTANCE WITH THE THIRD BIT '?'
-        this.prevHammingDistance = calculateHammingDistance();
-        this.prevCountOf0s = calculateTotalNumOf0s();
-        this.prevCountOf1s = calculateTotalNumOf1s();
-        this.prevCountOfQs = calculateTotalNumOfQs();
-        //this.prevHammingDistance = calculateUniqueStrings();
-        this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance, this.prevCountOf0s, this.prevCountOf1s, this.prevCountOfQs));
-    }
-
     public double calculateTotalNumOf0s(){
         double count = 0;
         for (int i = 0; i < this.chromosomes.size(); i++){
@@ -120,11 +125,15 @@ public class Population {
             // }
             count+= currChromosome.getNumberOf0s();
         }
-
+        
         count = (count/(this.sizeOfPopulation*this.genomeLength)) * 100;
         return count;
     }
     
+    /**
+     * ensures: calculates the total number of ones in the chromosomes
+     * @return total number of ones in the chromosomes
+     */
     public double calculateTotalNumOf1s(){
         double count = 0;
         for (int i = 0; i < this.chromosomes.size(); i++){
@@ -139,6 +148,10 @@ public class Population {
         return count;
     }
 
+    /**
+     * ensures: calculates the total number of question marks in the chromosomes
+     * @return total number of question marks in the chromosomes
+     */
     public double calculateTotalNumOfQs(){
         double count = 0;
         for (int i = 0; i < this.chromosomes.size(); i++){
@@ -308,6 +321,9 @@ public class Population {
     }
 
     // TODO: RESEARCH
+    /**
+     * ensures: performs selection for the research part of the program
+     */
     public void performSelectionResearch(){
         if (this.isResearch){
             this.chromosomes.parallelStream().forEach(chromosome -> chromosome.liveLife());
@@ -328,6 +344,10 @@ public class Population {
         this.chromosomes = currentChromosomes;
     }
 
+    /**
+     * ensures: selects a random parent chromosome and returns it
+     * @return the parent chromosome
+     */
     public Chromosome selectRandomParent(){
 
         ArrayList<Double> chromosomeScores = new ArrayList<Double>();
@@ -355,6 +375,10 @@ public class Population {
         return null;
     }
 
+    /**
+     * ensures: selects a second random parent chromosome and returns it
+     * @return the second parent chromosome
+     */
     public Chromosome selectSecondRandomParent(Chromosome firstParent){
         ArrayList<Double> chromosomeScores = new ArrayList<Double>();
         ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(this.chromosomes);
@@ -383,6 +407,10 @@ public class Population {
         return null;
     }
 
+    /**
+     * ensures: performs crossover for the researc part of the program and returns the child
+     * @return child chromosome after crossover
+     */
     public Chromosome performResearchCrossover(){
         Chromosome parent1 = this.selectRandomParent();
         Chromosome parent2 = this.selectSecondRandomParent(parent1);
@@ -401,6 +429,10 @@ public class Population {
     }
     // TODO: RESEARCH END
 
+    /**
+     * ensures: performs crossover and returns the children
+     * @return the arraylist of child chromosomes after crossover
+     */
     public ArrayList<Chromosome> performCrossover(ArrayList<Chromosome> selectedParents){
         ArrayList<Chromosome> childChromosomes = new ArrayList<Chromosome>();
         for (int i = 0; i < selectedParents.size(); i++){
@@ -441,6 +473,10 @@ public class Population {
         return avg;
     }
 
+    /**
+     * ensures: calcualtes the hamming distance
+     * @return hamming distance
+     */
     public double calculateHammingDistance(){
         double hammingDistance = 0;
         int[][] position1n0Array = new int[genomeLength][2];
@@ -501,51 +537,128 @@ public class Population {
         return this.chromosomes;
     }
 
+    /**
+     * ensures: returns the size of the lineArray list
+     * @return size of the lineArray list
+     */
     public int getLineArraySize() {
         return this.lineArray.size();
     }
 
+    /**
+     * ensures: returns the best fitness line for a lineArray element at index i
+     * @param i index
+     * @return best fitness line
+     */
     public double getBestFitnessForLineArrayElement(int i) {
         return this.lineArray.get(i).getBestFitness();
     }
 
+    /**
+     * ensures: returns the average fitness line for a lineArray element at index i
+     * @param i index
+     * @return average fitness line
+     */
     public double getAvgFitnessForLineArrayElement(int i) {
         return this.lineArray.get(i).getAvgFitness();
     }
 
+    /**
+     * ensures: returns the lowest fitness line for a lineArray element at index i
+     * @param i index
+     * @return lowest fitness line
+     */
     public double getLowFitnessForLineArrayElement(int i) {
         return this.lineArray.get(i).getLowFitness();
     }
 
+    /**
+     * ensures: returns the hamming distance for a lineArray element at index i
+     * @param i index
+     * @return hamming distance
+     */
     public double getHammingDistancForLineArrayElement(int i) {
         return this.lineArray.get(i).getHammingDistance();
     }
 
+    /**
+     * ensures: returns the number of zeroes for a lineArray element at index i
+     * @param i index
+     * @return number of zeroes
+     */
     public double getNumberOf0sForLineArrayElement(int i) {
         return this.lineArray.get(i).getNumberOf0s();
     }
 
+    /**
+     * ensures: returns the number of ones for a lineArray element at index i
+     * @param i index
+     * @return number of ones
+     */
     public double getNumberOf1sForLineArrayElement(int i) {
         return this.lineArray.get(i).getNumberOf1s();
     }
 
+    /**
+     * ensures: returns the number of question marks for a lineArray element at index i
+     * @param i index
+     * @return number of question marks
+     */
     public double getNumberOfQsForLineArrayElement(int i) {
         return this.lineArray.get(i).getNumberOfQs();
     }
 
+    /**
+     * ensures: returns the numPerColumn for a chromosome at index i
+     * @param i index
+     * @return numPerColumn
+     */
     public int getNumPerColumnForChromosome(int i) {
         return this.chromosomes.get(i).getNumPerColumn();
     }
 
+    /**
+     * ensures: a wrapper for the drawOn(g, geneWidth, border) method for chromosome at index i
+     * @param index
+     * @param g
+     * @param geneWidth
+     * @param border
+     */
     public void drawOnForChromosome(int index, Graphics g, int geneWidth, int border) {
         this.chromosomes.get(index).drawOn(g, geneWidth, border);
     }
 
+    /**
+     * ensures: returns wehther the chromosome array is empty
+     * @return
+     */
     public boolean isChromosomesEmpty() {
         return this.chromosomes.isEmpty();
     }
 
+    /**
+     * ensrues: returns the chromosome list size
+     * @return
+     */
     public int getChromosomesSize() {
         return this.chromosomes.size();
+    }
+
+    /**
+     * ensures: returns whether the chromosome at index i is used for the research part
+     * @param i
+     * @return
+     */
+    public boolean isResearchChromosome(int i) {
+        return this.getChromosomeByIndex(i).isResearch();
+    }
+
+    /**
+     * ensures: returns a chromosome at index i
+     * @param i
+     * @return
+     */
+    public Chromosome getChromosomeByIndex(int i) {
+        return this.chromosomes.get(i);
     }
 }

@@ -11,9 +11,9 @@ public class Evolution {
     private boolean crossover;
     
     public Evolution(){}
-
+    
     public Evolution(Population population, int populationSize, int generations, double elitism,
-            int genomeLength, double mutationRate, String selection, boolean crossover) {
+    int genomeLength, double mutationRate, String selection, boolean crossover) {
         this.population = population;
         this.populationSize = populationSize;
         this.generations = generations;
@@ -23,59 +23,149 @@ public class Evolution {
         this.selection = selection;
         this.crossover = crossover;
     }
+
+    /**
+     * ensures: returns the population
+     * @return
+     */
     public Population getPopulation() {
         return population;
     }
+
+    /**
+     * ensures: sets popoulation to a new value
+     * @param population
+     */
     public void setPopulation(Population population) {
         this.population = population;
     }
+
+    /**
+     * returns the population size
+     * @return
+     */
     public int getPopulationSize() {
         return populationSize;
     }
+
+    /**
+     * ensures: sets the population size to a new values
+     * @param populationSize
+     */
     public void setPopulationSize(int populationSize) {
         this.populationSize = populationSize;
     }
+
+    /**
+     * ensures: returns the nunmber of generations
+     * @return
+     */
     public int getGenerations() {
         return generations;
     }
+
+    /**
+     * ensures: sets the number of generations to a new number
+     * @param generations
+     */
     public void setGenerations(int generations) {
         this.generations = generations;
     }
+
+    /**
+     * ensures: returns elitism
+     * @return
+     */
     public double getElitism() {
         return elitism;
     }
+
+    /**
+     * ensures: sets elitism to a new number
+     * @param elitism
+     */
     public void setElitism(double elitism) {
         this.elitism = elitism;
     }
+
+    /**
+     * ensures: returns the genome lenght
+     * @return
+     */
     public int getGenomeLength() {
         return genomeLength;
     }
+
+    /**
+     * ensures: sets the genome lenght to a new value
+     * @param genomeLength
+     */
     public void setGenomeLength(int genomeLength) {
         this.genomeLength = genomeLength;
     }
+
+    /**
+     * ensures: returns the mutation rate
+     * @return
+     */
     public double getMutationRate() {
         return mutationRate;
     }
+
+    /**
+     * ensures: sets the mutation rate to a new value
+     * @param mutationRate
+     */
     public void setMutationRate(double mutationRate) {
         this.mutationRate = mutationRate;
     }
+
+    /**
+     * ensures: returns the selection string
+     * @return
+     */
     public String getSelection() {
         return selection;
     }
+
+    /**
+     * ensures: sets the selection string to a new value
+     * @param selection
+     */
     public void setSelection(String selection) {
         this.selection = selection;
     }
+
+    /**
+     * ensures: returns crossover
+     * @return
+     */
     public boolean isCrossover() {
         return crossover;
     }
+
+    /**
+     * ensures: sets crossover to a new value
+     * @param crossover
+     */
     public void setCrossover(boolean crossover) {
         this.crossover = crossover;
     }
-
+    
+    /**
+     * ensures: returns the size of the lineArray size
+     * @return
+     */
     public int getLineArraySize(){
         return this.population.getLineArraySize(); //lineArray.size();
     }
-
+    
+    /**
+     * ensures: gets fitness for lineArray element at index i
+     * @param i
+     * @param s
+     * @return
+     */
     public double getLineArrayIndex(int i, String s){
         if (s.equals("Best")){
             return this.population.getBestFitnessForLineArrayElement(i);  //lineArray.get(i).getBestFitness();
@@ -102,7 +192,10 @@ public class Evolution {
             return -1;
         }
     }
-
+    /**
+     * ensures: check if any of the chromosomes within the population has a 100 fitness score
+     * @return
+     */
     public boolean checkForFitness100() {
         for (Chromosome chromosome : population.getChromosomes()) {
             if (chromosome.getFitnessScore() == 100) {
@@ -111,42 +204,61 @@ public class Evolution {
         }
         return false;
     }
-
+    
     /**
-  * Handles the selection of individuals in the population based on the specified
-  * selection method.
-  */
-  public void handleSelection(){
-    String s = this.selection;
-    if (s.equals("Truncation")){
-      this.handleTruncationSelection();
+    * Handles the selection of individuals in the population based on the specified
+    * selection method.
+    */
+    public void handleSelection(){
+        String s = this.selection;
+        if (s.equals("Truncation")){
+            this.handleTruncationSelection();
+        }
+        else if (s.equals("Roulette")){
+            this.handleRouletteSelection();
+        }
+        else if (s.equals("Rank")){
+            this.handleRankedSelection();
+        }
     }
-    else if (s.equals("Roulette")){
-      this.handleRouletteSelection();
+    
+    /**
+    * handles truncation selection of the population
+    */
+    public void handleTruncationSelection(){
+        this.population.performSelection(this.mutationRate, 0, this.elitism, this.crossover);
     }
-    else if (s.equals("Rank")){
-      this.handleRankedSelection();
+    
+    /**
+    * handles roulette selection of the population
+    */
+    public void handleRouletteSelection(){
+        this.population.performSelection(this.mutationRate, 1, this.elitism, this.crossover);
     }
-  }
-
-  /**
-  * handles truncation selection of the population
-  */
-  public void handleTruncationSelection(){
-    this.population.performSelection(this.mutationRate, 0, this.elitism, this.crossover);
-  }
-  
-  /**
-  * handles roulette selection of the population
-  */
-  public void handleRouletteSelection(){
-    this.population.performSelection(this.mutationRate, 1, this.elitism, this.crossover);
-  }
-  
-  /**
-  * handles ranked selection of the population
-  */
-  public void handleRankedSelection(){
-    this.population.performSelection(this.mutationRate, 2, this.elitism, this.crossover);
-  }
+    
+    /**
+    * handles ranked selection of the population
+    */
+    public void handleRankedSelection(){
+        this.population.performSelection(this.mutationRate, 2, this.elitism, this.crossover);
+    }
+    
+    /**
+    * checks whether the population is the research or not
+    * @return population.isResearch()
+    */
+    public boolean isResearchPopulation() {
+        return this.population.isResearch();
+    }
+    
+    /**
+    * performs selection on the research population
+    */
+    public void performSelectionResearch() {
+        this.population.performSelectionResearch();
+    }
+    
+    public boolean isResearchChromosome(int i) {
+        return this.population.isResearchChromosome(i);
+    }
 }
