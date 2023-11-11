@@ -20,8 +20,8 @@ public class Histogram {
 
     public void updateFitnessFrequency(){
         fitnessFrequency = new int[101];
-        for (int i = 0; i < population.getChromosomes().size(); i++){
-            Chromosome currChromosome = population.getChromosomes().get(i);
+        for (int i = 0; i < population.getChromosomesSize(); i++){
+            Chromosome currChromosome = population.getChromosomeByIndex(i);  //getChromosomes().get(i);
             int fitnessCurrChromosome = (int)(currChromosome.getFitnessScore());
             //fitnessFrequency.set(fitnessCurrChromosome, fitnessFrequency.get(fitnessCurrChromosome)+1); 
             fitnessFrequency[fitnessCurrChromosome]++;

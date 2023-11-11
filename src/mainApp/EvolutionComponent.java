@@ -89,8 +89,8 @@ public class EvolutionComponent extends JComponent {
   */
   public void handleSelection(){
     //TODO FIX MESSAGE CHAINS
-    if (this.evolution.getPopulation().isResearch()){
-      this.evolution.getPopulation().performSelectionResearch();
+    if (this.evolution.isResearchPopulation()) {  //.getPopulation().isResearch()){
+      this.evolution.performSelectionResearch();  // getPopulation().performSelectionResearch();
     }
     else{
       this.evolution.handleSelection();
@@ -227,7 +227,7 @@ public class EvolutionComponent extends JComponent {
         
         //TODO REMOVE THE MESSAGE CHAIN
         
-        if (this.evolution.getPopulation().getChromosomes().get(0).isResearch()){
+        if (this.evolution.isResearchChromosome(0)) { //.getPopulation().getChromosomes().get(0).isResearch()){
           //Line of 0s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "0"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "0"));
