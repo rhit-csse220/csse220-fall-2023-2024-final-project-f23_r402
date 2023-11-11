@@ -169,7 +169,6 @@ public class Chromosome implements Comparable {
 	/**
 	 * ensures: initiates the genome with a given data
 	 * @param s given data in a form of "0100101"
-	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
 	 */
 	public void initiateGeneWithString(String s) {
 		this.initiateGeneWithStringLoad(s);

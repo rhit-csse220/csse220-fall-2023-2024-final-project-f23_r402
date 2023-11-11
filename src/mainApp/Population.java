@@ -186,7 +186,7 @@ public class Population {
         }
 
         // initializing new chromosomes
-        this.chromosomes = new ArrayList<Chromosome>();
+        currentChromosomes = new ArrayList<Chromosome>();
 
         // // performing crossover
         if (crossover){
@@ -197,12 +197,14 @@ public class Population {
         for (int i = 0; i < initialSize/2; i++){
             String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
             try {
-                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate, this.fitnessFunctionType, this.isResearch));
-                this.chromosomes.add(new Chromosome(currChromosomeData, true, mutationRate, this.fitnessFunctionType, this.isResearch));
+                currentChromosomes.add(new Chromosome(currChromosomeData, true, mutationRate, this.fitnessFunctionType, this.isResearch));
+                currentChromosomes.add(new Chromosome(currChromosomeData, true, mutationRate, this.fitnessFunctionType, this.isResearch));
             } catch (InvalidChromosomeFormatException e) {
                 e.printStackTrace();
             }
         }
+
+        this.chromosomes = currentChromosomes;
 
         // add elitist chromosomes
         this.sortPopulation();
