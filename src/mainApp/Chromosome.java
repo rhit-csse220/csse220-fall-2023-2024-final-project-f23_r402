@@ -8,6 +8,13 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * class: Chromosome
+ * @author F23_R402
+ * 
+ * Purpose:
+ *   Is the class for the testing individual in the simulation, the chromosome. 
+ */
 public class Chromosome implements Comparable {
 	// constants
 	public static final int NUM_PER_ROW = 10;
@@ -56,7 +63,7 @@ public class Chromosome implements Comparable {
 	public Chromosome(int numOfGenes) {
 		this.numOfGenes = numOfGenes;
 		this.numPerColumn = numOfGenes/NUM_PER_ROW;
-	}
+	} //Chromosome
 
 	/**
 	 * Initializes with specific fitness function type
@@ -67,7 +74,7 @@ public class Chromosome implements Comparable {
 		this(numOfGenes);
 		this.fitnessFunctionType = fitnessFunctionType;
 		this.isResearch = isResearch;
-	}
+	} //Chromosome
 	
 	/**
 	 * Initiatizes with fileData
@@ -76,7 +83,7 @@ public class Chromosome implements Comparable {
 	 */
 	public Chromosome(String fileData) throws InvalidChromosomeFormatException{ 
 		this.initiateGeneWithString(fileData);
-	}
+	} //Chromosome
 	
 	/**
 	 * Initializes with fileData, mutate, and mutation rate
@@ -91,7 +98,7 @@ public class Chromosome implements Comparable {
 		this.calcFitnessFuction();
 		
 		if (mutate){this.mutateGenes(mutationRate);}
-	}
+	} //Chromosome
 
 	/**
 	 * Initializes Chromosome with fileData, mutate, mutation rate, fitness function type, and isResearch
@@ -110,7 +117,7 @@ public class Chromosome implements Comparable {
 		this.isResearch = isResearch;
 
 		if (mutate){this.mutateGenes(mutationRate);}
-	}
+	} //Chromosome
 
 	/**
 	 * Initializes Chromosome with isResearch
@@ -119,7 +126,7 @@ public class Chromosome implements Comparable {
 	public Chromosome(boolean isResearch){
 		this.isResearch = isResearch;
 		this.fitnessScore = -1;
-	}
+	} //Chromosome
 
 	/**
 	 * Initializes Chromosome with fileData and isResearch
@@ -130,16 +137,16 @@ public class Chromosome implements Comparable {
 		this.isResearch = isResearch;
 		this.fitnessScore = -1;
 		initiateGeneWithString(fileData);
-	}
+	} //Chromosome
 
 	/**
-	* ensures: that a numOfGenes Gene objects is initialized into the chromosome
+	* ensures: initializes the array of genes and calculates the fitness function for the chromosome
 	*/
 	public void initiateGene() {
 		this.initiateGeneLoad();
 		// SET THE FITNESS SCORE
 		this.calcFitnessFuction();
-	}
+	} //initiateGene
 
 	/**
 	 * ensures: initializes the array of genes
@@ -169,17 +176,17 @@ public class Chromosome implements Comparable {
 				this.genes[i * NUM_PER_ROW + j] = new Gene(aBit, true, this.geneWidth * j + this.border, this.geneWidth * i, this.geneWidth);
 			}
 		}
-	}
+	} //initiateGeneLoad
 	
 	/**
-	 * ensures: initiates the genome with a given data
+	 * ensures: initiates the genome with a given data and calculates the fitness score for the chromosome
 	 * @param s given data in a form of a String
 	 */
 	public void initiateGeneWithString(String s) {
 		this.initiateGeneWithStringLoad(s);
 		// TO SET THE FITNESS SCORE
 		this.calcFitnessFuction();
-	}
+	} //initiateGeneWithString
 
 	/**
 	 * ensures: initiates the genome with a given data
@@ -208,7 +215,7 @@ public class Chromosome implements Comparable {
 				this.genes[i * NUM_PER_ROW + j] = new Gene(bit, true, this.geneWidth * j + this.border, this.geneWidth * i, this.geneWidth);
 			}
 		}
-	}
+	} //initiateGeneWithStringLoad
 	
 	/**
 	 * ensures: the correct fitness function is used
@@ -221,10 +228,10 @@ public class Chromosome implements Comparable {
 		} else {
 			System.out.println("Warning. Wrong fitness function selected.");
 		}
-	}
+	} //calcFitnessFuction
 
 	/*
-	* ensures: that the fitness score for the chromosome is calculated
+	* ensures: that the fitness score for the chromosome is calculated according to the All1s fitness function
 	*/
 	public void calculateDefaultFitnessFunction() {
 		int score = 0;
@@ -235,7 +242,7 @@ public class Chromosome implements Comparable {
 			}
 		}
 		this.fitnessScore = (int) ((score / (double) numOfGenes) * MAX_FITNESS_SCORE);
-	}
+	} //calculateDefaultFitnessFunction
 	
 	/**
 	* ensures: calculates fitness score based on similarity with the targetString
@@ -270,10 +277,15 @@ public class Chromosome implements Comparable {
 		// Set the fitness score based on the number of matching bits
 		this.fitnessScore = (int) ((matchingBits / (double) numOfGenes) * MAX_FITNESS_SCORE);
 		if (this.fitnessFunctionType == 3){
+			// This specific section is used to set the fitness score according to how CLOSE the genetic data's encoded decimal number is to the target decimal number
 			this.fitnessScore = fitnessBinaryToDecimalTarget();
 		}
-	}
+	} //fitnessTarget
 
+	/**
+	* ensures: calculates fitness score based on how close the number encoded by the chromosome's genetic data is to the target number
+	* @return the value of the fitness score
+	*/
 	public double fitnessBinaryToDecimalTarget() {
 		String chromosomeData = getChromosomeDataAsString();
 		
@@ -287,7 +299,7 @@ public class Chromosome implements Comparable {
 		double fitness = 1 / (1 + Math.abs(decimalValue - targetDecimalValue));
 		
 		return fitness * 100; // Scale the fitness to a percentage
-	}
+	} //fitnessBinaryToDecimalTarget
 	
 	
 	/**
@@ -311,7 +323,7 @@ public class Chromosome implements Comparable {
 		
 		// Set the fitness score based on the maximum consecutive ones
 		this.fitnessScore = maxConsecutiveOnes;
-	}
+	} //fitnessMax
 	
 	/**
 	 * ensures: the information is displayed correctly on resizing the window
@@ -324,7 +336,7 @@ public class Chromosome implements Comparable {
 				this.genes[i*NUM_PER_ROW+j].setGeneWidth(this.geneWidth);
 			}
 		}
-	}
+	} //adjustGenePosition
 	
 	/**
 	 * ensures: performs mutation of the genes
@@ -335,7 +347,7 @@ public class Chromosome implements Comparable {
 			gene.mutate(mutationRate, this.numOfGenes);
 		}
 		this.calcFitnessFuction();
-	}
+	} //mutateGenes
 	
 	/**
 	* ensures: that the chromosome data, i.e the genes and their values, are concatenated into a single string
@@ -347,7 +359,7 @@ public class Chromosome implements Comparable {
 			data += gene.getBit();
 		}
 		return data;
-	}
+	} //getChromosomeDataAsString
 	
 	/**
 	* ensures: that the number of genes per column in this chromosome is returned
@@ -379,13 +391,13 @@ public class Chromosome implements Comparable {
 	 * ensures: that the genes in the chromosome is set to the param genes
 	 * @param genes
 	 */
-	public void setGenes(Gene[] genes) {this.genes = genes;}
+	public void setGenes(Gene[] genes) {this.genes = genes;} //setGenes
 	
 	/**
 	 * ensures: that the genes in the chromosome is returned
 	 * @return the genes array of the chromosome
 	 */
-	public Gene[] getGenes() {return this.genes;}
+	public Gene[] getGenes() {return this.genes;} //getGenes
 	
 	/**
 	 * ensurs: the gene is drawn
@@ -411,7 +423,7 @@ public class Chromosome implements Comparable {
 			g2.setFont(new Font(null, Font.PLAIN, geneWidth/3));
 			g2.drawString((String)(i + ""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + this.genes[i].getY());
 		}
-	}
+	} //drawOn
 
 	/**
 	 * ensures: draws the chromosomes (population)
@@ -427,24 +439,7 @@ public class Chromosome implements Comparable {
 		this.adjustGenePosition();
 		this.drawGenes(g2);
 		g2.translate(-x,-y);
-	}
-
-	/**
-	 * ensures: draws the best chromosome
-	 * @param g Graphics2D object to draw on
-	 * @param geneWidth gene width
-	 * @param border border width
-	 * @x the x-coordinate
-	 * @y the y-coordinate
-	 */	
-	public void drawBestView(Graphics2D g, int geneWidth, int border, int x, int y) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.translate(x,y);
-		this.geneWidth = geneWidth;
-		this.border = border;
-		this.adjustGenePosition();
-		this.drawGenes(g2);
-	}
+	} //drawPopulationView
 
 	/**
 	 * ensures: draws genes
@@ -457,9 +452,11 @@ public class Chromosome implements Comparable {
 				g2.setColor(GENE_1_TEXT_COLOR);
 			} else if (this.genes[i].getBit() == '0') {
 				g2.setColor(GENE_0_TEXT_COLOR);
+			} else if (this.genes[i].getBit() == '?'){
+				g2.setColor(GENE_2_TEXT_COLOR);
 			}
 		}
-	}
+	} //drawGenes
 	
 	/**
 	 * ensures: fitness of this chromosome and another chromosome passed in as param is compared
@@ -478,7 +475,7 @@ public class Chromosome implements Comparable {
 		} else {
 			return 0;
 		}
-	}
+	} //compareTo
 	
 	/**
 	 * ensures: the selected gene is found
@@ -492,7 +489,7 @@ public class Chromosome implements Comparable {
 			}
 		}
 		return null;
-	}
+	} //handleGetSelectedGene
 
 	/**
 	 * ensures: simulates 1,000 days of lifespan for a chromosome
@@ -502,7 +499,7 @@ public class Chromosome implements Comparable {
         for (int days = 0; days < 1000; days++){
             this.loadGeneFromOriginalData();
             for (int i = 0; i < qIndex.size(); i++){
-                int indexOfQ = qIndex.get(i); //qIndex is the arraylist wherein the index of the question marks in the gene list are stored..
+                int indexOfQ = qIndex.get(i); //qIndex is the arraylist wherein the index of the question marks in the gene list are stored; Used to increase speed of array
 				Gene gene = genes[indexOfQ];
                 if (!isPerfect && gene.getBit() == '?'){
                     gene.setRandomBit();
@@ -517,7 +514,7 @@ public class Chromosome implements Comparable {
         }
 		this.loadGeneFromOriginalData();
 		this.fitnessScore = calculateFitnessScoreResearch();
-    }
+    } //liveLife
 
 	/**
 	 * ensures: loads genes from the original genome data
@@ -529,7 +526,7 @@ public class Chromosome implements Comparable {
 				this.genes[i*NUM_PER_ROW+j] = new Gene(bit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
-	}
+	} //loadGeneFromOriginalData
 
 	/**
 	 * ensures: checks if the given string has all ones in its genome
@@ -544,7 +541,7 @@ public class Chromosome implements Comparable {
             }
         }
         return (score == s.length());
-    }
+    } //checkAll1s
 
 	/**
 	 * ensures: calculates the fitness score for the research part of the program
@@ -553,7 +550,7 @@ public class Chromosome implements Comparable {
 	public double calculateFitnessScoreResearch(){
 		double fitnessScore = (1 + (19*this.daysRemaining)/1000)*5;
 		return fitnessScore;
-	}
+	} //calculateFitnessScoreResearch
 	
 	/**
 	 * ensures: returns genome as a string for printing purposes
@@ -561,7 +558,7 @@ public class Chromosome implements Comparable {
 	@Override
 	public String toString() {
 		return this.getChromosomeDataAsString();
-	}
+	} //toString
 
 	/**
 	 * sets the fitness function type to another value
@@ -569,7 +566,7 @@ public class Chromosome implements Comparable {
 	 */
 	public void setFitnessFunctionType(int fitnessFunction) {
 		this.fitnessFunctionType = fitnessFunction;
-	}
+	} //setFitnessFunctionType
 
 	/**
 	 * ensures: gets the original genome data
@@ -577,28 +574,28 @@ public class Chromosome implements Comparable {
 	 */
 	public String getOriginalGenomeData(){
 		return this.originalGenomeData;
-	}
+	} //getOriginalGenomeData
 
 	/**
 	 * @return number of 1s in the chromosome
 	 */
 	public int getNumberOf1s() {
 		return numberOf1s;
-	}
+	} //getNumberOf1s
 
 	/**
 	 * @return number of 0s in the chromosome
 	 */
 	public int getNumberOf0s() {
 		return numberOf0s;
-	}
+	} //getNumberOf0s
 
 	/**
 	 * @return number of ?s in the chromosome
 	 */
 	public int getNumberOfQs() {
 		return numberOfQs;
-	}
+	} //getNumberOfQs
 
 	/**
 	 * ensures: returns whether this chromosome is perfect
@@ -606,7 +603,7 @@ public class Chromosome implements Comparable {
 	 */
 	public boolean isPerfect() {
 		return isPerfect;
-	}
+	} //isPerfect
 	
 	/**
 	 * ensures: returns whether this chromosome is used for the research part of the project
@@ -614,7 +611,7 @@ public class Chromosome implements Comparable {
 	 */
 	public boolean isResearch() {
 		return isResearch;
-	}
+	} //isResearch
 	
 	/**
 	 * ensures: sets the x value to a new number
@@ -622,7 +619,7 @@ public class Chromosome implements Comparable {
 	 */
 	public void setX(int x) {
 		this.x = x;
-	}
+	} //setX
 
 	/**
 	 * ensures: sets the y value to a new number
@@ -630,5 +627,5 @@ public class Chromosome implements Comparable {
 	 */
 	public void setY(int y) {
 		this.y = y;
-	}
-}
+	} //setY
+} //End Chromosome

@@ -24,7 +24,7 @@ public class BestFitLine2D {
         this.avgFitness = avgFitness;
         this.lowFitness = lowFitness;
         this.hammingDistance = hammingDistance;
-    }
+    } //BestFitLine2D
     
     /**
      * Initializes the BestFitLine2D object for the research part
@@ -45,7 +45,7 @@ public class BestFitLine2D {
         this.numberOf0s = numberOf0s;
         this.numberOf1s = numberOf1s;
         this.numberOfQs = numberOfQs;
-    }
+    } //BestFitLine2D
     
     /**
      * ensures: returns the number of zeroes in genome
@@ -53,7 +53,7 @@ public class BestFitLine2D {
      */
     public double getNumberOf0s() {
         return numberOf0s;
-    }
+    } //getNumberOf0s
 
     /**
      * ensures: sets the number of zeroes in genome to a new number
@@ -61,7 +61,7 @@ public class BestFitLine2D {
      */
     public void setNumberOf0s(double numberOf0s) {
         this.numberOf0s = numberOf0s;
-    }
+    } //setNumberOf0s
 
     /**
      * ensures: returns the number of ones in genome
@@ -69,7 +69,7 @@ public class BestFitLine2D {
      */
     public double getNumberOf1s() {
         return numberOf1s;
-    }
+    } //getNumberOf1s
 
     /**
      * ensures: sets the number of ones in genome to a new number
@@ -77,7 +77,7 @@ public class BestFitLine2D {
      */
     public void setNumberOf1s(double numberOf1s) {
         this.numberOf1s = numberOf1s;
-    }
+    } //setNumberOf1s
 
     /**
      * ensures: returns the number of question marks in genome
@@ -85,7 +85,7 @@ public class BestFitLine2D {
      */
     public double getNumberOfQs() {
         return numberOfQs;
-    }
+    } //getNumberOfQs
 
     /**
      * ensures: sets the number of question marks in genome to a new number
@@ -93,7 +93,7 @@ public class BestFitLine2D {
      */
     public void setNumberOfQs(double numberOfQs) {
         this.numberOfQs = numberOfQs;
-    }
+    } //setNumberOfQs
 
      /**
      * ensures: returns the hamming distance
@@ -101,7 +101,7 @@ public class BestFitLine2D {
      */
     public double getHammingDistance() {
         return hammingDistance;
-    }
+    } //getHammingDistance
 
     /**
      * ensures: sets the hamming distance to a new number
@@ -109,7 +109,7 @@ public class BestFitLine2D {
      */
     public void setHammingDistance(double hammingDistance) {
         this.hammingDistance = hammingDistance;
-    }
+    } //setHammingDistance
 
     /**
      * ensures: returns the best fitness score
@@ -117,7 +117,7 @@ public class BestFitLine2D {
      */
     public double getBestFitness() {
         return this.bestFitness;
-    }
+    } //getBestFitness
 
     /**
      * ensures: sets the best fitness score to a new number
@@ -125,7 +125,7 @@ public class BestFitLine2D {
      */
     public void setBestFitness(double bestFitness) {
         this.bestFitness = bestFitness;
-    }
+    } //setBestFitness
 
     /**
      * ensures: returns the average fitness score
@@ -133,7 +133,7 @@ public class BestFitLine2D {
      */
     public double getAvgFitness() {
         return this.avgFitness;
-    }
+    } //getAvgFitness
 
     /**
      * ensures: sets the average fitness score to a new number
@@ -141,7 +141,7 @@ public class BestFitLine2D {
      */
     public void setAvgFitness(double avgFitness) {
         this.avgFitness = avgFitness;
-    }
+    } //setAvgFitness
 
     /**
      * ensures: returns the lowest fitness score
@@ -149,7 +149,7 @@ public class BestFitLine2D {
      */
     public double getLowFitness() {
         return this.lowFitness;
-    }
+    } //getLowFitness
 
     /**
      * ensures: sets the lowest fitness score to a new number
@@ -157,5 +157,5 @@ public class BestFitLine2D {
      */
     public void setLowFitness(double lowFitness) {
         this.lowFitness = lowFitness;
-    }
-}
+    } //setLowFitness
+} //End BestFitLine2D

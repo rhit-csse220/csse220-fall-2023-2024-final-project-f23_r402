@@ -7,9 +7,12 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 
 /**
-* The EvolutionComponent class represents a component for visualizing the evolution process
-* of a population and drawing various data related to it.
-*/
+ * Class: EvolutionComponent
+ * @author F23_R402
+ * 
+ * Purpose: Represents a component for visualizing the evolution process
+ * of a population and drawing various data related to it.
+ */
 public class EvolutionComponent extends JComponent {
   // constants
   public static final int TITLE_Y_VALUE = 10;
@@ -59,7 +62,7 @@ public class EvolutionComponent extends JComponent {
   public EvolutionComponent() {
     this.evolution = new Evolution();
     this.evolution.setPopulation(new Population());
-  }
+  } //EvolutionComponent
   
   /**
    * ensures: returns the population of the evolution
@@ -67,7 +70,7 @@ public class EvolutionComponent extends JComponent {
    */
   public Population handleGetPopulation(){
     return this.evolution.getPopulation();
-  }
+  } //handleGetPopulation
   
   /**
    * ensures: returns the boolean of checkForFitness100 in the evolution field
@@ -75,7 +78,7 @@ public class EvolutionComponent extends JComponent {
    */
   public boolean checkForFitness100() {
     return this.evolution.checkForFitness100();
-  }
+  } //checkForFitness100
   
   /**
   * Sets various parameters for the evolution process, including population size,
@@ -98,7 +101,7 @@ public class EvolutionComponent extends JComponent {
     double ELITISM = Double.parseDouble(elitism);
     boolean isResearch = (selection.equals("Research")) ? true : false;
     this.evolution = new Evolution(new Population(populationSIZE, genomeLENGTH, fitnessFunction, isResearch), populationSIZE, GENERATIONS, ELITISM, genomeLENGTH, mutationRATE, selection, crossover);
-  }
+  } //setAll
   
   /**
   * Handles the selection of individuals in the population based on the specified
@@ -110,7 +113,7 @@ public class EvolutionComponent extends JComponent {
     } else{
       this.evolution.handleSelection();
     }
-  }
+  } //handleSelection
   
   /**
   * Paints the component and draws various elements, including axes, divisions, lines, and legend.
@@ -127,7 +130,7 @@ public class EvolutionComponent extends JComponent {
     this.drawLines(g2);
     this.drawLegend(g2);
     g2.drawString("Fitness over Generations", -x + (this.getWidth()/TITLE_CENTERING_RATIO), TITLE_Y_VALUE);
-  }
+  } //paintComponent
   
   /**
   * Draws various elements on the specified Graphics2D object, including axes and a legend.
@@ -138,7 +141,7 @@ public class EvolutionComponent extends JComponent {
     this.drawXDivisions(g2);
     this.drawYDivisions(g2);
     this.drawLegend(g2);
-  }
+  } //drawOn
   
   /**
   * Draws the divisions on the X-axis to indicate values.
@@ -157,7 +160,7 @@ public class EvolutionComponent extends JComponent {
       num += this.evolution.getGenerations() / GENERATION_INTERVAL;
     }
     g2.translate(-this.x, -this.yHeight);
-  }
+  } //drawXDivisions
   
   /**
   * Draws the divisions on the Y-axis to indicate values.
@@ -177,7 +180,7 @@ public class EvolutionComponent extends JComponent {
       }
     }
     g2.translate(-this.x, -this.y);
-  }
+  } //drawYDivisions
   
   /**
   * Calculates the Y-coordinate based on a percentage value.
@@ -186,7 +189,7 @@ public class EvolutionComponent extends JComponent {
   */
   public int calculateY(double y){
     return (int) (this.yHeight - (y * (this.yHeight / (double) MAX_FITNESS_SCORE)));
-  }
+  } //calculateY
   
   /**
   * Calculates the X-coordinate based on the current generation.
@@ -195,7 +198,7 @@ public class EvolutionComponent extends JComponent {
   */
   public int calculateX(double x){
     return (int) (x * ((double) this.xWidth / this.evolution.getGenerations()));
-  }
+  } //calculateX
   
   /**
   * Draws fitness lines on the specified Graphics2D object, including best fitness, average fitness, and lowest fitness.
@@ -260,7 +263,7 @@ public class EvolutionComponent extends JComponent {
       }
     }
     g2.translate(-this.x,-this.y);
-  }
+  } //drawLines
   
   /**
   * Draws a legend on the specified Graphics2D object, including colored boxes and labels for fitness lines.
@@ -290,7 +293,7 @@ public class EvolutionComponent extends JComponent {
     if (this.evolution.isResearchPopulation()){
       drawResearchLegend(g2);
     }
-  }
+  } //drawLegend
 
   /**
    * Draws the legend of the extra research variables if research is selected
@@ -312,5 +315,5 @@ public class EvolutionComponent extends JComponent {
     g2.drawString("Number of ?s", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_Q_Y + KEY_LABEL_OFFSET));
     g2.drawString("Number of 1s", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_1_Y + KEY_LABEL_OFFSET));
     g2.drawString("Number of 0s", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_0_Y + KEY_LABEL_OFFSET));
-  }
-}
+  } //drawResearchLegend
+} //End EvolutionComponent

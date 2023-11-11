@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/*
+ * Class: Population
+ * @author F23_402
+ * 
+ * Purpose: This class contains the set of the chromosomes. It contains the functions that will operate on the chromosomes, such as the selection functions, and the statistics for the simulation. 
+ */
 public class Population {
     // constants
     public static final int CROSSOVER_OFFSET = 1;
@@ -489,6 +495,9 @@ public class Population {
         return ((hammingDistance/(numPairs))/genomeLength)*100;
     }
     
+    /*
+     * ensures: Calculates the number of 1s and 0s at the ith position in the string. Given that the '?' is in a state of flux and can be either 1 or 0, it is not counted.
+     */
     public void readData1n0(Chromosome chromosome, int[][] position1n0Array){
         if (fitnessFunctionType==0){ //DEFAULT FITNESS
             String geneticData = chromosome.getChromosomeDataAsString();
@@ -501,7 +510,7 @@ public class Population {
                 }
             }
         }
-        else{
+        else{ //This else statement is used for checking when the fitness function is comparing a target bitstring
             String geneticData = chromosome.getChromosomeDataAsString();
             
             for (int i = 0; i < targetString.length(); i++){
@@ -676,4 +685,4 @@ public class Population {
     public double getPrevHammingDistance() {
         return this.prevHammingDistance;
     }
-}
+} //End Population

@@ -5,6 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JComponent;
 
+/**
+ * Class: ChromosomeComponent
+ * @author F23_R402
+ * 
+ * Purpose: the class is used for the code required for the visuals on the frame of the viewer
+ */
 public class ChromosomeComponent extends JComponent{
 	// constants
 	public static final int X_MOUSE_COORD_OFFSET = 7;
@@ -70,7 +76,7 @@ public class ChromosomeComponent extends JComponent{
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		chromosome.drawOn(g2, findGeneWidth(), findBorder()); // debugger
-	}
+	} //paintComponent
 	
 	/**
 	 * ensures: that given the coordinates, the method is able to determine which gene object is being clicked on
@@ -91,7 +97,7 @@ public class ChromosomeComponent extends JComponent{
 	public void handleLoadDataFromFile(String fileData) throws InvalidChromosomeFormatException {
 		this.setChromosome(new Chromosome());
 		this.chromosome.initiateGeneWithString(fileData);
-	}
+	} //handleLoadDataFromFile
 
 	/**
 	 * ensures: mutates genes in the chromosome
@@ -99,7 +105,7 @@ public class ChromosomeComponent extends JComponent{
 	 */
 	public void handleMutateGenesInChromosome(double mutationRate) {
 		this.chromosome.mutateGenes(mutationRate);
-	}
+	} //handleMutateGenesInChromosome
 
 	/**
 	 * ensures: returns the length of the genome
@@ -107,7 +113,7 @@ public class ChromosomeComponent extends JComponent{
 	 */
 	public int handleGetNumberOfGenesInChromosome() {
 		return this.chromosome.getNumOfGenes();
-	}
+	} //handleGetNumberOfGenesInChromosome
 
 	/**
 	 * ensures: returns chromosome data in te form of "10010100"
@@ -115,5 +121,5 @@ public class ChromosomeComponent extends JComponent{
 	 */
 	public String handleGetChromosomeDataAsString() {
 		return this.chromosome.getChromosomeDataAsString();
-	}
-}
+	} //handleGetChromosomeDataAsString
+} //End ChromosomeComponent

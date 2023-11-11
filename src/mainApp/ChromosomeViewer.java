@@ -232,14 +232,14 @@ public class ChromosomeViewer {
             }
         }
 		return true;
-	}
+	} //checkChromosomeData
 
 	/**
 	 * ensures: a wrapper method to invoke the  driverMain  method
 	 */
 	public void handleDriverMain() {
 		this.driverMain();
-	}
+	} //handleDriverMain
 
 	/**
 	 * ensures: starts the application
@@ -249,4 +249,4 @@ public class ChromosomeViewer {
 		ChromosomeViewer c = new ChromosomeViewer();
 		c.handleDriverMain();
 	} // main
-}
+} //End ChromosomeViewer

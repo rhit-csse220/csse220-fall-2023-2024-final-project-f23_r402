@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 
 /**
- * Abstract class: Component
+ * Abstract class: DataComponent
  * @author F23_R402
  * 
- * Purpose: provide generic functionality for all component classes within the program
+ * Purpose: provide generic functionality for all the visualization additional component classes within the program
  */
 abstract class DataComponent extends JComponent {
     // fields
@@ -19,7 +19,7 @@ abstract class DataComponent extends JComponent {
      */
     public Population getPopulation() {
         return this.population;
-    }
+    } //getPopulation
 
     /**
      * ensures: sets the population to a new value
@@ -27,11 +27,11 @@ abstract class DataComponent extends JComponent {
      */
     public void setPopulation(Population population) {
         this.population = population;
-    }
+    } //setPopulation
 
     /**
      * ensures: draws the component
      */
     @Override
-    public abstract void paint(Graphics g);
-}
+    public abstract void paint(Graphics g); //paint
+} //End DataComponent

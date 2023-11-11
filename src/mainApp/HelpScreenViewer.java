@@ -9,6 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Class: HelpScreenViewer
+ * @author F23_R402
+ * 
+ * Purpose: Will help visualize the contents of the help screen and frame its content correctly 
+ */
 public class HelpScreenViewer {
 
     static final int SCREEN_PADDING = 15;
@@ -18,8 +24,9 @@ public class HelpScreenViewer {
                 + "a single chromosome. A black square stands for 1 in genome, a green one for 0.</li>"
                 + "<li>Overall, genomes of different lengths are supported, but they should be divisible<br>"
                 + "by 10. Each gene in chromosome is toggleable, meaning its value can be changed from<br>"
-                + "0 to 1 and vice versa</li><br><br>"
-                + "<li>The other feature is simulating the entire evolution. Our tool provides users with<br>"
+                + "0 to 1 and vice versa. A third bit, '?', can be added when the selection function<br>"
+                + "is set to Research. Elitism and mutation will not work by default. Crossover is<br>"
+                + "enabled by default.<br></li><br><li>The other feature is simulating the entire evolution. Our tool provides users with<br>"
                 + "nice plots of the fittest, average, and the worst populations and the hamming distance.</li>"
                 + "<li>It also provides visualisations for the whole population, the best chromosome, and the<br>"
                 + "histogram</li>."
@@ -87,5 +94,4 @@ public class HelpScreenViewer {
     public void handleDriverMain() {
         this.driverMain();
     }
-    
-}
+} //End HelpScreenViewer

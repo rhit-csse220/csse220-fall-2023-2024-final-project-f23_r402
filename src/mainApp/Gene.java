@@ -6,6 +6,12 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
+/**
+ * Class: Gene
+ * @author F23_R402
+ * 
+ * Purpose: The Gene class is used for each gene in the chromosome. Each gene contains a value of 1 or 0, and if research, ?, which can either be 0 or 1. 
+ */
 public class Gene {
 	// constants
 	public static final int DEFAULT_GENE_SIDE = 30; // side length of gene square

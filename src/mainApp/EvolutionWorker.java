@@ -7,7 +7,10 @@ import javax.swing.SwingWorker;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * The EvolutionWorker class extends SwingWorker and represents the background
+ * Class: EvolutionWorker
+ * @author F23_R402
+ * 
+ * Purpose: The EvolutionWorker class extends SwingWorker and represents the background
  * worker responsible for handling the evolution process in the EvolutionComponent.
  * It operates perform evolutionary iterations and update the UI,
  * and handle user interactions such as pausing and auto-stopping.
@@ -34,7 +37,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
         this.generations = generations;
         this.startEvolutionButton = startEvolutionButton;
         this.shutAllFrames = false;
-    }
+    } //EvolutionWorker
 
     /**
      * Sets the paused state of the worker.
@@ -45,7 +48,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
         if (!paused) {
             pauseLatch.countDown(); // Resume the worker
         }
-    }
+    } //setPaused
 
     /**
      * Sets the auto-stop feature of the worker.
@@ -53,7 +56,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
      */
     public void setAutoStopEnabled(boolean autoStopEnabled) {
         this.autoStopEnabled = autoStopEnabled;
-    }
+    } //setAutoStopEnabled
 
     /**
      * Checks if all frames should be shut down.
@@ -61,7 +64,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
      */
     public boolean isShutAllFrames() {
         return this.shutAllFrames;
-    }
+    } //isShutAllFrames
 
     /**
      * Sets the flag to shut down all frames.
@@ -69,7 +72,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
      */
     public void setShutAllFrames(boolean shutAllFrames) {
         this.shutAllFrames = shutAllFrames;
-    }
+    } //setShutAllFrames
 
     /**
      * The background task that performs evolutionary iterations and updates the UI.
@@ -110,5 +113,5 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
         });
 
         return null;
-    }
-}
+    } //doInBackground
+} //End EvolutionWorker

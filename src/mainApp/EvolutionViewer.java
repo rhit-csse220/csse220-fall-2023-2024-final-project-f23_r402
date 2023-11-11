@@ -19,7 +19,10 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 /**
-* The EvolutionViewer class is responsible for creating a graphical user interface
+ * class: EvolutionViewer
+ * @author F23_R402
+ * 
+*  Purpose: The EvolutionViewer class is responsible for creating a graphical user interface
 * for viewing the evolution of populations. It allows users to configure various
 * parameters for the evolution process and visualize the results.
 */
@@ -556,4 +559,4 @@ public class EvolutionViewer {
         EvolutionViewer evViewer = new EvolutionViewer();
         evViewer.handleDriverMain();
     }
-}
+} //End EvolutionViewer
