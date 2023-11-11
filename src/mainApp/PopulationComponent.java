@@ -5,6 +5,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+/*
+ * Class: PopulationComponent
+ * @author F23_R402
+ * 
+ * Purpose: The class is used to visualize the population on its assigned frame
+ */
 public class PopulationComponent extends DataComponent{
     // constants
     public static final double FRAME_HEIGHT_RATIO = 1.33;

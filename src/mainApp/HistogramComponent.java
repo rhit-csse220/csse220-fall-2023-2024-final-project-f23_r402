@@ -3,7 +3,19 @@ package mainApp;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+/*
+ * Class: HistogramComponent
+ * @author F23_R402
+ * 
+ * Purpose: The visualization of the histogram diagram on its assigned frame given the data
+ */
 public class HistogramComponent extends EvolutionComponent{
+    //constants
+    public static final int FITNESS_SCORE_X_AXIS_INTERVAL = 5;
+    public static final int FITNESS_SCORE_INITIAL_LIMIT = 96;
+    public static final int FITNESS_SCORE_2ND_LAST_LIMIT = 99;
+    public static final int SCORE_STRING_X_OFFSET = 2;
+
     // fields
     private Histogram histogram;
 
@@ -31,21 +43,27 @@ public class HistogramComponent extends EvolutionComponent{
         this.drawRectangles(g2);
     }
 
+    /*
+     * ensures: It takes the data of how many chromosomes are there per fitness score interval from 0 to 100, and then draws the rectangles based on those values
+     */
     public void drawRectangles(Graphics2D g2){
         g2.translate(x, yHeight);
-        for (int i = 0; i <= 96; i+=5){
+        for (int i = 0; i <= FITNESS_SCORE_INITIAL_LIMIT; i+=FITNESS_SCORE_X_AXIS_INTERVAL){
             int sum = 0;
-            for (int j = i; j <i+5; j++){
+            for (int j = i; j <i+FITNESS_SCORE_X_AXIS_INTERVAL; j++){
                 sum += this.histogram.getFitnessFrequency(j);
+                if (j==FITNESS_SCORE_2ND_LAST_LIMIT){
+                    sum += this.histogram.getFitnessFrequency(MAX_FITNESS_SCORE);
+                }
             }
             int xCoord = calculateX(i);
             int yCoord = -calculateY(sum);
-            int width = calculateX(5);
+            int width = calculateX(FITNESS_SCORE_X_AXIS_INTERVAL);
             int height = calculateY(sum);
             g2.drawRect(xCoord, yCoord, width, height);
             String sNum = Integer.toString(sum);
             if (sum != 0){
-                g2.drawString(sNum, xCoord+calculateX(2), yCoord);
+                g2.drawString(sNum, xCoord+calculateX(SCORE_STRING_X_OFFSET), yCoord);
             }
         }
         g2.translate(-x, -yHeight);
@@ -96,4 +114,4 @@ public class HistogramComponent extends EvolutionComponent{
         histogram = new Histogram();
         histogram.setPopulation(population);
     }
-}
+} //End HistogramComponent

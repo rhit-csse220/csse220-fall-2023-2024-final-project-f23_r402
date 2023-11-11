@@ -3,6 +3,12 @@ package mainApp;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+/*
+ * Class: IndividualComponent
+ * @author F23_R402
+ * 
+ * Purpose: To visualize the best chromosome on its assigned frame
+ */
 public class IndividualComponent extends DataComponent{
     // constant
     final static int DEFAULT_BORDER = 3;
@@ -51,4 +57,4 @@ public class IndividualComponent extends DataComponent{
     public double getPopulationPrevHammingDistance() {
         return this.population.getPrevHammingDistance();
     }
-}
+} //End IndividualComponent

@@ -6,6 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+/*
+ * Class: HistogramViewer
+ * @author F23_R402
+ * 
+ * Purpose: To create the frame for visualizing the histogram graph for the population and where its chromosomes fit in each fitness score interval
+ */
 public class HistogramViewer extends DataViewer {
     // fields
     private HistogramComponent histogramComponent;
@@ -49,4 +55,4 @@ public class HistogramViewer extends DataViewer {
     public void handleSetPopulation(Population population){
         this.histogramComponent.handleSetPopulation(population);
     }
-}
+} //End HistogramViewer

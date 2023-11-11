@@ -8,6 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
+/*
+ * Class: IndividualViewer
+ * @author F23_R402
+ * 
+ * Purpose: To create and view the frame required for visualizing the best chromosome 
+ */
 public class IndividualViewer extends DataViewer {
     // fields
     private IndividualComponent indComponent = new IndividualComponent();
@@ -75,4 +81,4 @@ public class IndividualViewer extends DataViewer {
         this.frame.pack();
     }
 
-}
+} //End IndividualViewer

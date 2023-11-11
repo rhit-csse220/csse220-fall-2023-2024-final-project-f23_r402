@@ -7,6 +7,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+/*
+ * Class: PopulationViewer
+ * @author F23_R402
+ * 
+ * Purpose: To create and view the frame for visualizing the population in the simulation
+ */
 public class PopulationViewer extends DataViewer {
     // fields
     private PopulationComponent populationComponent = new PopulationComponent();
@@ -58,4 +64,4 @@ public class PopulationViewer extends DataViewer {
     public PopulationComponent getPopComponent(){
         return this.populationComponent;
     }
-}
+} //End PopulationComponent

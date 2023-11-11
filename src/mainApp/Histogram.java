@@ -1,5 +1,11 @@
 package mainApp;
 
+/*
+ * Class: Histogram
+ * @author: F23_R402
+ * 
+ * Purpose: Creates and stores the statistics for the fitness scores for all the chromosomes in the population
+ */
 public class Histogram {
     // fields
     private Population population;
