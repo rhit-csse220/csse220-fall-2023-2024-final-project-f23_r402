@@ -75,7 +75,6 @@ public class EvolutionComponent extends JComponent {
   * @throws InvalidGenomeLengthException
   */
   public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism, String fitnessFunction, boolean isResearch) throws InvalidGenomeLengthException{
-    System.out.println("=====setAll() is called=====");
     int populationSIZE = Integer.parseInt(populationSize);
     int mutationRATE = Integer.parseInt(mutationRate);
     int GENERATIONS = Integer.parseInt(generations);

@@ -119,7 +119,6 @@ public class Evolution {
   public void handleSelection(){
     String s = this.selection;
     if (s.equals("Truncation")){
-        System.out.println("HUHU");
       this.handleTruncationSelection();
     }
     else if (s.equals("Roulette")){

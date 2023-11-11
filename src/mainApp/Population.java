@@ -312,14 +312,7 @@ public class Population {
 
         this.createLine();
 
-        // for (Chromosome chromosome : this.chromosomes){
-        //     System.out.println(chromosome.getFitnessScore());
-        // }
-
         ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>();
-        
-        // int initialSize = this.chromosomes.size();
-        // this.chromosomes = new ArrayList<Chromosome>();
         
         // perform crossover
         for (int i = 0; i < this.sizeOfPopulation; i++){
@@ -328,8 +321,6 @@ public class Population {
         }
 
         this.chromosomes = currentChromosomes;
-        // sort population
-        //this.sortPopulation();
     }
 
     public Chromosome selectRandomParent(){
@@ -393,8 +384,8 @@ public class Population {
 
         int crossoverPoint = r.nextInt(CROSSOVER_OFFSET, this.genomeLength);
 
-        String parent1Data = parent1.getChromosomeDataAsString().substring(0, crossoverPoint);
-        String parent2Data = parent2.getChromosomeDataAsString().substring(crossoverPoint, this.genomeLength);
+        String parent1Data = parent1.getOriginalGenomeData().substring(0, crossoverPoint);
+        String parent2Data = parent2.getOriginalGenomeData().substring(crossoverPoint, this.genomeLength);
         String childData = parent1Data + parent2Data;
         try{
             Chromosome childChromosome = new Chromosome(childData, this.isResearch);
@@ -501,37 +492,6 @@ public class Population {
         }
     }
 
-    // Was another measure of diversity but idk how to code it 
-    // public double calculateUniqueStrings(){
-    //     int uniqueCount = 0;
-    //     for (int i = 1; i < sizeOfPopulation; i++){
-    //         if (!this.chromosomes.get(i).getChromosomeDataAsString().equals(this.chromosomes.get(i-1).getChromosomeDataAsString())){
-    //             uniqueCount++;
-    //         }
-    //     }
-    //     return ((double)uniqueCount/sizeOfPopulation);
-    // }
-
-
-    // Debugger methods
-
-    // to check the fitness score of chromosomes in the ArrayList
-    // public void printArrayList(ArrayList<Chromosome> chromosomes){
-    //     for (Chromosome c : chromosomes){
-    //         System.out.print(c.getFitnessScore() + ", ");
-    //     }
-    //     System.out.println();
-    // }
-
-    // to check if the sorting by fitness gave the correct result
-    // public void Fitness(){
-    //     // this.sortPopulation();
-    //     for (Chromosome chromosome : this.chromosomes){
-    //         System.out.println(chromosome.getFitnessScore());
-    //     }
-    //     System.out.println(this.chromosomes.size());
-    // }
-
     public ArrayList<Chromosome> getChromosomes() {
         return this.chromosomes;
     }
@@ -583,23 +543,4 @@ public class Population {
     public int getChromosomesSize() {
         return this.chromosomes.size();
     }
-
-    // public void setFitnessFunctionForChromosomes(String fitnessFunction) throws InvalidGenomeLengthException {
-    //     if (fitnessFunction.contains("only") && fitnessFunction.contains("100") && this.genomeLength != 100) {
-    //         throw new InvalidGenomeLengthException(100);
-    //     }
-    //     if (fitnessFunction.equals("Default"))
-	// 		this.fitnessFunctionType = 0;
-	// 	else if (fitnessFunction.contains("Smiley"))
-	// 		this.fitnessFunctionType = 1;
-    // }
-    // public static void main(String[] args) {
-    //     Population p = new Population(1000, 20, "Default", true);
-    //     for (int i = 0; i < 100; i++){
-    //         p.performSelectionResearch();
-    //         System.out.println("BRUH");
-    //     }
-    //     p.sortPopulation();
-    //     System.out.println(p.getChromosomes());
-    // }
 }

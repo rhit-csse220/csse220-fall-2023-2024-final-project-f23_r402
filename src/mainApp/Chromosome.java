@@ -11,15 +11,12 @@ import java.util.Random;
 public class Chromosome implements Comparable {
 	public static final int NUM_PER_ROW = 10;
 	public static final int X_COORD_LETTER_OFFSET = 5;
-	// public static final int Y_COORD_LETTER_OFFSET = 10;
 	public static final double MAX_FITNESS_SCORE = 100.0;
 	public static final int ORIGIN = 1;
-	public static final int CROSSOVER_OFFSET = 1;
-	
+	public static final int CROSSOVER_OFFSET = 1;	
 	public static final Color GENE_0_TEXT_COLOR = Color.WHITE;
 	public static final Color GENE_1_TEXT_COLOR = Color.BLACK;
 	public static final Color GENE_2_TEXT_COLOR = Color.RED;
-	
 	public static final String smileyGeneticData = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
 	public static final String susGeneticData = "1111111111111000001111011111010001110001010111110101011111010001111101110110110111011011011110010011";
 	
@@ -48,9 +45,7 @@ public class Chromosome implements Comparable {
 
 	// research
 	private boolean isResearch = false;
-
 	private boolean isPerfect = false;
-
 	private int daysRemaining = 0;
 
 	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
@@ -102,11 +97,6 @@ public class Chromosome implements Comparable {
 	
 	public Chromosome(String fileData) throws InvalidChromosomeFormatException{ 
 		this.initiateGeneWithString(fileData);
-		// this.fileData = fileData;
-		// this.numOfGenes = this.fileData.length();
-		// this.initiateGeneWithFile();
-		// this.calcFitnessFuction();
-		//this.fitnessSmiley();
 	}
 	
 	public Chromosome(String fileData, boolean mutate, double mutationRate) throws InvalidChromosomeFormatException{
@@ -144,9 +134,8 @@ public class Chromosome implements Comparable {
 	public void initiateGene() {
 		this.initiateGeneLoad();
 		
-		// TO SET THE FITNESS SCORE
+		// SET THE FITNESS SCORE
 		this.calcFitnessFuction();
-		//this.fitnessSmiley();
 	}
 
 	public void initiateGeneLoad(){
@@ -172,7 +161,6 @@ public class Chromosome implements Comparable {
 					numberOfQs++;
 					qIndex.add(i*NUM_PER_ROW+j);
 				}
-				// this.genes[i*numPerColumn+j] = new Gene((char)(bit+'0'), true, this.geneSide*j, this.geneSide*i, this.geneSide);
 				this.genes[i*NUM_PER_ROW+j] = new Gene(aBit, true, this.geneWidth*j + this.border, this.geneWidth*i, this.geneWidth);
 			}
 		}
@@ -209,7 +197,6 @@ public class Chromosome implements Comparable {
 				char bit = s.charAt(i*NUM_PER_ROW+j);
 				this.numberOf0s = (bit=='0') ? this.numberOf0s+1 : this.numberOf0s;
 				this.numberOf1s = (bit=='1') ? this.numberOf1s+1 : this.numberOf1s;
-				//this.numberOfQs = (bit=='?') ? this.numberOfQs+1 : this.numberOfQs;
 				if (bit == '?'){
 					this.numberOfQs++;
 					qIndex.add(i*NUM_PER_ROW+j);
@@ -317,19 +304,7 @@ public class Chromosome implements Comparable {
 			gene.mutate(mutationRate, this.numOfGenes);
 		}
 		this.calcFitnessFuction();
-		//this.fitnessSmiley();
 	}
-
-	// think this would make more sense to be done in population?
-
-	// public void doCrossover(Chromosome other){
-	// 	int crossoverPoint = r.nextInt(CROSSOVER_OFFSET, numOfGenes-CROSSOVER_OFFSET); // set to 1 and numOfGenes-1 because there would no crossover if the point was at the last index, or at 0 as it would replace the entirety of the chromosome's data
-	// 	String crossoverData = other.getChromosomeDataAsString();
-	// 	System.out.println(crossoverPoint);
-	// 	for (int i = crossoverPoint; i<crossoverData.length(); i++){
-	// 		this.genes[i].setBit(crossoverData.charAt(i));
-	// 	}
-	// }
 	
 	/**
 	* ensures: that the chromosome data, i.e the genes and their values, are concatenated into a single string
@@ -490,17 +465,12 @@ public class Chromosome implements Comparable {
             if (checkAll1s(this.getChromosomeDataAsString())){
                 this.isPerfect = true;
 				this.daysRemaining = 1000 - days - 1;
-				//this.fitnessScore = calculateFitnessScoreResearch();
-				//System.out.println(this.fitnessScore);
-				System.out.println(this.originalGenomeData);
                 return;
             }
             this.daysRemaining = 1000 - days -1 ;
         }
 		this.loadGeneFromOriginalData();
-		//System.out.println(this.daysRemaining);
 		this.fitnessScore = calculateFitnessScoreResearch();
-		//System.out.println(this.fitnessScore);
     }
 
 	public void loadGeneFromOriginalData(){
@@ -537,5 +507,9 @@ public class Chromosome implements Comparable {
 
 	public void setFitnessFunctionType(int fitnessFunction) {
 		this.fitnessFunctionType = fitnessFunction;
+	}
+
+	public String getOriginalGenomeData(){
+		return this.originalGenomeData;
 	}
 }

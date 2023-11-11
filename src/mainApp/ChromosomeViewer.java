@@ -23,7 +23,6 @@ public class ChromosomeViewer {
 	 * component
 	 */
 	private String fileName = "Chromosome X";
-	private String filePath = "";
 	private File file;
 	private JFrame frame;
 	private ChromosomeComponent chComponent;
@@ -42,11 +41,8 @@ public class ChromosomeViewer {
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
-		// frame.setResizable(false);
 
 		frame.setVisible(true);
-
-		// public int getFrameWidth() {return frame.getWidth()};
 
 		// fileName - BorderLayout.NORTH
 		JLabel fileNameLabel = new JLabel(fileName);
@@ -113,7 +109,6 @@ public class ChromosomeViewer {
 		        if (response == JFileChooser.APPROVE_OPTION) {
 		            file = new File(chooseFile.getSelectedFile().getAbsolutePath());
 		            fileName = file.getName();
-		            // filePath = file.getPath();
 		            fileNameLabel.setText(fileName);
 
 		            try {
@@ -127,23 +122,12 @@ public class ChromosomeViewer {
 		                // Check if the loaded file data is invalid in terms of length
 		                int characterCount = fileData.length();
 		                if (characterCount % 10 != 0) {
-		                    // JOptionPane.showMessageDialog(null,
-		                    //         "Invalid file data length. Expected a multiple of 10 characters, but loaded " + characterCount + " characters.",
-		                    //         "Invalid Data Length",
-		                    //         JOptionPane.ERROR_MESSAGE);
-
-							// TODO: we can delete this if since chComponent.handleLoadDataFromFile throws the exception anyways
 							throw new InvalidChromosomeFormatException(characterCount);
 		                } else if (!checkChromosomeData(fileData.toString())){
 							throw new InvalidChromosomeCharacterException();
 						} else {
 		                    // Proceed with loading and initializing the data
-
 							chComponent.handleLoadDataFromFile(fileData.toString());  // TODO: change fileData type to String to avoid using toString everywhere 
-
-		                    // chComponent.setChromosome(new Chromosome());
-		                    // chComponent.handleStoreChromosomeData(fileData.toString());
-		                    // chComponent.handleInitiateGeneWithFile();
 		                    frame.repaint();
 		                }
 		            } catch (IOException | InvalidChromosomeFormatException | InvalidChromosomeCharacterException ex) {
@@ -165,8 +149,6 @@ public class ChromosomeViewer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
-				// Deleted because not everybody has the directory
-				// fileChooser.setCurrentDirectory(new File("C:\\Users\\%USERNAME%\\Documents\\GARP"));
 				int response = fileChooser.showSaveDialog(null);
 
 				if (response == JFileChooser.APPROVE_OPTION) {
