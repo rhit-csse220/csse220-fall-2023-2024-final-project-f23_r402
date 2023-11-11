@@ -4,8 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-
 import javax.swing.JComponent;
 
 /**
@@ -26,7 +24,6 @@ public class EvolutionComponent extends JComponent {
   public static final int X_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING = -6;
   public static final int Y_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING = -25;
   public static final int Y_AXIS_LABEL_TO_LINE_VERTICAL_PADDING = 5;
-  
   public static final int KEY_BOX_SIDE_LENGTH = 20;
   public static final double KEY_DISTANCE = 12.0;
   public static final double KEY_GREEN_Y = 30.0;
@@ -36,13 +33,10 @@ public class EvolutionComponent extends JComponent {
   public static final double KEY_LABEL_OFFSET = -6;
   public static final double KEY_X_RATIO = 0.95;
   public static final double KEY_LABEL_X_RATIO = 0.975;
-  
   public static final int DEFAULT_STROKE = 500;
   public static final int DEFAULT_GENERATION = 100;
   
   protected int x,y,xLimit,yLimit,xWidth,yHeight;
-  // private int generationCount;
-  // private ArrayList<BestFitLine2D> lineArray = new ArrayList<BestFitLine2D>();
   private Evolution evolution;
   
   /**
@@ -74,12 +68,13 @@ public class EvolutionComponent extends JComponent {
   * @param elitism The new elitism percentage.
   * @throws InvalidGenomeLengthException
   */
-  public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism, String fitnessFunction, boolean isResearch) throws InvalidGenomeLengthException{
+  public void setAll(String populationSize, String selection, String mutationRate, boolean crossover, String generations, String genomeLength, String elitism, String fitnessFunction) throws InvalidGenomeLengthException{
     int populationSIZE = Integer.parseInt(populationSize);
     int mutationRATE = Integer.parseInt(mutationRate);
     int GENERATIONS = Integer.parseInt(generations);
     int genomeLENGTH = Integer.parseInt(genomeLength);
     double ELITISM = Double.parseDouble(elitism);
+    boolean isResearch = (selection.equals("Research")) ? true : false;
     this.evolution = new Evolution(new Population(populationSIZE, genomeLENGTH, fitnessFunction, isResearch), populationSIZE, GENERATIONS, ELITISM, genomeLENGTH, mutationRATE, selection, crossover);
   }
   

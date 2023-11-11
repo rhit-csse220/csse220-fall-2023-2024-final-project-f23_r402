@@ -31,18 +31,6 @@ public class Chromosome implements Comparable {
 	private int numberOf1s, numberOf0s, numberOfQs = 0;
 	private ArrayList<Integer> qIndex = new ArrayList<>();
 
-	public int getNumberOf1s() {
-		return numberOf1s;
-	}
-
-	public int getNumberOf0s() {
-		return numberOf0s;
-	}
-
-	public int getNumberOfQs() {
-		return numberOfQs;
-	}
-
 	// research
 	private boolean isResearch = false;
 	private boolean isPerfect = false;
@@ -51,21 +39,6 @@ public class Chromosome implements Comparable {
 	//ADDED X & Y VARIABLES FOR POPULATION OF CHROMOSOMES TO BE DRAWN; CAN BE CHANGED IN HINDSIGHT
 	private int x = 0;
 	private int y = 0;
-
-	public boolean isPerfect() {
-		return isPerfect;
-	}
-	
-	public boolean isResearch() {
-		return isResearch;
-	}
-	
-	public void setX(int x) {
-		this.x = x;
-	}
-	public void setY(int y) {
-		this.y = y;
-	}
 
 	// Create a Random object
 	Random r = new Random();
@@ -510,5 +483,32 @@ public class Chromosome implements Comparable {
 
 	public String getOriginalGenomeData(){
 		return this.originalGenomeData;
+	}
+
+	public int getNumberOf1s() {
+		return numberOf1s;
+	}
+
+	public int getNumberOf0s() {
+		return numberOf0s;
+	}
+
+	public int getNumberOfQs() {
+		return numberOfQs;
+	}
+
+	public boolean isPerfect() {
+		return isPerfect;
+	}
+	
+	public boolean isResearch() {
+		return isResearch;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	public void setY(int y) {
+		this.y = y;
 	}
 }
