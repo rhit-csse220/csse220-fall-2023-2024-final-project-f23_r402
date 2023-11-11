@@ -25,41 +25,40 @@ public class Population {
     public boolean isResearch() {
         return isResearch;
     }
-
+    
     public int getSizeOfPopulation() {
         return sizeOfPopulation;
     }
-
+    
     public void setSizeOfPopulation(int sizeOfPopulation) {
         this.sizeOfPopulation = sizeOfPopulation;
     }
-
+    
     public double getPrevHammingDistance() {
         return prevHammingDistance;
     }
     
     // Create a Random object
     Random r = new Random();
-
+    
     public Population(){}
-
+    
     public Population(int sizeOfPopulation, int genomeLength){
         this.sizeOfPopulation = sizeOfPopulation;
         this.genomeLength = genomeLength;
         this.initiatePopulation();
     }
-
+    
     public Population(int sizeOfPopulation, int genomeLength, String fitnessFunction, boolean isResearch) {
         this.sizeOfPopulation = sizeOfPopulation;
         this.genomeLength = genomeLength;
         this.isResearch = isResearch;
         if (fitnessFunction.equals("Default")){
-			this.fitnessFunctionType = 0;
+            this.fitnessFunctionType = 0;
         } else if (fitnessFunction.contains("Smiley")){
-			this.fitnessFunctionType = 1;
+            this.fitnessFunctionType = 1;
             this.targetString = Chromosome.smileyGeneticData;
-        }
-        else if (fitnessFunction.contains("Sus")){
+        } else if (fitnessFunction.contains("Sus")){
             this.fitnessFunctionType = 2;
             this.targetString = Chromosome.susGeneticData;
         }
@@ -84,29 +83,29 @@ public class Population {
         }
     }
 
-    /**
-     * sorts the chromosomes ArrayList from highest to lowest fitness score
-     */
-    public void sortPopulation(){
-        Collections.sort(this.chromosomes);
-    }
+/**
+* sorts the chromosomes ArrayList from highest to lowest fitness score
+*/
+public void sortPopulation(){
+    Collections.sort(this.chromosomes);
+}
 
-    /**
-     * creates a BestFitLine2D object based on the previous best, average, and low fitness and add to lineArray
-     */
-    public void createLine(){
-        // find previous best + avg + lowest fitness
-        this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
-        this.prevAvgFitness = calculateAvgFitness();
-        this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
-        //TODO FIGURE OUT HAMMING DISTANCE WITH THE THIRD BIT '?'
-        this.prevHammingDistance = calculateHammingDistance();
-        this.prevCountOf0s = calculateTotalNumOf0s();
-        this.prevCountOf1s = calculateTotalNumOf1s();
-        this.prevCountOfQs = calculateTotalNumOfQs();
-        //this.prevHammingDistance = calculateUniqueStrings();
-        this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance, this.prevCountOf0s, this.prevCountOf1s, this.prevCountOfQs));
-    }
+/**
+* creates a BestFitLine2D object based on the previous best, average, and low fitness and add to lineArray
+*/
+public void createLine(){
+    // find previous best + avg + lowest fitness
+    this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
+    this.prevAvgFitness = calculateAvgFitness();
+    this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
+    //TODO FIGURE OUT HAMMING DISTANCE WITH THE THIRD BIT '?'
+    this.prevHammingDistance = calculateHammingDistance();
+    this.prevCountOf0s = calculateTotalNumOf0s();
+    this.prevCountOf1s = calculateTotalNumOf1s();
+    this.prevCountOfQs = calculateTotalNumOfQs();
+    //this.prevHammingDistance = calculateUniqueStrings();
+    this.lineArray.add(new BestFitLine2D(this.prevBestFitness, this.prevAvgFitness, this.prevLowFitness, this.prevHammingDistance, this.prevCountOf0s, this.prevCountOf1s, this.prevCountOfQs));
+}
 
     /**
      * ensures: calculates the total number of zeroes in the chromosomes
@@ -121,7 +120,7 @@ public class Population {
             // }
             count+= currChromosome.getNumberOf0s();
         }
-
+        
         count = (count/(this.sizeOfPopulation*this.genomeLength)) * 100;
         return count;
     }

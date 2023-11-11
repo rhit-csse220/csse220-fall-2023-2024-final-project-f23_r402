@@ -31,18 +31,6 @@ public class Chromosome implements Comparable {
 	private int numberOf1s, numberOf0s, numberOfQs = 0;
 	private ArrayList<Integer> qIndex = new ArrayList<>();
 
-	public int getNumberOf1s() {
-		return numberOf1s;
-	}
-
-	public int getNumberOf0s() {
-		return numberOf0s;
-	}
-
-	public int getNumberOfQs() {
-		return numberOfQs;
-	}
-
 	// research
 	private boolean isResearch = false;
 	private boolean isPerfect = false;
@@ -189,7 +177,6 @@ public class Chromosome implements Comparable {
 	/**
 	 * ensures: initiates the genome with a given data
 	 * @param s given data in a form of "0100101"
-	 * @throws InvalidChromosomeFormatException if s.length() % 10 != 0
 	 */
 	public void initiateGeneWithString(String s) {
 		this.initiateGeneWithStringLoad(s);
@@ -574,5 +561,32 @@ public class Chromosome implements Comparable {
 	 */
 	public String getOriginalGenomeData(){
 		return this.originalGenomeData;
+	}
+
+	public int getNumberOf1s() {
+		return numberOf1s;
+	}
+
+	public int getNumberOf0s() {
+		return numberOf0s;
+	}
+
+	public int getNumberOfQs() {
+		return numberOfQs;
+	}
+
+	public boolean isPerfect() {
+		return isPerfect;
+	}
+	
+	public boolean isResearch() {
+		return isResearch;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	public void setY(int y) {
+		this.y = y;
 	}
 }
