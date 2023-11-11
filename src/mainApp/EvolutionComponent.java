@@ -83,9 +83,8 @@ public class EvolutionComponent extends JComponent {
   * selection method.
   */
   public void handleSelection(){
-    //TODO FIX MESSAGE CHAINS
-    if (this.evolution.isResearchPopulation()) {  //.getPopulation().isResearch()){
-      this.evolution.performSelectionResearch();  // getPopulation().performSelectionResearch();
+    if (this.evolution.isResearchPopulation()) {
+      this.evolution.performSelectionResearch();
     }
     else{
       this.evolution.handleSelection();
@@ -155,7 +154,6 @@ public class EvolutionComponent extends JComponent {
       if ((i + this.yHeight / FITNESS_SCORE_INTERVAL) >= this.yHeight){
         this.yHeight = i;
       }
-      //System.out.println(i+","+yHeight);
     }
     g2.translate(-this.x, -this.y);
   }
@@ -185,7 +183,6 @@ public class EvolutionComponent extends JComponent {
   public void drawLines(Graphics2D g2){
     int generations = this.evolution.getGenerations();
     g2.translate(this.x, this.y);
-    // System.out.println(this.population.lineArray.size());
     if (generations <= 100){
       g2.setStroke(new BasicStroke(DEFAULT_STROKE / DEFAULT_GENERATION));
     } else {
@@ -219,10 +216,8 @@ public class EvolutionComponent extends JComponent {
         nY = calculateY(this.evolution.getLineArrayIndex(i, "Ham"));
         g2.setColor(Color.yellow);
         g2.drawLine(pX, pY, nX, nY);
-        
-        //TODO REMOVE THE MESSAGE CHAIN
-        
-        if (this.evolution.isResearchChromosome(0)) { //.getPopulation().getChromosomes().get(0).isResearch()){
+                
+        if (this.evolution.isResearchChromosome(0)) { 
           //Line of 0s
           pY = calculateY(this.evolution.getLineArrayIndex(i-1, "0"));
           nY = calculateY(this.evolution.getLineArrayIndex(i, "0"));
@@ -271,20 +266,4 @@ public class EvolutionComponent extends JComponent {
     g2.drawString("Low fitness", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_RED_Y + KEY_LABEL_OFFSET));
     g2.drawString("Hamming distance", calculateX(KEY_LABEL_X_RATIO * generations), calculateY(KEY_YELLOW_Y + KEY_LABEL_OFFSET));
   }
-  
-  /**
-  //    * ensures: returns generationCount
-  //    * @return generationCount
-  //    
-  * @throws InvalidGenomeLengthException*/
-  //   public int getGenerationCount() {
-    //     return generationCount;
-    //   }
-    
-    //   /**
-    //    * ensures: sets generationCount
-    //    */
-    //   public void setGenerationCount(int generationCount) {
-      //     this.generationCount = generationCount;
-      //   }
-    }
+}
