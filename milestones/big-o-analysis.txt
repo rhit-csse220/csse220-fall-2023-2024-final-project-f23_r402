@@ -32,6 +32,7 @@ c. Roulette wheel selection function
 
     Overall, this function comes down to being an O(N^2) function
 
-    Because of the way we implemented the evolution, we never call calculations of tehe fitness score directly since we always
-    create a set of new chromosomes. We only call getFitnessScore().
-    However, we do call calculateAvgFitness() once
+    Because of the way we implemented the evolution, we never call calculations of the fitness score directly since we always
+    create a set of new chromosomes. We only call getFitnessScore(). However, when we create a new Chromosome, the calcFitnessScore()
+    method is called once, which is N times per the selection method call.
+    And we also call calculateAvgFitness() once
