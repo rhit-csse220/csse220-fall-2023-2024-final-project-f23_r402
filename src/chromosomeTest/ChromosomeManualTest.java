@@ -1,12 +1,9 @@
 package chromosomeTest;
 
-import java.util.Scanner;
-
 import mainApp.Population;
 
 /**
  * Class: ChromosomeManualTest
- * @author anisima
  * 
  * Purpose: test cases that cannot be done with JUnit
  * Example:

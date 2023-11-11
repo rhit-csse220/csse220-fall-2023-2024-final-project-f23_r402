@@ -2,9 +2,7 @@ package chromosomeTest;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-
 import mainApp.Gene;
-
 import java.awt.geom.Rectangle2D;
 
 public class GeneTest {

@@ -1,17 +1,13 @@
 package chromosomeTest;
 
 import static org.junit.Assert.*;
-
 import java.util.HashMap;
-
 import org.junit.Test;
-
 import mainApp.Chromosome;
 import mainApp.InvalidChromosomeFormatException;
 
 /**
  * Class: ChromosomeTest
- * @author: anisima and huaj1
  * 
  * Purpose: test the Chromosome class
  * Example:
