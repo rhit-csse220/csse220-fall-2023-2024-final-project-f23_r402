@@ -28,11 +28,22 @@ public class Chromosome implements Comparable {
 	public static final String smileyGeneticData = "1111111111111111111111011110111111111111111111111111111111111111111111101111110110000000011111111111";
 	public static final String susGeneticData = "1111111111111000001111011111010001110001010111110101011111010001111101110110110111011011011110010011";
 	public static final int fitB = 135300;
+	public static final int MAX_DAYS = 1000;
+	public static final int DAYS_OFFSET = 1;
+	public static final double SCALING_MULTIPLER = 100;
+	public static final int ALL1S_FITNESS_NUM = 0;
+	public static final int SMILEY_FITNESS_NUM = 1;
+	public static final int SUS_FITNESS_NUM = 2;
+	public static final int BINARY_ENCODING_FITNESS_NUM = 3;
+	public static final int QUESTION_MARK_LIMIT = 4;
+	public static final int NORMAL_LIMIT = 2;
+	public static final double PRE_CALCULATION_FITNESS = -1;
+	public static final int FONT_SIZE_DIVIDER = 3;
 
 	// fields
 	private int numOfGenes = 100;           //default values
 	private int numPerColumn = 10;          //default values
-	private int fitnessFunctionType = 0;;   //default values
+	private int fitnessFunctionType = 0;    //default values
 	private Gene[] genes;
 	private double fitnessScore;
 	private int geneWidth = Gene.DEFAULT_GENE_SIDE;
@@ -125,7 +136,7 @@ public class Chromosome implements Comparable {
 	 */
 	public Chromosome(boolean isResearch){
 		this.isResearch = isResearch;
-		this.fitnessScore = -1;
+		this.fitnessScore = PRE_CALCULATION_FITNESS;
 	} //Chromosome
 
 	/**
@@ -135,7 +146,7 @@ public class Chromosome implements Comparable {
 	 */
 	public Chromosome(String fileData, boolean isResearch){
 		this.isResearch = isResearch;
-		this.fitnessScore = -1;
+		this.fitnessScore = PRE_CALCULATION_FITNESS;
 		initiateGeneWithString(fileData);
 	} //Chromosome
 
@@ -159,7 +170,7 @@ public class Chromosome implements Comparable {
 		this.genes = new Gene[this.numOfGenes];
 		for (int i = 0; i < this.numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
-				int limit = isResearch ? 4 : 2;
+				int limit = isResearch ? QUESTION_MARK_LIMIT : NORMAL_LIMIT; //Sets variable to the first value if expression true, else second value set
 				int bit = r.nextInt(0, limit);
 				char aBit = ' ';
 				if (bit == 0){
@@ -206,8 +217,8 @@ public class Chromosome implements Comparable {
 		for (int i = 0; i < this.numPerColumn; i++) {
 			for (int j = 0; j < NUM_PER_ROW; j++) {
 				char bit = s.charAt(i * NUM_PER_ROW + j);
-				this.numberOf0s = (bit == '0') ? this.numberOf0s + 1 : this.numberOf0s;
-				this.numberOf1s = (bit == '1') ? this.numberOf1s + 1 : this.numberOf1s;
+				this.numberOf0s = (bit == '0') ? this.numberOf0s + 1 : this.numberOf0s; //Expression adds one to the given value else it remains same
+				this.numberOf1s = (bit == '1') ? this.numberOf1s + 1 : this.numberOf1s; //Same as above but for different variable
 				if (bit == '?'){
 					this.numberOfQs++;
 					qIndex.add(i * NUM_PER_ROW + j);
@@ -221,9 +232,9 @@ public class Chromosome implements Comparable {
 	 * ensures: the correct fitness function is used
 	 */
 	public void calcFitnessFuction() {
-		if (this.fitnessFunctionType == 0) {
+		if (this.fitnessFunctionType == ALL1S_FITNESS_NUM) {
 			this.calculateDefaultFitnessFunction();
-		} else if (this.fitnessFunctionType == 1 || this.fitnessFunctionType == 2 || this.fitnessFunctionType == 3) {
+		} else if (this.fitnessFunctionType == SMILEY_FITNESS_NUM || this.fitnessFunctionType == SUS_FITNESS_NUM || this.fitnessFunctionType == BINARY_ENCODING_FITNESS_NUM) {
 			this.fitnessTarget();
 		} else {
 			System.out.println("Warning. Wrong fitness function selected.");
@@ -249,10 +260,10 @@ public class Chromosome implements Comparable {
 	*/
 	public void fitnessTarget() {
 		String targetString;
-		if (this.fitnessFunctionType==1){
+		if (this.fitnessFunctionType==SMILEY_FITNESS_NUM){
 			targetString = smileyGeneticData;
 		}
-		if (this.fitnessFunctionType==3){
+		else if (this.fitnessFunctionType==BINARY_ENCODING_FITNESS_NUM){
 			targetString = Integer.toBinaryString(fitB);
 		}
 		else {
@@ -276,7 +287,7 @@ public class Chromosome implements Comparable {
 	
 		// Set the fitness score based on the number of matching bits
 		this.fitnessScore = (int) ((matchingBits / (double) numOfGenes) * MAX_FITNESS_SCORE);
-		if (this.fitnessFunctionType == 3){
+		if (this.fitnessFunctionType == BINARY_ENCODING_FITNESS_NUM){
 			// This specific section is used to set the fitness score according to how CLOSE the genetic data's encoded decimal number is to the target decimal number
 			this.fitnessScore = fitnessBinaryToDecimalTarget();
 		}
@@ -298,7 +309,7 @@ public class Chromosome implements Comparable {
 		// Calculate fitness based on the absolute difference from the target
 		double fitness = 1 / (1 + Math.abs(decimalValue - targetDecimalValue));
 		
-		return fitness * 100; // Scale the fitness to a percentage
+		return fitness * SCALING_MULTIPLER; // Scale the fitness to a percentage
 	} //fitnessBinaryToDecimalTarget
 	
 	
@@ -420,8 +431,8 @@ public class Chromosome implements Comparable {
 			} else {
 				g2.setColor(GENE_2_TEXT_COLOR);
 			}
-			g2.setFont(new Font(null, Font.PLAIN, geneWidth/3));
-			g2.drawString((String)(i + ""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/3 + this.genes[i].getY());
+			g2.setFont(new Font(null, Font.PLAIN, geneWidth/FONT_SIZE_DIVIDER));
+			g2.drawString((String)(i + ""), this.genes[i].getX() + X_COORD_LETTER_OFFSET, geneWidth/FONT_SIZE_DIVIDER + this.genes[i].getY());
 		}
 	} //drawOn
 
@@ -496,7 +507,7 @@ public class Chromosome implements Comparable {
 	 */
 	public void liveLife() {
 		this.originalGenomeData = this.getChromosomeDataAsString();
-        for (int days = 0; days < 1000; days++){
+        for (int days = 0; days < MAX_DAYS; days++){
             this.loadGeneFromOriginalData();
             for (int i = 0; i < qIndex.size(); i++){
                 int indexOfQ = qIndex.get(i); //qIndex is the arraylist wherein the index of the question marks in the gene list are stored; Used to increase speed of array
@@ -507,10 +518,10 @@ public class Chromosome implements Comparable {
             }
             if (checkAll1s(this.getChromosomeDataAsString())){
                 this.isPerfect = true;
-				this.daysRemaining = 1000 - days - 1;
+				this.daysRemaining = MAX_DAYS - (days+DAYS_OFFSET); //Days starts at 0 and goes to 999; Therefore subtracting 1 more to get accurate value
                 return;
             }
-            this.daysRemaining = 1000 - days -1 ;
+            this.daysRemaining = MAX_DAYS - (days+DAYS_OFFSET);
         }
 		this.loadGeneFromOriginalData();
 		this.fitnessScore = calculateFitnessScoreResearch();
@@ -544,7 +555,7 @@ public class Chromosome implements Comparable {
     } //checkAll1s
 
 	/**
-	 * ensures: calculates the fitness score for the research part of the program
+	 * ensures: calculates the fitness score for the research part of the program (The formula is given here)
 	 * @return the fitness score
 	 */
 	public double calculateFitnessScoreResearch(){

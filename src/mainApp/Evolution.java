@@ -7,6 +7,9 @@ package mainApp;
  * Purpose: provides the actions required for evolving the assigned population per generation
  */
 public class Evolution {
+    // constants
+    public static final int MAX_FITNESS_SCORE = 100;
+
     // fields
     private Population population;
     private int populationSize;
@@ -219,7 +222,7 @@ public class Evolution {
      */
     public boolean checkForFitness100() {
         for (Chromosome chromosome : population.getChromosomes()) {
-            if (chromosome.getFitnessScore() == 100) {
+            if (chromosome.getFitnessScore() == MAX_FITNESS_SCORE) {
                 return true;
             }
         }
@@ -247,21 +250,21 @@ public class Evolution {
     * handles truncation selection of the population
     */
     public void handleTruncationSelection(){
-        this.population.performSelection(this.mutationRate, 0, this.elitism, this.crossover);
+        this.population.performSelection(this.mutationRate, Population.TRUNCATION_SELECTION_NUM, this.elitism, this.crossover);
     } //handleTruncationSelection
     
     /**
     * handles roulette selection of the population
     */
     public void handleRouletteSelection(){
-        this.population.performSelection(this.mutationRate, 1, this.elitism, this.crossover);
+        this.population.performSelection(this.mutationRate, Population.ROULETTE_SELECTION_NUM, this.elitism, this.crossover);
     } //handleRouletteSelection
     
     /**
     * handles ranked selection of the population
     */
     public void handleRankedSelection(){
-        this.population.performSelection(this.mutationRate, 2, this.elitism, this.crossover);
+        this.population.performSelection(this.mutationRate, Population.RANKED_SELECTION_NUM, this.elitism, this.crossover);
     } //handleRankedSelection
     
     /**

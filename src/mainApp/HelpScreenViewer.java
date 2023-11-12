@@ -18,6 +18,9 @@ import javax.swing.border.EmptyBorder;
 public class HelpScreenViewer {
 
     static final int SCREEN_PADDING = 15;
+    static final int TITLE_FONT_SIZE = 25;
+    static final int DESCRIPTION_FONT_SIZE = 13;
+    static final int LINKS_FONE_SIZE = 14;
     static final String descriptionText = "<html>"
                 + "This program deals with Genetic Algorithms and has two main features.<br>"
                 + "<ul><li>First, the program allows users to create, save to a file, and load from a file<br>"
@@ -51,19 +54,19 @@ public class HelpScreenViewer {
 
         JPanel titlePanel = new JPanel();
         JLabel titleLabel = new JLabel("Help");
-        titleLabel.setFont(new Font(null, Font.BOLD, 25));
+        titleLabel.setFont(new Font(null, Font.BOLD, TITLE_FONT_SIZE));
         titlePanel.add(titleLabel);
         mainPanel.add(titlePanel);
 
         JPanel descriptionPanel = new JPanel();
         JLabel descriptionLabel = new JLabel(descriptionText);
-        descriptionLabel.setFont(new Font(null, Font.PLAIN, 13));
+        descriptionLabel.setFont(new Font(null, Font.PLAIN, DESCRIPTION_FONT_SIZE));
         descriptionPanel.add(descriptionLabel);
         mainPanel.add(descriptionPanel);
 
         JPanel usefulLinksTextPanel = new JPanel();
         JLabel usefulLinksLabel = new JLabel("Useful links");
-        usefulLinksLabel.setFont(new Font(null, Font.BOLD, 14));
+        usefulLinksLabel.setFont(new Font(null, Font.BOLD, LINKS_FONE_SIZE));
         usefulLinksTextPanel.add(usefulLinksLabel);
         mainPanel.add(usefulLinksTextPanel);
 

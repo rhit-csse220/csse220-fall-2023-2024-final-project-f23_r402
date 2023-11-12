@@ -40,12 +40,14 @@ public class IndividualViewer extends DataViewer {
         final String frameTitle = "Best Chromosome";
         final int frameWidth = 400;
         final int frameHeight = 400;
+        final int xLocation = 767;
+        final int yLocation = 393;
         final int MAX_PERCENTAGE = 100;
 
         this.frame = new JFrame();
         this.frame.setTitle(frameTitle);
         this.frame.setSize(frameWidth, frameHeight);
-        this.frame.setLocation(767, 393);
+        this.frame.setLocation(xLocation, yLocation);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         this.frame.setLayout(new BorderLayout());

@@ -7,6 +7,9 @@ package mainApp;
  * Purpose: Creates and stores the statistics for the fitness scores for all the chromosomes in the population
  */
 public class Histogram {
+    // constants
+    static final int MAX_FITNESS_ARRAY_SIZE = 101;
+
     // fields
     private Population population;
     private int[] fitnessFrequency;
@@ -40,7 +43,7 @@ public class Histogram {
      * ensures: updates fitness frequency
      */
     public void updateFitnessFrequency(){
-        fitnessFrequency = new int[101];
+        fitnessFrequency = new int[MAX_FITNESS_ARRAY_SIZE];
         for (int i = 0; i < population.getChromosomesSize(); i++){
             Chromosome currChromosome = population.getChromosomeByIndex(i);  //getChromosomes().get(i);
             int fitnessCurrChromosome = (int) (currChromosome.getFitnessScore());

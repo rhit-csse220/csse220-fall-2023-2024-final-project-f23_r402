@@ -28,6 +28,9 @@ import javax.swing.Timer;
 */
 public class EvolutionViewer {
     // constants
+    public static final int INITIALIZATION_GEN_COUNT = -1;
+    public static final int COUNT_LIMIT = 5;
+    public static final int NUM_OF_TEXT_FIELDS = 5;
     public static final int TIMER_DELAY = 1500;
     public static final int SUBMIT_FORM_KEY = KeyEvent.VK_ENTER;
     
@@ -48,11 +51,13 @@ public class EvolutionViewer {
         final int frameWidth = 800;
         final int frameHeight = 400;
         final int textFieldWidth = 3;
+        final int xLocation = 0;
+        final int yLocation = 0;
         
         JFrame frame = new JFrame();
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
-        frame.setLocation(0, 0);
+        frame.setLocation(xLocation, yLocation);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
@@ -62,7 +67,7 @@ public class EvolutionViewer {
         frame.add(this.evComponent, BorderLayout.CENTER);
                 
         //Text fields array
-        JTextField[] textFields = new JTextField[5];
+        JTextField[] textFields = new JTextField[NUM_OF_TEXT_FIELDS];
         
         // create a panel for buttons
         JPanel buttonPanel = new JPanel();
@@ -167,7 +172,7 @@ public class EvolutionViewer {
             
             private boolean passedErrorCheck = true;
             Timer timer = new Timer(TIMER_DELAY/Integer.parseInt(generationsField.getText()), new ActionListener() {
-                int generationCount = -1;
+                int generationCount = INITIALIZATION_GEN_COUNT;
 
                 private void resetEvolution() {
                     startEvolutionButton.setText("Start Evolution");
@@ -177,7 +182,7 @@ public class EvolutionViewer {
                         evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                     } catch (InvalidGenomeLengthException e) { }
 
-                    generationCount = -1;
+                    generationCount = INITIALIZATION_GEN_COUNT;
                     timer.stop();
                     indViewer.stopTimer();
                     popViewer.stopTimer();
@@ -208,8 +213,9 @@ public class EvolutionViewer {
                         if (passedErrorCheck){
                             if (autoStopCheckBox.isSelected() && evComponent.checkForFitness100()) {
                                 count++;
-                                if (count == 5) {
-                                    JOptionPane.showMessageDialog(null, "The first generation with perfect genes is " + (generationCount-5), "Perfect Genes Found", JOptionPane.INFORMATION_MESSAGE);
+                                if (count == COUNT_LIMIT) {
+                                    //Ensures that the graph is able to go to the max limit instead of cutting off; Also gives correct value where it reached solution
+                                    JOptionPane.showMessageDialog(null, "The first generation with perfect genes is " + (generationCount-COUNT_LIMIT), "Perfect Genes Found", JOptionPane.INFORMATION_MESSAGE); 
                                     resetEvolution();
                                     timer.stop();
                                     count = 0;
@@ -217,7 +223,7 @@ public class EvolutionViewer {
                                 }
                             }
                             
-                            if (generationCount == -1){
+                            if (generationCount == INITIALIZATION_GEN_COUNT){
                                 try {
                                     evComponent.setAll(populationField.getText(), addSelectionChooser.getSelectedItem().toString(), mRateField.getText(), checkCrossover.isBorderPaintedFlat(), generationsField.getText(), genomeLengthField.getText(), elitismField.getText(), fitnessFunctionChooser.getSelectedItem().toString());
                                 } catch (InvalidGenomeLengthException e1) { }
@@ -427,7 +433,7 @@ public class EvolutionViewer {
      * @param autoStopCheckBox
      */
     public void makeAllFieldsUneditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < textFields.length; i++){
             textFields[i].setEditable(false);
         }
         addSelectionChooser.setEnabled(false);
@@ -446,7 +452,7 @@ public class EvolutionViewer {
      * @param isResearchCheckBox
     */
     public void makeAllFieldsEditable(JTextField[] textFields, JComboBox<String> addSelectionChooser, JCheckBox checkCrossover, JCheckBox fastEvolutionCheckbox, JCheckBox autoStopCheckBox){
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < textFields.length; i++){
             textFields[i].setEditable(true);
         }
         addSelectionChooser.setEnabled(true);

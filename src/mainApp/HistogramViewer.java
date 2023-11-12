@@ -28,12 +28,14 @@ public class HistogramViewer extends DataViewer {
         // constants
         final int frameWidth = 780;
         final int frameHeight = 400;
+        final int xLocation = 0;
+        final int yLocation = 393;
         final String frameTitle = "Population Fitness Histogram";
 
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
-        frame.setLocation(0, 393);
+        frame.setLocation(xLocation, yLocation);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 

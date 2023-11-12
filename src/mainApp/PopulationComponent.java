@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class PopulationComponent extends DataComponent{
     // constants
     public static final double FRAME_HEIGHT_RATIO = 1.33;
+    public static final double SCALING_MULTIPLER = 1.1;
     
     // fields
     private ArrayList<Chromosome> chromosomes;
@@ -36,8 +37,8 @@ public class PopulationComponent extends DataComponent{
                 Chromosome currChromosome = this.chromosomes.get(Chromosome.NUM_PER_ROW * i + j);
                 x = geneWidth * Chromosome.NUM_PER_ROW * j;
                 y = geneWidth * chromosomes.get(i).getNumPerColumn() * i;
-                currChromosome.setX((int) (1.1 * x + geneWidth));
-                currChromosome.setY((int) (1.1 * y + geneWidth));
+                currChromosome.setX((int) (SCALING_MULTIPLER * x + geneWidth));
+                currChromosome.setY((int) (SCALING_MULTIPLER * y + geneWidth));
                 currChromosome.drawPopulationView(g2, geneWidth, 0);
                 if (y > maxHeight) {
                     maxHeight = y;

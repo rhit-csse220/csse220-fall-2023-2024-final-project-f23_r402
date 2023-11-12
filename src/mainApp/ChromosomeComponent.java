@@ -16,6 +16,7 @@ public class ChromosomeComponent extends JComponent{
 	public static final int X_MOUSE_COORD_OFFSET = 7;
 	public static final int Y_MOUSE_COORD_OFFSET = 45;
 	public static final int DEFAULT_BORDER = 3;
+	public static final int SCALING_NUMBER = 2;
 	
 	// fields
 	private Chromosome chromosome;
@@ -37,7 +38,7 @@ public class ChromosomeComponent extends JComponent{
 		int compHeight = this.getHeight();
 		int compWidth = this.getWidth();
 		if (compWidth <= compHeight) {
-			return (compWidth - DEFAULT_BORDER * 2) / (Chromosome.NUM_PER_ROW);
+			return (compWidth - DEFAULT_BORDER * SCALING_NUMBER) / (Chromosome.NUM_PER_ROW);
 		} else {
 			return (compHeight) / (Chromosome.NUM_PER_ROW);
 		}
@@ -53,7 +54,7 @@ public class ChromosomeComponent extends JComponent{
 		if (compWidth <= compHeight) {
 			return DEFAULT_BORDER;
 		} else {
-			return (compWidth - compHeight)/2;
+			return (compWidth - compHeight)/SCALING_NUMBER;
 		}
 	} // findBorder
 

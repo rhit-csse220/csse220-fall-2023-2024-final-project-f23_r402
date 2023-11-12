@@ -15,6 +15,8 @@ public class HistogramComponent extends EvolutionComponent{
     public static final int FITNESS_SCORE_INITIAL_LIMIT = 96;
     public static final int FITNESS_SCORE_2ND_LAST_LIMIT = 99;
     public static final int SCORE_STRING_X_OFFSET = 2;
+    public static final int FITNESS_SCORE_INTERVAL = 5;
+    public static final int SCALING_DIVIDER = 20;
 
     // fields
     private Histogram histogram;
@@ -99,11 +101,11 @@ public class HistogramComponent extends EvolutionComponent{
     public void drawXDivisions(Graphics2D g2) {
         g2.translate(this.x, this.yHeight);
         int num = 0;
-        for (int i = 0; num <= 100; i += (int)(this.xWidth / (20))){
+        for (int i = 0; num <= MAX_FITNESS_SCORE; i += (int)(this.xWidth / (SCALING_DIVIDER))){
             String sNum = Integer.toString(num);
             g2.drawLine(i, -AXIS_LABEL_LINE_WIDTH, i, AXIS_LABEL_LINE_WIDTH);
             g2.drawString(sNum, i + X_AXIS_LABEL_TO_LINE_HORIZONTAL_PADDING, X_AXIS_LABEL_TO_LINE_VERTICAL_PADDING);
-            num += 5;
+            num += FITNESS_SCORE_INTERVAL;
             xLimit = i;
         }
         g2.drawLine(x, 0, xLimit, 0);

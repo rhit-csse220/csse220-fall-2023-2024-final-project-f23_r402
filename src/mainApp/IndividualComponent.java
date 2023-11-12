@@ -44,7 +44,7 @@ public class IndividualComponent extends DataComponent{
 		int compWidth = this.getWidth();
 
         int numColumn = this.population.getNumPerColumnForChromosome(0);
-        if (numColumn < 10){
+        if (numColumn < NUM_PER_ROW){
             return (compWidth - DEFAULT_BORDER * MULTIPLIER) / (NUM_PER_ROW);
         } else{
             return (compHeight) / numColumn;

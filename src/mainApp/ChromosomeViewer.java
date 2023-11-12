@@ -39,6 +39,7 @@ public class ChromosomeViewer {
 		final int frameWidth = 310;
 		final int frameHeight = 420;
 		final int textFieldWidth = 3;
+		final int CHECK_MULTIPLE_OF_TEN_DIVIDER = 10;
 
 		this.frame = new JFrame();
 		frame.setTitle(frameTitle);
@@ -125,7 +126,7 @@ public class ChromosomeViewer {
 
 		                // Check if the loaded file data is invalid in terms of length
 		                int characterCount = fileData.length();
-		                if (characterCount % 10 != 0) {
+		                if (characterCount % CHECK_MULTIPLE_OF_TEN_DIVIDER != 0) {
 							throw new InvalidChromosomeFormatException(characterCount);
 		                } else if (!checkChromosomeData(fileData.toString())){
 							throw new InvalidChromosomeCharacterException();

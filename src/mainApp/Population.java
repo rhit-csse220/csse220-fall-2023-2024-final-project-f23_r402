@@ -15,6 +15,12 @@ import java.util.Random;
 public class Population {
     // constants
     public static final int CROSSOVER_OFFSET = 1;
+    public static final int BEST_INDEX = 0;
+    public static final int TRUNCATION_SELECTION_NUM = 0;
+    public static final int ROULETTE_SELECTION_NUM = 1;
+    public static final int RANKED_SELECTION_NUM = 2;
+    public static final int PERCENTAGE_CONVERTER = 100;
+    public static final int SIZE_DIVIDER = 2;
     
     // fields
     private ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
@@ -57,17 +63,17 @@ public class Population {
         this.genomeLength = genomeLength;
         this.isResearch = isResearch;
         if (fitnessFunction.equals("Default")){
-            this.fitnessFunctionType = 0;
+            this.fitnessFunctionType = Chromosome.ALL1S_FITNESS_NUM;
         } else if (fitnessFunction.contains("Smiley")){
-            this.fitnessFunctionType = 1;
+            this.fitnessFunctionType = Chromosome.SMILEY_FITNESS_NUM;
             this.targetString = Chromosome.smileyGeneticData;
         } else if (fitnessFunction.contains("Sus")){
-            this.fitnessFunctionType = 2;
+            this.fitnessFunctionType = Chromosome.SUS_FITNESS_NUM;
             this.targetString = Chromosome.susGeneticData;
         }
         
         else if (fitnessFunction.contains("Binary")){
-            this.fitnessFunctionType = 3;
+            this.fitnessFunctionType = Chromosome.BINARY_ENCODING_FITNESS_NUM;
             this.targetString = Integer.toBinaryString(Chromosome.fitB);
         }
         this.initiatePopulation();
@@ -102,7 +108,7 @@ public class Population {
     * creates a BestFitLine2D object based on the previous best, average, and low fitness and add to lineArray
     */
     public void createLine(){
-        this.prevBestFitness = this.chromosomes.get(0).getFitnessScore();
+        this.prevBestFitness = this.chromosomes.get(BEST_INDEX).getFitnessScore();
         this.prevAvgFitness = calculateAvgFitness();
         this.prevLowFitness = this.chromosomes.get(this.chromosomes.size()-1).getFitnessScore();
         this.prevHammingDistance = calculateHammingDistance();
@@ -122,7 +128,7 @@ public class Population {
             Chromosome currChromosome = this.chromosomes.get(i);
             count+= currChromosome.getNumberOf0s();
         }
-        count = (count/(this.sizeOfPopulation*this.genomeLength)) * 100;
+        count = (count/(this.sizeOfPopulation*this.genomeLength)) * PERCENTAGE_CONVERTER;
         return count;
     }
     
@@ -136,7 +142,7 @@ public class Population {
             Chromosome currChromosome = this.chromosomes.get(i);
             count+= currChromosome.getNumberOf1s();
         }
-        count = (count/(this.sizeOfPopulation*this.genomeLength)) * 100;
+        count = (count/(this.sizeOfPopulation*this.genomeLength)) * PERCENTAGE_CONVERTER;
         return count;
     }
     
@@ -169,11 +175,11 @@ public class Population {
         // finding the parent chromosomes by selection algorithm
         ArrayList<Chromosome> currentChromosomes = new ArrayList<Chromosome>(chromosomes);
         ArrayList<Chromosome> chosenChromosomes = new ArrayList<Chromosome>();
-        if (selectionType == 0){
+        if (selectionType == TRUNCATION_SELECTION_NUM){
             chosenChromosomes = findTruncationList(currentChromosomes);
-        } else if (selectionType == 1){
+        } else if (selectionType == ROULETTE_SELECTION_NUM){
             chosenChromosomes = findRouletteList(currentChromosomes, new ArrayList<Chromosome>());
-        } else if (selectionType == 2){
+        } else if (selectionType == RANKED_SELECTION_NUM){
             chosenChromosomes = findRankedList(currentChromosomes, new ArrayList<Chromosome>());
         } else{
             throw new InvalidParameterException();
@@ -182,7 +188,7 @@ public class Population {
         int initialSize = this.chromosomes.size();
         
         // The amount of the most fit population to be retained from the initial collection of chromosomes. 
-        int elitistSize = (int) ((elitism / 100) * initialSize);
+        int elitistSize = (int) ((elitism / PERCENTAGE_CONVERTER) * initialSize); //Converts the elitism back from percentage value, which is then multiplied by initialSize to find elitistSize
         
         // store all the elite chromosomes
         ArrayList<Chromosome> eliteChromosomes = new ArrayList<Chromosome>();
@@ -199,7 +205,7 @@ public class Population {
             chosenChromosomes = this.performCrossover(chosenChromosomes);
         }
         
-        // initiating new chromosomes
+        // initiating new chromosomes; Divided by 2 to ensure that only half the parents generate the pairs
         for (int i = 0; i < initialSize/2; i++){
             String currChromosomeData = chosenChromosomes.get(i).getChromosomeDataAsString();
             try {
@@ -231,8 +237,8 @@ public class Population {
     * @return an ArrayList of chromosomes that have been chosen with the truncation selection
     */
     public ArrayList<Chromosome> findTruncationList(ArrayList<Chromosome> currentChromosomes){
-        int middleIndex = this.chromosomes.size()/2;
-        for (int i = this.chromosomes.size()/2; i < this.chromosomes.size(); i++){
+        int middleIndex = this.chromosomes.size()/SIZE_DIVIDER;
+        for (int i = this.chromosomes.size()/SIZE_DIVIDER; i < this.chromosomes.size(); i++){
             currentChromosomes.remove(middleIndex);
         }
         return currentChromosomes;
@@ -429,7 +435,7 @@ public class Population {
         for (int i = 0; i < selectedParents.size(); i++){
             // ensuring two children generated for each pair of parent
             int index = i;
-            if (index % 2 == 1){
+            if (index % 2 == 1){ //Checks if odd
                 index--;
             }
             
@@ -484,7 +490,7 @@ public class Population {
         
         int numPairs;
         if (fitnessFunctionType==0){
-            numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2;
+            numPairs = (this.sizeOfPopulation)*(this.sizeOfPopulation-1)/2; //THE FORMULA WE FOUND CALCULATING NUM PAIRS
         } else{
             numPairs = this.sizeOfPopulation;
         }
@@ -492,7 +498,7 @@ public class Population {
         for (int i = 0; i < genomeLength; i++){
             hammingDistance += (position1n0Array[i][0]*position1n0Array[i][1]);
         }
-        return ((hammingDistance/(numPairs))/genomeLength)*100;
+        return ((hammingDistance/(numPairs))/genomeLength)*PERCENTAGE_CONVERTER;
     }
     
     /*

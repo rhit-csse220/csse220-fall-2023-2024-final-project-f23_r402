@@ -18,7 +18,12 @@ public class Gene {
 	public static final Color GENE_0_COLOR = Color.BLACK;
 	public static final Color GENE_1_COLOR = Color.GREEN;
 	public static final Color GENE_2_COLOR = new Color(255, 227, 43);
-	
+	public static final int ORIGIN = 0;
+	public static final int BOUND = 2;
+	public static final int MUTATION_THRESHOLD_OFFSET = 1;
+
+
+
 	// fields
 	private char bit;
 	private boolean changeable;
@@ -79,8 +84,8 @@ public class Gene {
 	 * ensures: randomizes the bit value to 0 or 1
 	 */
 	public void setRandomBit(){
-		int value = r.nextInt(0,2);
-		this.bit = (value == 0 ? '0' : '1');
+		int value = r.nextInt(ORIGIN,BOUND);
+		this.bit = (value == ORIGIN ? '0' : '1');
 	}
 
 	/**
@@ -168,7 +173,7 @@ public class Gene {
 	 * @param numOfGenes
 	 */
 	public void mutate(double mutationRate, int numOfGenes){
-		int randomNum = (int)(Math.random() * numOfGenes) + 1;
+		int randomNum = (int)(Math.random() * numOfGenes) + MUTATION_THRESHOLD_OFFSET;
 		if (randomNum <= mutationRate) {
 			// Mutate the gene
 			this.changeBit();

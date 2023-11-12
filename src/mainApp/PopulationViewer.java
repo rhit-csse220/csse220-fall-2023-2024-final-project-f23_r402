@@ -24,11 +24,14 @@ public class PopulationViewer extends DataViewer {
         final String frameTitle = "Population Viewer";
         final int frameWidth = 400;
         final int frameHeight = 400;
+        final int xLocation = 1150;
+        final int yLocation = 0;
+        final int timerDelay = 1000/33;
 
         frame = new JFrame();
         frame.setTitle(frameTitle);
         frame.setSize(frameWidth, frameHeight);
-        frame.setLocation(1150, 0);
+        frame.setLocation(xLocation, yLocation);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
         frame.setLayout(new BorderLayout());
@@ -37,7 +40,7 @@ public class PopulationViewer extends DataViewer {
         // Adds the component to the frame
         frame.add(populationComponent);
         
-        timer = new Timer(1000/33, new ActionListener() {
+        timer = new Timer(timerDelay, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
