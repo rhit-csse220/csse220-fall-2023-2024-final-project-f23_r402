@@ -1,0 +1,314 @@
+@startuml AlgorithmResearchUML1
+skinparam style stictuml
+
+class BestFitLine2D{
+    bestFitness: double
+    avgFitness: double
+    lowFitness: double
+    hammingDistance: double
+    numberOf0s: double
+    numberOf1s: double
+    numberOfQs: double
+}
+
+class Chromosome{
+    numOfGenes: int
+    numPerColumn: int
+    fitnessFunctionType: int
+    fitnessScore: double
+    geneWidth: int
+    border: int
+    originalGenomeData: String
+    numberOf1s: int
+    numberOf0s: int
+    numberOfQs: int
+    qIndex: ArrayList<Integer>
+    isResearch: boolean
+    isPerfect: boolean
+    daysRemaining: int
+    x: int
+    y: int
+
+    initiateGene(): void
+    initiateGeneLoad(): void
+    initiateGeneWithString(s: String): void
+    initiateGeneWithStringLoad(s: String): void
+    calcFitnessFuction(): void
+    calculateDefaultFitnessFunction(): void
+    fitnessTarget(): void
+    fitnessMax(): void
+    adjustGenePosition(): void
+    mutateGenes(mutationRate: double): void
+    drawOn(g: Graphics, geneWidth: int, border: int): void
+    drawPopulationView(g: Graphics2D, geneWidth: int, border: int): void
+    drawBestView(g: Graphics2D, geneWidth: int, border: int, x: int, y: int): void
+    drawGenes(g2: Graphics2D): void
+    compareTo(otherChromosome: Object): int
+    handleGetSelectedGene(box: Rectangle2D.Double): Gene
+    liveLife(): void
+    loadGeneFromOriginalData(): void
+    checkAll1s(s: String): boolean
+    calculateFitnessScoreResearch(): double
+    toString(): String
+}
+
+class ChromosomeComponent{
+    findGeneWidth(): int
+    findBorder(): int
+    paintComponent(g: Graphics): void
+    containsGene(x: int, y: int): Gene
+    handleLoadDataFromFile(fileData: String): void
+    handleMutateGenesInChromosome(mutationRate: double): void
+    handleGetNumberOfGenesInChromosome(): int
+    handleGetChromosomeDataAsString(): String
+}
+
+class ChromosomeViewer {
+    fileName: String
+    file: File
+    frame: JFrame
+
+    driverMain(): void
+    checkChromosomeData(fileData: String): boolean
+    handleDriverMain(): void
+}
+
+abstract class DataComponent{
+    {abstract} paint(g: Graphics): void
+}
+
+abstract class DataViewer{
+    frame: JFrame
+    timerDelay: int
+    timer: Timer
+    {abstract} driverMain(): void
+    shutDownFrame(): void
+    stopTimer(): void
+    startTimer(): void
+    handleSetPopulation(p: Population): void
+}
+
+class Evolution {
+    population: Population
+    populationSize: int
+    generations: int
+    elitism: double
+    genomeLength: int
+    mutationRate: double
+    selection: String
+    crossover: boolean
+
+    getLineArraySize(): int
+    getLineArrayIndex(i: int, s: String): double
+    checkForFitness100(): boolean
+    handleSelection(): void
+    handleTruncationSelection(): void
+    handleRouletteSelection(): void
+    handleRankedSelection(): void
+    isResearchPopulation(): boolean
+    performSelectionResearch(): void
+    isResearchChromosome(): boolean
+}
+
+class EvolutionComponent {
+    x: int
+    y: int
+    xLimit: int
+    yLimit: int
+    xWidth: int
+    yHeight: int
+
+    handleGetPopulation(): Population
+    checkForFitness100(): boolean
+    etAll(populationSize: String, selection: String, mutationRate: String, crossover: boolean, generations: String, genomeLength: String, elitism: String, fitnessFunction: String): void
+    handleSelection(): void
+    paintComponent(g: Graphics): void
+    drawOn(g2: Graphics2D): void
+    drawXDivisions(g2: Graphics2D): void
+    drawYDivisions(g2: Graphics2D): void
+    calculateY(y: double): int
+    calculateX(x: double): int
+    drawLines(g2: Graphics2D): void
+    drawLegend(g2: Graphics2D): void
+    drawResearchLegend(g2: Graphics2D): void
+}
+
+class EvolutionViewer{
+    makeAllFieldsUneditable(textFields: JTextField[], addSelectionChooser: JComboBox<String>, checkCrossover: JCheckBox, fastEvolutionCheckbox: JCheckBox, autoStopCheckbox: JCheckBox): void
+    makeAllFieldsEditable(textFields: JTextField[], addSelectionChooser: JComboBox<String>, checkCrossover: JCheckBox, fastEvolutionCheckbox: JCheckBo, autoStopCheckbox: JCheckBoxx): void
+    checkFields(textFields: JTextField[], fitnessFunction: String, hasError: boolean[]): void
+    driverMain(): void
+    handleDriverMain(): void
+}
+
+class EvolutionWorker{
+    generations: int
+    startEvolutionButton: JButton
+    shutAllFrames: boolean
+    paused: boolean
+    autoStopEnabled: boolean
+    pauseLatch: CountDownLatch
+
+    doInBackground(): void
+}
+
+class Gene{
+    bit: char
+    changeable: boolean
+    x: int
+    y: int
+    geneWidth: int
+    border: int
+    drawOn(g: Graphics): void
+    changeBit(): void
+    setRandomBit(): void
+    isSelected(box: Rectangle2D): boolean
+    mutate(mutationRate: double, numOfGenes: int): void
+    toString(): String
+}
+
+class HelpScreenViewer{
+    driverMain(): void
+    handleDriverMain(): void
+}
+
+class Histogram{
+    fitnessFrequency: int[]
+    updateFitnessFrequency(): void
+    getAllElements(): int
+    getSizeOfPopulation(): int
+}
+
+class HistogramComponent{
+    drawRectangles(g: Graphics2D): void
+    handleSetPopulation(p: Population): void
+}
+
+class HistogramViewer{
+    driverMain(): void
+    handleSetPopulation(p: Population): void
+}
+
+class IndividualComponent{
+    int: index
+    paint(g: Graphics): void
+    findGeneWidth(): int
+    getPopulationPrevHammingDistance(): double
+}
+
+class IndividualViewer{
+    int: timerDelay
+    driverMain(): void
+    setSize(width: int, height: int): void
+}
+
+class MainApp{
+    runApp(): void
+}
+
+class OpenWebsiteButtonListener{
+    uri: URI
+    openWebpage(uri: URI): boolean
+}
+
+class Population{
+    sizeOfPopulation: int
+    genomeLength: int
+    prevBestFitness: double
+    prevLowFitness: double
+    prevAvgFitness: double
+    prevHammingDistance: double
+    prevCountOf0s: double
+    prevCountOf1s: double
+    prevCountOfQs: double
+    targetString: String
+    fitnessFunctionType: int
+    isResearch: boolean
+
+    initiatePopulation(): void
+    sortPopulation(): void
+    createLine(): void
+    calculateTotalNumOf0s(): double
+    calculateTotalNumOf1s(): double
+    calculateTotalNumOfQs(): double
+    performSelection(mutationRate: double, selectionType: int, elitism: double, crossover: boolean): void
+    findTruncationList(currentChromosomes: ArrayList<Chromosome>): ArrayList<Chromosome>
+    findRouletteList(currentChromosomes: ArrayList<Chromosome>, chosenChromosomes: ArrayList<Chromosome>): ArrayList<Chromosome>
+    findRankedList(currentChromosomes: ArrayList<Chromosome>, chosenChromosomes: ArrayList<Chromosome>): ArrayList<Chromosome>
+    performCrossover(selectedParents: ArrayList<Chromosome>): ArrayList<Chromosome>
+    performSelectionResearch(): void
+    selectRandomParent(): Chromosome
+    selectSecondRandomParent(firstParent: Chromosome): Chromosome
+    performResearchCrossover(): Chromosome
+    calculateAvgFitness(): double
+    calculateHammingDistance(): double
+    readData1n0(chromosome: Chromosome, position1n0Array: int[][]): void
+    getLineArraySize(): int
+    getBestFitnessForLineArrayElement(i: int): double
+    getAvgFitnessForLineArrayElement(i: int): double
+    getLowFitnessForLineArrayElement(i: int): double
+    getHammingDistancForLineArrayElement(i: int): double
+    getNumberOf0sForLineArrayElement(i: int): double
+    getNumberOf1sForLineArrayElement(i: int): double
+    getNumberOfQsForLineArrayElement(i: int): double
+    getNumPerColumnForChromosome(i: int): int
+    drawOnForChromosome(index: int, g: Graphics, geneWidth: int, border: int): void
+    isChromosomesEmpty(): boolean
+    getChromosomesSize(): int
+    isResearchChromosome(i: int): boolean
+    getChromosomeByIndex(i: int): Chromosome
+}
+
+class PopulationComponent{
+    maxHeight: int
+}
+
+class PopulationViewer{
+    driverMain(): void
+    handleSetPopulation(Population: p): void
+}
+
+Chromosome -> "*" Gene
+Chromosome ..|> Comparable
+ChromosomeComponent -down-> Chromosome
+ChromosomeComponent -left-|> JComponent
+ChromosomeViewer -down-> ChromosomeComponent
+
+DataComponent -|> JComponent
+DataComponent -> Population
+DataViewer -> DataComponent
+
+Evolution -> Population
+EvolutionComponent -up-|> JComponent
+EvolutionComponent -> Evolution
+EvolutionViewer -> EvolutionComponent
+EvolutionViewer -> IndividualViewer
+EvolutionViewer -> PopulationViewer
+EvolutionViewer -up-> HistogramViewer
+
+EvolutionWorker -up-> EvolutionComponent
+EvolutionWorker -right-|> SwingWorker
+
+Histogram -up-> Population
+HistogramComponent -up-|> EvolutionComponent
+HistogramViewer -|> DataViewer
+
+IndividualComponent --|> DataComponent
+IndividualViewer --|> DataViewer
+IndividualViewer --> IndividualComponent
+
+MainApp ..> HelpScreenViewer
+MainApp ..> OpenWebsiteButtonListener
+MainApp -> EvolutionViewer
+MainApp -> IndividualViewer
+
+OpenWebsiteButtonListener -|> ActionListener
+
+Population -right-> "*" Chromosome
+Population -> "*" BestFitLine2D
+PopulationComponent -> "*" Chromosome
+PopulationComponent -|> DataComponent
+PopulationViewer -> PopulationComponent
+PopulationViewer -right-|> DataViewer
+
+@enduml
