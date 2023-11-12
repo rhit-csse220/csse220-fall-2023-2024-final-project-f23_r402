@@ -346,7 +346,7 @@ public class EvolutionViewer {
                                         indViewer.shutDownFrame();
                                         popViewer.shutDownFrame();
                                         histViewer.shutDownFrame();
-                                    }
+                                    } 
                                 } else if (indViewer!=null){
                                     indViewer.shutDownFrame();
                                     popViewer.shutDownFrame();

@@ -98,6 +98,7 @@ public class EvolutionWorker extends SwingWorker<Void, Void> {
                 SwingUtilities.invokeLater(() -> {
                     startEvolutionButton.setText("Start Evolution");
                     JOptionPane.showMessageDialog(null, "The first generation with perfect genes is " + generationCounts, "Perfect Genes Found", JOptionPane.INFORMATION_MESSAGE);
+                    this.shutAllFrames = true;
                 });
                 return null;
             }
